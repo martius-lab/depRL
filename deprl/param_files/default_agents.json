@@ -1,0 +1,37 @@
+{
+
+  "DEP":{
+        "kappa": 10000,
+        "tau":  80,
+        "bias_rate":  0.00002,
+        "time_dist":  60,
+        "normalization":  "independent",
+        "s4avg": 6,
+        "buffer_size": 600,
+        "sensor_delay": 1,
+        "regularization": 32,
+        "with_learning": true,
+        "q_norm_selector": "l2"
+  },
+
+
+  "DEP_ostrich":{
+    "test_episode_every": 3,
+    "kappa": 20,
+    "tau": 8,
+    "buffer_size": 90,
+    "bias_rate": 0.03,
+    "s4avg": 1,
+    "time_dist": 5,
+    "normalization":  "independent",
+    "sensor_delay": 1,
+    "regularization": 32,
+    "with_learning": true,
+    "q_norm_selector": "l2",
+    "intervention_length": 4,
+    "intervention_proba": 0.0004
+  }
+
+
+
+}

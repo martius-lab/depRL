@@ -1,0 +1,17 @@
+{
+  "tonic":
+  {"header": "import tonic.torch;import gym, warmup; import custom_agents; from custom_torso import custom_model_mpo; from custom_trainer import Trainer; import torch;",
+   "agent": "custom_agents.dep_factory(True, tonic.torch.agents.MPO())(model=custom_model_mpo(hidden_size=256), replay=tonic.replays.buffers.Buffer(return_steps=3, batch_size=256, steps_between_batches=1000, batch_iterations=30, steps_before_batches=10))",
+   "environment": "tonic.environments.Gym('arm750-v0', scaled_actions=False)",
+   "test_environment": null,
+   "trainer": "Trainer(steps=int(1e8), epoch_steps=int(1e4), save_steps=int(5e4))",
+   "before_training": "",
+   "after_training": "",
+   "parallel": 1,
+   "sequential": 1,
+   "seed": 0,
+   "name": "default_params",
+   "environment_name": null,
+   "checkpoint": "last",
+   "path": ""}
+}

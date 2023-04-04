@@ -1,0 +1,29 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.1.0
+    hooks:
+    -   id: check-json
+    -   id: check-yaml
+    -   id: end-of-file-fixer
+    -   id: trailing-whitespace
+-   repo: https://github.com/MarcoGorelli/absolufy-imports
+    rev: v0.3.1
+    hooks:
+    -   id: absolufy-imports
+        files: 'al4myochallenge/'
+-   repo: https://github.com/ambv/black
+    rev: 23.1.0
+    hooks:
+    - id: black
+      args: [--config=pyproject.toml]
+-   repo: https://github.com/PyCQA/isort
+    rev: 5.12.0
+    hooks:
+    - id: isort
+      args: [--settings-path=pyproject.toml]
+-   repo: https://github.com/charliermarsh/ruff-pre-commit
+    # Ruff version.
+    rev: 'v0.0.254'
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
