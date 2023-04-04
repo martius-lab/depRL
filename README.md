@@ -6,6 +6,11 @@ The work was performed by Pierre Schumacher, Daniel F.B. Haeufle, Dieter Büchle
 
 If you just want to see the code for DEP, take a look at `deprl/dep_controller.py`, `deprl/custom_agents.py` and `deprl/env_wrapper/wrappers.py`
 
+<p align="center">
+<img src=https://user-images.githubusercontent.com/24903880/229767812-0a489aac-d112-4abf-b8f0-82b924422903.gif width=250>
+<img src=https://user-images.githubusercontent.com/24903880/229768065-a66cca5b-e15d-4fec-bc99-9d7adb643863.gif width=214>
+<img src=https://user-images.githubusercontent.com/24903880/229768175-21dd0f31-bd89-44d6-923c-97f99f1f90ef.gif width=214>
+</p>
 
 ## Abstract
 Muscle-actuated organisms are capable of learning an unparalleled diversity of
