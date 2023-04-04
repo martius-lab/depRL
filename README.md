@@ -24,7 +24,7 @@ While [TonicRL](https://github.com/fabiopardo/tonic) with PyTorch is used for th
 1. Make sure to install poetry and deactivate all virtual environments.
 2. Clone the environment
 ```
-git clone updatelink!
+git clone https://github.com/martius-lab/depRL
 ```
 
 3. Go to the root folder and run
