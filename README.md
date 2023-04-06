@@ -122,6 +122,8 @@ for ep in range(5):
 
 ```
 
+The humanoid environments were simulated with [SCONE](https://scone.software/doku.php?id=start). A ready-to-use RL package will be released in cooperation with GOATSTREAM at a later date.
+
 ## Citation
 
 Please use the following citation if you make use of our work:
