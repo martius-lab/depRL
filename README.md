@@ -102,7 +102,7 @@ Be aware that ostrich training can be seed-dependant, as seen in the plots of th
 
 The ostrich environment can be found [here](https://github.com/vittorione94/ostrichrl) and is installed automatically via poetry.
 
-The underlying arm-environment (warmup) can be used like any other gym environment:
+The arm-environment [warmup](https://github.com/P-Schumacher/warmup) is also automatically installed by poetry and can be used like any other gym environment:
 
 ```
 import gym
