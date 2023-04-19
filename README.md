@@ -64,12 +64,13 @@ If it happens, try to append
 ```
 export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring
 ```
-to your bashrc.
+to your bashrc. You can also try to prepend it to the poetry command: `PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring poetry install`.
 * If you have an error related to your `ptxas` version, this means that your cuda environment is not setup correctly and you should install the cuda-toolkit. The easiest way is to do this via conda if you don't have admin rights on your workstation.
 I recommend running
 ```
 conda install -c conda-forge cudatoolkit-dev
 ```
+* In any other case, first try to delete the `poetry.lock` file and the virtual env `.venv`, then run `poetry install` again.
 
 
 Feel free to open an issue if you encounter any problems.
