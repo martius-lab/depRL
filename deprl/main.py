@@ -212,7 +212,6 @@ def train(
         exec(before_training)
 
     # Train.
-    scores = trainer.run(orig_params, **time_dict)
     try:
         scores = trainer.run(orig_params, **time_dict)
     except Exception as e:
