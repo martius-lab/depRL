@@ -33,7 +33,7 @@
   },
 
 
-  "working_dir": "./experiments/",
+  "working_dir": "./output/",
   "id": 0,
   "env_args": {"force_scale": 0.0003}
 
