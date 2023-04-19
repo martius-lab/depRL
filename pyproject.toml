@@ -11,17 +11,17 @@ python = ">=3.9, <3.11"
 torch = "^1.13.1"
 pyyaml = "^6.0"
 gym = "0.13.0"
-tonic = {git = "https://github.com/P-Schumacher/tonic.git", branch="updates"}
+tonic = {path = "./deprl/vendor/tonic"}
 free-mujoco-py = "*"
 jax = {extras = ["cuda11_cudnn82"], version = "^0.4.6"}
-ostrichrl = {git = "https://github.com/P-Schumacher/ostrichrl.git", branch="fix/setuptools"}
-warmup = {git = "https://github.com/P-Schumacher/warmup.git"}
 numpy = "^1.24.2"
 
 [tool.poetry.group.dev.dependencies]
 pudb = "*"
 pre-commit = "*"
 wandb = "^0.13.11"
+ostrichrl = {git = "https://github.com/P-Schumacher/ostrichrl.git", branch="fix/setuptools"}
+warmup = {git = "https://github.com/P-Schumacher/warmup.git"}
 
 [[tool.poetry.source]]
 name = "jorenham/jax_pep503"

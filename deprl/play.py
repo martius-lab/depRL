@@ -237,7 +237,7 @@ def play(path, checkpoint, seed, header, agent, environment):
     # Adapt mpo specific settings
     if "config" in locals():
         if "mpo_args" in config:
-             agent.set_params(**config.mpo_args)
+            agent.set_params(**config.mpo_args)
     # Initialize the agent.
     agent.initialize(
         observation_space=environment.observation_space,

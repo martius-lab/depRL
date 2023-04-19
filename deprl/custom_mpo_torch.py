@@ -1,9 +1,7 @@
 import torch
+from tonic.torch import agents, updaters
+
 from deprl import custom_torso
-from tonic.torch import agents
-from tonic.torch import models
-from tonic.torch import normalizers
-from tonic.torch import updaters
 
 
 class TunedMPO(agents.MPO):
@@ -27,12 +25,19 @@ class TunedMPO(agents.MPO):
         retnorm=None,
         return_steps=None,
     ):
-        optim_critic = lambda params: torch.optim.Adam(params, lr_critic)
+        def optim_critic(params):
+            return torch.optim.Adam(params, lr_critic)
+
         self.critic_updater = TunedExpectedSARSA(
             optimizer=optim_critic, gradient_clip=grad_clip_critic
         )
-        optim_actor = lambda params: torch.optim.Adam(params, lr=lr_actor)
-        optim_dual = lambda params: torch.optim.Adam(params, lr=lr_dual)
+
+        def optim_actor(params):
+            return torch.optim.Adam(params, lr=lr_actor)
+
+        def optim_dual(params):
+            return torch.optim.Adam(params, lr=lr_dual)
+
         self.actor_updater = TunedMaximumAPosteriori(
             actor_optimizer=optim_actor,
             dual_optimizer=optim_dual,
@@ -41,7 +46,9 @@ class TunedMPO(agents.MPO):
         if hidden_size is None:
             hidden_size = 256
         if retnorm is not None:
-            self.model = custom_torso.custom_return_mpo(hidden_size=hidden_size)
+            self.model = custom_torso.custom_return_mpo(
+                hidden_size=hidden_size
+            )
         else:
             self.model = custom_torso.custom_model_mpo(hidden_size=hidden_size)
         if batch_size is not None:
@@ -54,7 +61,9 @@ class TunedMPO(agents.MPO):
 
 
 class TunedExpectedSARSA(updaters.critics.ExpectedSARSA):
-    def __init__(self, num_samples=20, loss=None, optimizer=None, gradient_clip=0):
+    def __init__(
+        self, num_samples=20, loss=None, optimizer=None, gradient_clip=0
+    ):
         self.num_samples = num_samples
         self.loss = loss or torch.nn.MSELoss()
         self.optimizer = optimizer or (
@@ -63,7 +72,9 @@ class TunedExpectedSARSA(updaters.critics.ExpectedSARSA):
         self.gradient_clip = gradient_clip
 
 
-class TunedMaximumAPosteriori(updaters.actors.MaximumAPosterioriPolicyOptimization):
+class TunedMaximumAPosteriori(
+    updaters.actors.MaximumAPosterioriPolicyOptimization
+):
     def __init__(
         self,
         num_samples=20,

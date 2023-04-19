@@ -1,0 +1,11 @@
+from .a2c import A2C  # noqa
+from .agent import Agent
+from .d4pg import D4PG  # noqa
+from .ddpg import DDPG
+from .mpo import MPO
+from .ppo import PPO
+from .sac import SAC
+from .td3 import TD3
+from .trpo import TRPO
+
+__all__ = [Agent, A2C, DDPG, D4PG, MPO, PPO, SAC, TD3, TRPO]
