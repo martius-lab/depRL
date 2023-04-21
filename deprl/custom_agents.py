@@ -1,7 +1,7 @@
 import numpy as np
-from tonic import logger
 
 from .dep_controller import DEP
+from .vendor.tonic import logger
 
 
 def dep_factory(mix, instance):

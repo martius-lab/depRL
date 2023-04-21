@@ -1,7 +1,7 @@
 import torch
-from tonic.torch import agents, updaters
 
 from deprl import custom_torso
+from deprl.vendor.tonic.torch import agents, updaters
 
 
 class TunedMPO(agents.MPO):

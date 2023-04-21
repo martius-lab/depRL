@@ -1,5 +1,6 @@
 import torch
-from tonic.torch import models, normalizers
+
+from deprl.vendor.tonic.torch import models, normalizers
 
 
 def custom_model_mpo(hidden_size=256):

@@ -1,5 +1,6 @@
 import numpy as np
-from tonic import logger
+
+from deprl.vendor.tonic import logger
 
 
 def test_mujoco(env, agent, steps, params=None, test_episodes=10):

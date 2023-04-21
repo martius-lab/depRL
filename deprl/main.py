@@ -3,12 +3,12 @@ import argparse
 import os
 import traceback
 
-import tonic
 import torch
 import yaml
 
 from deprl import custom_distributed
 from deprl.utils import prepare_params
+from deprl.vendor import tonic
 
 
 def maybe_load_checkpoint(

@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "deprl"
-version = "1.0.0"
-description = "Code for the DEP-RL paper for musculoskeletal systems."
+version = "0.0.1"
+description = "DEP-RL, a method for robust control of musculoskeletal systems."
 authors = ["Pierre Schumacher <pierre.schumacher@tuebingen.mpg.de>"]
 license = "MIT"
 readme = "README.md"
@@ -11,10 +11,10 @@ python = ">=3.9, <3.11"
 torch = "^1.13.1"
 pyyaml = "^6.0"
 gym = "0.13.0"
-tonic = {path = "./deprl/vendor/tonic"}
 free-mujoco-py = "*"
 jax = {extras = ["cuda11_cudnn82"], version = "^0.4.6"}
 numpy = "^1.24.2"
+termcolor = "^2.2.0"
 
 [tool.poetry.group.dev.dependencies]
 pudb = "*"

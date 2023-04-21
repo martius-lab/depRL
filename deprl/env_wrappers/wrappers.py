@@ -2,8 +2,9 @@ from abc import ABC, abstractmethod
 
 import gym
 import numpy as np
-import tonic  # noqa
-from tonic import logger
+
+import deprl  # noqa
+from deprl.vendor.tonic import logger
 
 
 class AbstractWrapper(gym.Wrapper, ABC):
