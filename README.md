@@ -35,7 +35,7 @@ If you would like to use `jax` with CUDA support, which significantly speeds up 
 ```
 pip install --upgrade "jax[cuda12_pip]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
 ```
-or similar afterwards. 
+or similar afterwards.
 
 The humanreacher environment can be installed with
 ```
