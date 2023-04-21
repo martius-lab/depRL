@@ -4,10 +4,11 @@ import argparse
 import os
 
 import numpy as np
-from .vendor.tonic import logger
 import yaml
 
 from deprl import env_wrappers
+
+from .vendor.tonic import logger
 
 
 def play_gym(agent, environment):
