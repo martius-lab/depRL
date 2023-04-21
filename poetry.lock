@@ -280,6 +280,21 @@ files = [
 ]
 
 [[package]]
+name = "colorednoise"
+version = "2.1.0"
+description = "Generate Gaussian (1/f)**beta noise (e.g. pink noise)"
+category = "main"
+optional = true
+python-versions = ">=3"
+files = [
+    {file = "colorednoise-2.1.0-py3-none-any.whl", hash = "sha256:2ae4a3e22d018c6f3fb9e23977d663538a9e2fcffcddeda14d1540e6b8ae531d"},
+    {file = "colorednoise-2.1.0.tar.gz", hash = "sha256:590fa1f99aac276dcc99a64a4479fa8dae84d74c6e931b442d2f5afe86fce24d"},
+]
+
+[package.dependencies]
+numpy = ">=1.17.0"
+
+[[package]]
 name = "cython"
 version = "0.29.34"
 description = "The Cython compiler for writing C extensions for the Python language."
@@ -1307,7 +1322,7 @@ tests = ["pytest", "pytest-cov", "pytest-pep8"]
 [[package]]
 name = "ostrichrl"
 version = "0.1.0"
-description = ""
+description = "OstrichRL"
 category = "dev"
 optional = false
 python-versions = ">=3.6"
@@ -2199,4 +2214,4 @@ test = ["pytest (>=6.0.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8, <3.11"
-content-hash = "d8fd85de613eb92d27d6803693e6728e5820406a169a676b07135a69a0b2353e"
+content-hash = "f2494122c290c0eb41f9342bf4e8ab3e19cc01ce0a29adfa2133f9baca1d739f"

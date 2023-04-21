@@ -24,56 +24,26 @@ domain of self-organization, as being able to induce state-space covering explor
 learning of reaching and locomotion in musculoskeletal systems, outperforming
 current approaches in all considered tasks in sample efficiency and robustness.
 
+
 ## Installation
 
-We recommend an installation with [poetry](https://python-poetry.org/) to ensure reproducibility.
-While [TonicRL](https://github.com/fabiopardo/tonic) with PyTorch is used for the RL algorithms, DEP itself is implemented in JAX. We *strongly* recommend GPU-usage to speed up the computation of DEP. On systems without GPUs, give the tensorflow version of TonicRL a try! We alternatively provide a pip_requirements file.
-1. Make sure to install poetry and deactivate all virtual environments.
-2. Clone the environment
+We provide a python package for easy installation:
 ```
-git clone https://github.com/martius-lab/depRL
+pip install deprl
+```
+If you would like to use `jax` with CUDA support, which significantly speeds up learning, we recommend running:
+```
+pip install --upgrade "jax[cuda12_pip]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+```
+or similar afterwards. 
+
+The humanreacher environment can be installed with
+```
+pip install pip install git+https://github.com/P-Schumacher/warmup.git
 ```
 
-3. Go to the root folder and run
-```
-poetry install
-poetry shell
-```
+OstrichRL can be installed from [here](https://github.com/vittorione94/ostrichrl).
 
-That's it!
-
-
-You can try the installation by running:
-```
-bash play_files/play_dep_humanreacher.sh
-bash play_files/play_dep_ostrich.sh
-bash play_files/play_dep_dmcontrol_quadruped.sh
-```
-
-You might see a more interesting ostrich behavior by disabling episode resets in the ostrich environment first.
-
-The build has been tested with:
-```
-Ubuntu 20.04 and Ubuntu 22.04
-CUDA 12.0
-poetry 1.4.0
-```
-### Troubleshooting
-* A common error with poetry is a faulty interaction with the python keyring, resulting in a `Failed to unlock the collection!`-error. It could also happen that the dependency solving takes very long (more than 60s), this is caused by the same error.
-If it happens, try to append
-```
-export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring
-```
-to your bashrc. You can also try to prepend it to the poetry command: `PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring poetry install`.
-* If you have an error related to your `ptxas` version, this means that your cuda environment is not setup correctly and you should install the cuda-toolkit. The easiest way is to do this via conda if you don't have admin rights on your workstation.
-I recommend running
-```
-conda install -c conda-forge cudatoolkit-dev
-```
-* In any other case, first try to delete the `poetry.lock` file and the virtual env `.venv`, then run `poetry install` again.
-
-
-Feel free to open an issue if you encounter any problems.
 
 ## Experiments
 
@@ -99,6 +69,15 @@ See the [TonicRL](https://github.com/fabiopardo/tonic) documentation for details
 
 Be aware that ostrich training can be seed-dependant, as seen in the plots of the original publication.
 
+## Pure DEP
+If you want to see pure DEP in action, just run the following bash files after installing the ostrichrl and warmup environments.
+```
+bash play_files/play_dep_humanreacher.sh
+bash play_files/play_dep_ostrich.sh
+bash play_files/play_dep_dmcontrol_quadruped.sh
+```
+
+You might see a more interesting ostrich behavior by disabling episode resets in the ostrich environment first.
 ## Environments
 
 The ostrich environment can be found [here](https://github.com/vittorione94/ostrichrl) and is installed automatically via poetry.
@@ -124,6 +103,47 @@ for ep in range(5):
 ```
 
 The humanoid environments were simulated with [SCONE](https://scone.software/doku.php?id=start). A ready-to-use RL package will be released in cooperation with GOATSTREAM at a later date.
+
+## Source Code Installation
+
+We recommend an installation with [poetry](https://python-poetry.org/) to ensure reproducibility.
+While [TonicRL](https://github.com/fabiopardo/tonic) with PyTorch is used for the RL algorithms, DEP itself is implemented in JAX. We *strongly* recommend GPU-usage to speed up the computation of DEP. On systems without GPUs, give the tensorflow version of TonicRL a try! We alternatively provide a pip_requirements file.
+1. Make sure to install poetry and deactivate all virtual environments.
+2. Clone the environment
+```
+git clone https://github.com/martius-lab/depRL
+```
+
+3. Go to the root folder and run
+```
+poetry install
+poetry shell
+```
+
+That's it!
+
+The build has been tested with:
+```
+Ubuntu 20.04 and Ubuntu 22.04
+CUDA 12.0
+poetry 1.4.0
+```
+### Troubleshooting
+* A common error with poetry is a faulty interaction with the python keyring, resulting in a `Failed to unlock the collection!`-error. It could also happen that the dependency solving takes very long (more than 60s), this is caused by the same error.
+  If it happens, try to append
+```
+export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring
+```
+to your bashrc. You can also try to prepend it to the poetry command: `PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring poetry install`.
+* If you have an error related to your `ptxas` version, this means that your cuda environment is not setup correctly and you should install the cuda-toolkit. The easiest way is to do this via conda if you don't have admin rights on your workstation.
+  I recommend running
+```
+conda install -c conda-forge cudatoolkit-dev
+```
+* In any other case, first try to delete the `poetry.lock` file and the virtual env `.venv`, then run `poetry install` again.
+
+
+Feel free to open an issue if you encounter any problems.
 
 ## Citation
 
