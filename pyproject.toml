@@ -1,20 +1,20 @@
 [tool.poetry]
 name = "deprl"
-version = "0.0.1"
+version = "0.0.3"
 description = "DEP-RL, a method for robust control of musculoskeletal systems."
 authors = ["Pierre Schumacher <pierre.schumacher@tuebingen.mpg.de>"]
 license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.9, <3.11"
-torch = "^1.13.1"
+python = ">=3.8, <3.11"
 pyyaml = "^6.0"
-gym = "0.13.0"
-free-mujoco-py = "*"
-jax = {extras = ["cuda11_cudnn82"], version = "^0.4.6"}
 numpy = "^1.24.2"
 termcolor = "^2.2.0"
+torch = ">=1.13.1"
+jaxlib = "^0.4.7"
+jax = "^0.4.8"
+gym = "0.13.0"
 
 [tool.poetry.group.dev.dependencies]
 pudb = "*"
@@ -22,11 +22,8 @@ pre-commit = "*"
 wandb = "^0.13.11"
 ostrichrl = {git = "https://github.com/P-Schumacher/ostrichrl.git", branch="fix/setuptools"}
 warmup = {git = "https://github.com/P-Schumacher/warmup.git"}
-
-[[tool.poetry.source]]
-name = "jorenham/jax_pep503"
-url = "https://jorenham.github.io/jax_pep503/"
-secondary = true
+gym = "0.13.0"
+free-mujoco-py = "*"
 
 [tool.black]
 line-length = 79

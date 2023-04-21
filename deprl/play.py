@@ -4,7 +4,7 @@ import argparse
 import os
 
 import numpy as np
-import tonic  # noqa
+from .vendor.tonic import logger
 import yaml
 
 from deprl import env_wrappers
@@ -165,16 +165,16 @@ def play(path, checkpoint, seed, header, agent, environment):
     checkpoint_path = None
 
     if path:
-        tonic.logger.log(f"Loading experiment from {path}")
+        logger.log(f"Loading experiment from {path}")
 
         # Use no checkpoint, the agent is freshly created.
         if checkpoint == "none" or agent is not None:
-            tonic.logger.log("Not loading any weights")
+            logger.log("Not loading any weights")
 
         else:
             checkpoint_path = os.path.join(path, "checkpoints")
             if not os.path.isdir(checkpoint_path):
-                tonic.logger.error(f"{checkpoint_path} is not a directory")
+                logger.error(f"{checkpoint_path} is not a directory")
                 checkpoint_path = None
 
             # List all the checkpoints.
@@ -200,14 +200,14 @@ def play(path, checkpoint, seed, header, agent, environment):
                             checkpoint_path, f"step_{checkpoint_id}"
                         )
                     else:
-                        tonic.logger.error(
+                        logger.error(
                             f"Checkpoint {checkpoint_id} "
                             f"not found in {checkpoint_path}"
                         )
                         checkpoint_path = None
 
             else:
-                tonic.logger.error(f"No checkpoint found in {checkpoint_path}")
+                logger.error(f"No checkpoint found in {checkpoint_path}")
                 checkpoint_path = None
 
         # Load the experiment configuration.

@@ -4,3 +4,4 @@ wandb/
 packages/
 .idea/
 output/
+dist/
