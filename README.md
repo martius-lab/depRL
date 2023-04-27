@@ -39,7 +39,7 @@ or similar afterwards.
 
 The humanreacher environment can be installed with
 ```
-pip install pip install git+https://github.com/P-Schumacher/warmup.git
+pip install git+https://github.com/P-Schumacher/warmup.git
 ```
 
 OstrichRL can be installed from [here](https://github.com/vittorione94/ostrichrl).
