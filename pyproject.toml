@@ -9,7 +9,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = ">=3.8, <3.11"
 pyyaml = "^6.0"
-numpy = "^1.24.2"
+numpy = "^1.22.4"
 termcolor = "^2.2.0"
 torch = ">=1.13.1"
 jaxlib = "^0.4.7"
@@ -24,6 +24,10 @@ ostrichrl = {git = "https://github.com/P-Schumacher/ostrichrl.git", branch="fix/
 warmup = {git = "https://github.com/P-Schumacher/warmup.git"}
 gym = "0.13.0"
 free-mujoco-py = "*"
+myosuite = {path = "../myosuite", develop = true}
+
+[tool.poetry.scripts]
+log = "deprl.vendor.tonic.log:main"
 
 [tool.black]
 line-length = 79

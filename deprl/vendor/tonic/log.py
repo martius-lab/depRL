@@ -2,9 +2,10 @@ import argparse
 import os
 import time
 
-import wandb
 import yaml
-from tonic import utils
+
+import wandb
+from deprl.vendor.tonic import utils
 
 
 class WandbProcessor:
@@ -49,17 +50,16 @@ class WandbProcessor:
             self._last_line_number = self.get_line_number(data)
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--path", type=str, default="None")
+    parser.add_argument("--project", type=str, default="None")
     args = parser.parse_args()
-    # from pudb import set_trace; set_trace()
     config = yaml.load(
         open(os.path.join(args.path[:-7], "config.yaml"), "r"),
         Loader=yaml.FullLoader,
     )
-    wandb.init(project="scone", entity="rlpractitioner", config=config)
-    # path = '/is/rg/al/Projects/muscle_optim/myochallenge_diereorient/defaultmpo_allkeynactiv/cluster_myosuite/log.csv'
+    wandb.init(project=args.project, entity="rlpractitioner", config=config)
     processor = WandbProcessor(args.path)
     while True:
         processor.update()
