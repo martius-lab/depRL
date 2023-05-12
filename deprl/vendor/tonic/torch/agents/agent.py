@@ -25,16 +25,24 @@ class Agent(agents.Agent):
         path = path + ".pt"
         logger.log(f"\nLoading weights from {path}")
         if torch.cuda.is_available():
-            self.model.load_state_dict(torch.load(path))
+            state_dict = torch.load(path)
         else:
-            self.model.load_state_dict(torch.load(path, map_location="cpu"))
+            state_dict = torch.load(path, map_location="cpu")
+        try:
+            if "critic.torso.model.0.weight" in state_dict.keys():
+                logger.log('Loading full model.')
+                self._load_weights(state_dict, full=True)
+            else:
+                logger.log('Loading only actor weights.')
+                self._load_weights(state_dict, full=False)
+        except RuntimeError as e:
+            logger.log(f'Loading failed, policy mismatch with checkpoint: {e}')
 
-    def load_policy(self, path):
-        path = path + ".pt"
-        logger.log(f"\nLoading weights from {path}")
-        if torch.cuda.is_available():
-            self.model.actor.load_state_dict(torch.load(path))
+
+    def _load_weights(self, state_dict, full=False):
+        if full:
+            self.model.load_state_dict(state_dict)
         else:
-            self.model.actor.load_state_dict(
-                torch.load(path, map_location="cpu")
-            )
+            self.model.actor.load_state_dict(state_dict)
+
+
