@@ -28,3 +28,13 @@ class Agent(agents.Agent):
             self.model.load_state_dict(torch.load(path))
         else:
             self.model.load_state_dict(torch.load(path, map_location="cpu"))
+
+    def load_policy(self, path):
+        path = path + ".pt"
+        logger.log(f"\nLoading weights from {path}")
+        if torch.cuda.is_available():
+            self.model.actor.load_state_dict(torch.load(path))
+        else:
+            self.model.actor.load_state_dict(
+                torch.load(path, map_location="cpu")
+            )
