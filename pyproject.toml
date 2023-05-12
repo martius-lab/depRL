@@ -1,10 +1,6 @@
 [tool.poetry]
 name = "deprl"
-<<<<<<< HEAD
 version = "0.1.2_b2"
-=======
-version = "0.1.2"
->>>>>>> d71f572 (integrated new precommit hooks to always update requirements file from poetry.)
 description = "DEP-RL, a method for robust control of musculoskeletal systems."
 authors = ["Pierre Schumacher <pierre.schumacher@tuebingen.mpg.de>"]
 license = "MIT"
