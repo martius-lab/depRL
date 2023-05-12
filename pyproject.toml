@@ -7,7 +7,8 @@ license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.8, <3.11"
+# python = ">=3.8, <3.11"
+python = ">=3.9,<3.11"
 pyyaml = "^6.0"
 numpy = "^1.22.4"
 termcolor = "^2.2.0"
@@ -27,6 +28,7 @@ warmup = {git = "https://github.com/P-Schumacher/warmup.git"}
 gym = "0.13.0"
 free-mujoco-py = "*"
 myosuite = {path = "../myosuite", develop = true}
+sconegym = {path = "../scone-rl", develop = true}
 
 [tool.poetry.scripts]
 log = "deprl.log:main"

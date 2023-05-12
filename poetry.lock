@@ -1731,6 +1731,20 @@ doc = ["matplotlib (>2)", "numpydoc", "pydata-sphinx-theme (==0.9.0)", "sphinx (
 test = ["asv", "gmpy2", "mpmath", "pooch", "pytest", "pytest-cov", "pytest-timeout", "pytest-xdist", "scikit-umfpack", "threadpoolctl"]
 
 [[package]]
+name = "sconegym"
+version = "0.1.0"
+description = "SconePy Gym Environments"
+category = "dev"
+optional = false
+python-versions = "~=3.9"
+files = []
+develop = true
+
+[package.source]
+type = "directory"
+url = "../scone-rl"
+
+[[package]]
 name = "sentry-sdk"
 version = "1.22.2"
 description = "Python client for Sentry (https://sentry.io)"
@@ -2126,7 +2140,6 @@ docker-pycreds = ">=0.4.0"
 GitPython = ">=1.0.0,<3.1.29 || >3.1.29"
 pathtools = "*"
 protobuf = [
-    {version = ">=3.12.0,<4.21.0 || >4.21.0,<5", markers = "python_version < \"3.9\" and sys_platform == \"linux\""},
     {version = ">=3.15.0,<4.21.0 || >4.21.0,<5", markers = "python_version == \"3.9\" and sys_platform == \"linux\""},
     {version = ">=3.19.0,<4.21.0 || >4.21.0,<5", markers = "python_version > \"3.9\" or sys_platform != \"linux\""},
 ]
@@ -2171,5 +2184,5 @@ resolved_reference = "c2adfcbb41a099215c7c1cf45471d2dbbc7ad324"
 
 [metadata]
 lock-version = "2.0"
-python-versions = ">=3.8, <3.11"
-content-hash = "becef378506af5e9c2c77f0a17581cf30142c2d5ff4f0fa3bb0affc9b8adc40b"
+python-versions = ">=3.9,<3.11"
+content-hash = "2214ffbbe5805c0ac4e19897483db57037645cbaf0ca1ece42aafe3d44b1a896"
