@@ -33,9 +33,5 @@ class Agent(abc.ABC):
         """Reloads the agent weights from a checkpoint."""
         pass
 
-    def load_policy(self, path):
-        """Reloads the agent weights from a checkpoint."""
-        pass
-
     def __call__(self, observation):
         return self.test_step(observation, steps=1e6)

@@ -4,6 +4,7 @@ import os
 import sys
 from types import SimpleNamespace
 
+import gdown
 import yaml
 
 from deprl.vendor.tonic import logger
@@ -48,8 +49,27 @@ def load(path, environment, checkpoint="last"):
         action_space=environment.action_space,
     )
     # Load the weights of the agent form a checkpoint.
-    agent.load_policy(checkpoint_path)
+    agent.load(checkpoint_path)
     return agent
+
+
+def load_baseline(environment):
+    modelurl = (
+        "https://drive.google.com/uc?id=1UkiUozk-PM8JbQCZNoy2Jr2t1StLcAzx"
+    )
+    configurl = (
+        "https://drive.google.com/uc?id=1knsol05ZL14aqyuaT-TlOvahr31gKQwE"
+    )
+    foldername = "./baselines_DEPRL/myoLegWalkStraight_20230514/myoLeg"
+    if not os.path.exists(foldername):
+        os.makedirs(foldername)
+        os.makedirs(os.path.join(foldername, "checkpoints"))
+    modelpath = os.path.join(foldername, "checkpoints/step_150000000.pt")
+    configpath = os.path.join(foldername, "config.yaml")
+    if not os.path.exists(modelpath):
+        gdown.download(modelurl, modelpath, quiet=False)
+        gdown.download(configurl, configpath, quiet=False)
+    return load(foldername, environment)
 
 
 def load_config_and_paths(path, checkpoint="last"):

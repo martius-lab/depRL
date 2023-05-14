@@ -30,19 +30,16 @@ class Agent(agents.Agent):
             state_dict = torch.load(path, map_location="cpu")
         try:
             if "critic.torso.model.0.weight" in state_dict.keys():
-                logger.log('Loading full model.')
+                logger.log("Loading full model.")
                 self._load_weights(state_dict, full=True)
             else:
-                logger.log('Loading only actor weights.')
+                logger.log("Loading only actor weights.")
                 self._load_weights(state_dict, full=False)
         except RuntimeError as e:
-            logger.log(f'Loading failed, policy mismatch with checkpoint: {e}')
-
+            logger.log(f"Loading failed, policy mismatch with checkpoint: {e}")
 
     def _load_weights(self, state_dict, full=False):
         if full:
             self.model.load_state_dict(state_dict)
         else:
             self.model.actor.load_state_dict(state_dict)
-
-

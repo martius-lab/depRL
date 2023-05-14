@@ -1,6 +1,6 @@
 from . import custom_agents, custom_mpo_torch, custom_trainer
 from .env_wrappers import apply_wrapper, env_tonic_compat
-from .utils import load
+from .utils import load, load_baseline
 from .vendor.tonic import (
     Trainer,
     agents,
@@ -25,4 +25,5 @@ __all__ = [
     replays,
     Trainer,
     load,
+    load_baseline,
 ]
