@@ -15,6 +15,7 @@ torch = ">=1.13.1"
 jaxlib = "^0.4.7"
 jax = "^0.4.8"
 gym = "0.13.0"
+pandas = "^2.0.1"
 
 [tool.poetry.group.dev.dependencies]
 pudb = "*"
@@ -28,6 +29,7 @@ myosuite = {path = "../myosuite", develop = true}
 
 [tool.poetry.scripts]
 log = "deprl.log:main"
+plot = "deprl.plot:main"
 
 [tool.black]
 line-length = 79

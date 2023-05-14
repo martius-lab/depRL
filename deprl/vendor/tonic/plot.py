@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from matplotlib import gridspec, lines
-from tonic import logger
+from deprl.vendor.tonic import logger
 
 
 def smooth(vals, window):
@@ -478,7 +478,7 @@ def plot(
     return fig
 
 
-if __name__ == "__main__":
+def main():
     # Argument parsing.
     parser = argparse.ArgumentParser()
     parser.add_argument("--paths", nargs="+", default=[])
