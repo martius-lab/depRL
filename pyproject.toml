@@ -27,7 +27,7 @@ free-mujoco-py = "*"
 myosuite = {path = "../myosuite", develop = true}
 
 [tool.poetry.scripts]
-log = "deprl.vendor.tonic.log:main"
+log = "deprl.log:main"
 
 [tool.black]
 line-length = 79
