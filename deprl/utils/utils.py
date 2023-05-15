@@ -60,7 +60,7 @@ def load_baseline(environment):
     configurl = (
         "https://drive.google.com/uc?id=1knsol05ZL14aqyuaT-TlOvahr31gKQwE"
     )
-    foldername = "./baselines_DEPRL/myoLegWalkStraight_20230514/myoLeg"
+    foldername = "./baselines_DEPRL/myoLegWalk_20230514/myoLeg"
     if not os.path.exists(foldername):
         os.makedirs(foldername)
         os.makedirs(os.path.join(foldername, "checkpoints"))
