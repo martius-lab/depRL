@@ -64,3 +64,6 @@ def main():
     while True:
         processor.update()
         time.sleep(100)
+
+if __name__ == "__main__":
+    main()
