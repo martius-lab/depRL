@@ -9,14 +9,28 @@ import yaml
 from deprl import env_wrappers
 
 from .vendor.tonic import logger
+def remove_skin(environment):
+    for name in environment.sim.model.geom_names:
+        if 'col' in name or name in ['humerus_r', 'ulna_rv', 'humerus_l', 'ulna_lv', 'cola', 'colb', 'colv', 'colvv', 'r_pelvis_col', 'l_pelvis_col']:
+            g_idx = environment.sim.model.geom_name2id(name)
+            environment.sim.model.geom_rgba[g_idx, :] = 0.0
+
+
+def apply_muscle_vis(env):
+    muscle_max_force = (env.sim.model.actuator_gainprm[:, 2]-(np.min(env.sim.model.actuator_gainprm[:,2]))) / (np.max(env.sim.model.actuator_gainprm[:,2]) - np.min(env.sim.model.actuator_gainprm[:,2]))
+    muscle_max_force = np.log(muscle_max_force+3) - 0.9
+    # muscle_max_force = np.log(muscle_max_force+3) - 0.5
+    env.sim.model.tendon_width[:env.sim.model.na] = 0.01*muscle_max_force + 0.002*env.sim.data.act[:env.sim.model.na]
 
 
 def play_gym(agent, environment):
     """Launches an agent in a Gym-based environment."""
+    remove_skin(environment)
     environment = env_wrappers.apply_wrapper(environment)
+    environment.sim.model.opt.gravity[:] = 0.0
     observations = environment.reset()
     tendon_states = environment.tendon_states
-    environment.render()
+    environment.mj_render()
 
     score = 0
     length = 0
@@ -35,7 +49,8 @@ def play_gym(agent, environment):
             actions = actions[0, :]
         observations, reward, done, info = environment.step(actions)
         tendon_states = environment.tendon_states
-        environment.render()
+        apply_muscle_vis(environment)
+        environment.mj_render()
 
         steps += 1
         score += reward
@@ -45,7 +60,8 @@ def play_gym(agent, environment):
         global_max_reward = max(global_max_reward, reward)
         length += 1
 
-        if done or length >= environment.max_episode_steps:
+        # if done or length >= environment.max_episode_steps:
+        if length >= environment.max_episode_steps:
             episodes += 1
 
             print()
