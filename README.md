@@ -14,6 +14,12 @@ If you just want to see the code for DEP, take a look at `deprl/dep_controller.p
 </p>
 
 
+### MyoLeg
+If you are coming here for the MyoLeg, take a look at this [tutorial](https://github.com/facebookresearch/myosuite/blob/main/docs/source/tutorials.rst#load-dep-rl-baseline). It will show you how to run the pre-trained baseline. We also explain how to train the walking agent in the MyoSuite  [documentation](https://myosuite.readthedocs.io/en/latest/baselines.html#dep-rl-baseline).  
+<p align="center">
+<img src=https://github.com/martius-lab/depRL/assets/24903880/d06200ae-ad35-484c-9d55-83b5235269bc width=350
+</p>
+
 ## Abstract
 Muscle-actuated organisms are capable of learning an unparalleled diversity of
 dexterous movements despite their vast amount of muscles. Reinforcement learning (RL) on large musculoskeletal models, however, has not been able to show
