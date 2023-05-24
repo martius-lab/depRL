@@ -1097,7 +1097,7 @@ termcolor = "*"
 
 [package.source]
 type = "directory"
-url = "../myosuite"
+url = "../../../../is/sg2/pschumacher/Documents/myochallenge_locomotion/myochallenge_locomotion"
 
 [[package]]
 name = "networkx"

@@ -145,10 +145,15 @@ class SconeWrapper(ExceptionWrapper):
     gym=0.13.
     """
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0de73ee (fixed wrapper for sconerl)
     def render(self, *args, **kwargs):
         pass
 
     def muscle_lengths(self):
+<<<<<<< HEAD
         length = self.unwrapped.model.muscle_fiber_length_array()
         return length
 
@@ -192,6 +197,21 @@ class SconeWrapper(ExceptionWrapper):
         self.unwrapped.total_reward += reward
 
         return obs, reward, done, {}
+=======
+        length = self.model.muscle_fiber_length_array()
+        return length
+
+    def muscle_forces(self):
+        force = self.model.muscle_force_array()
+        return force
+
+    def muscle_velocities(self):
+        velocity = self.model.muscle_fiber_velocity_array()
+        return velocity
+
+    def muscle_activity(self):
+        return self.model.muscle_activation_array()
+>>>>>>> 0de73ee (fixed wrapper for sconerl)
 
     @property
     def _max_episode_steps(self):
@@ -249,11 +269,20 @@ class OstrichDMWrapper(DMWrapper):
 
 
 def apply_wrapper(env):
+<<<<<<< HEAD
     if "control" in str(env).lower():
         if env.name == "ostrich-run":
             return OstrichDMWrapper(env)
         return DMWrapper(env)
     elif "scone" in str(env).lower():
+=======
+    print(type(env))
+    if "control" in str(type(env)).lower():
+        if env.name == "ostrich-run":
+            return OstrichDMWrapper(env)
+        return DMWrapper(env)
+    elif "scone" in str(type(env)).lower():
+>>>>>>> 0de73ee (fixed wrapper for sconerl)
         return SconeWrapper(env)
     else:
         return GymWrapper(env)
