@@ -133,6 +133,35 @@ class GymWrapper(ExceptionWrapper):
         return self.unwrapped.max_episode_steps
 
 
+class SconeWrapper(ExceptionWrapper):
+    """Wrapper for SconeRL, compatible with
+    gym=0.13.
+    """
+
+
+    def render(self, *args, **kwargs):
+        pass
+
+    def muscle_lengths(self):
+        length = self.model.muscle_fiber_length_array()
+        return length
+
+    def muscle_forces(self):
+        force = self.model.muscle_force_array()
+        return force
+
+    def muscle_velocities(self):
+        velocity = self.model.muscle_fiber_velocity_array()
+        return velocity
+
+    def muscle_activity(self):
+        return self.model.muscle_activation_array()
+
+    @property
+    def _max_episode_steps(self):
+        return 1000
+
+
 class DMWrapper(ExceptionWrapper):
     """
     Wrapper for general DeepMind ControlSuite environments.
@@ -181,11 +210,15 @@ class OstrichDMWrapper(DMWrapper):
 
 
 def apply_wrapper(env):
+    print(type(env))
     if "control" in str(type(env)).lower():
         if env.name == "ostrich-run":
             return OstrichDMWrapper(env)
         return DMWrapper(env)
-    return GymWrapper(env)
+    elif "scone" in str(type(env)).lower():
+        return SconeWrapper(env)
+    else:
+        return GymWrapper(env)
 
 
 def env_tonic_compat(env, preid=5, parallel=1, sequential=1):
