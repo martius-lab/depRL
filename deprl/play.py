@@ -64,6 +64,62 @@ def play_gym(agent, environment):
             min_reward = float("inf")
             max_reward = -float("inf")
 
+def play_scone(agent, environment):
+    """Launches an agent in a Gym-based environment."""
+    environment = env_wrappers.apply_wrapper(environment)
+    environment.store_next_episode()
+    observations = environment.reset()
+    tendon_states = environment.tendon_states
+    environment.render()
+
+    score = 0
+    length = 0
+    min_reward = float("inf")
+    max_reward = -float("inf")
+    global_min_reward = float("inf")
+    global_max_reward = -float("inf")
+    steps = 0
+    episodes = 0
+
+    while True:
+        actions = agent.test_step(
+            observations, tendon_states=tendon_states, steps=1e6
+        )
+        if len(actions.shape) > 1:
+            actions = actions[0, :]
+        observations, reward, done, info = environment.step(actions)
+        tendon_states = environment.tendon_states
+        environment.render()
+
+        steps += 1
+        score += reward
+        min_reward = min(min_reward, reward)
+        max_reward = max(max_reward, reward)
+        global_min_reward = min(global_min_reward, reward)
+        global_max_reward = max(global_max_reward, reward)
+        length += 1
+
+        if done or length >= environment.max_episode_steps:
+            episodes += 1
+
+            print()
+            print(f"Episodes: {episodes:,}")
+            print(f"Score: {score:,.3f}")
+            print(f"Length: {length:,}")
+            print(f"Terminal: {done:}")
+            print(f"Min reward: {min_reward:,.3f}")
+            print(f"Max reward: {max_reward:,.3f}")
+            print(f"Global min reward: {min_reward:,.3f}")
+            print(f"Global max reward: {max_reward:,.3f}")
+            environment.write_now()
+            environment.store_next_episode()
+            environment.reset()
+
+            score = 0
+            length = 0
+            min_reward = float("inf")
+            max_reward = -float("inf")
+
 
 def play_control_suite(agent, environment):
     """Launches an agent in a DeepMind Control Suite-based environment."""
@@ -246,11 +302,13 @@ def play(path, checkpoint, seed, header, agent, environment):
         seed=seed,
     )
 
-    # Load the weights of the agent form a checkpoint.
+    # Load the weights of the agent from a checkpoint.
     if checkpoint_path:
         agent.load(checkpoint_path)
-    if "ontrol" in type(environment).__name__:
+    if "control" in str(type(environment)).lower():
         play_control_suite(agent, environment)
+    if "scone" in str(type(environment)).lower():
+        play_scone(agent, environment)
     play_gym(agent, environment)
 
 

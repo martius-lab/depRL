@@ -157,6 +157,13 @@ class SconeWrapper(ExceptionWrapper):
     def muscle_activity(self):
         return self.model.muscle_activation_array()
 
+    def write_now(self):
+        if self.store_next:
+            self.model.write_results(
+            self.output_dir, f"{self.episode:05d}_{self.total_reward:.3f}"
+            )
+        self.store_next = False
+
     @property
     def _max_episode_steps(self):
         return 1000
@@ -210,7 +217,6 @@ class OstrichDMWrapper(DMWrapper):
 
 
 def apply_wrapper(env):
-    print(type(env))
     if "control" in str(type(env)).lower():
         if env.name == "ostrich-run":
             return OstrichDMWrapper(env)
