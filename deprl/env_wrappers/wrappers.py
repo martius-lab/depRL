@@ -137,8 +137,6 @@ class SconeWrapper(ExceptionWrapper):
     """Wrapper for SconeRL, compatible with
     gym=0.13.
     """
-
-
     def render(self, *args, **kwargs):
         pass
 
@@ -163,6 +161,10 @@ class SconeWrapper(ExceptionWrapper):
             self.output_dir, f"{self.episode:05d}_{self.total_reward:.3f}"
             )
         self.store_next = False
+
+    def store_next_episode(self):
+        self.store_next = True
+        self.reset()
 
     @property
     def _max_episode_steps(self):
