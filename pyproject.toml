@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "deprl"
-version = "0.1.0_b2"
+version = "0.1.2_b2"
 description = "DEP-RL, a method for robust control of musculoskeletal systems."
 authors = ["Pierre Schumacher <pierre.schumacher@tuebingen.mpg.de>"]
 license = "MIT"
