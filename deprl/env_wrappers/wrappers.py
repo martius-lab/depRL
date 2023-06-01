@@ -11,7 +11,7 @@ class AbstractWrapper(gym.Wrapper, ABC):
     def merge_args(self, args):
         if args is not None:
             for k, v in args.items():
-                setattr(self, k, v)
+                setattr(self.unwrapped, k, v)
 
     def apply_args(self):
         pass
@@ -141,30 +141,27 @@ class SconeWrapper(ExceptionWrapper):
         pass
 
     def muscle_lengths(self):
-        length = self.model.muscle_fiber_length_array()
+        length = self.unwrapped.model.muscle_fiber_length_array()
         return length
 
     def muscle_forces(self):
-        force = self.model.muscle_force_array()
+        force = self.unwrapped.model.muscle_force_array()
         return force
 
     def muscle_velocities(self):
-        velocity = self.model.muscle_fiber_velocity_array()
+        velocity = self.unwrapped.model.muscle_fiber_velocity_array()
         return velocity
 
     def muscle_activity(self):
-        return self.model.muscle_activation_array()
+        return self.unwrapped.model.muscle_activation_array()
 
     def write_now(self):
-        if self.store_next:
+        if self.unwrapped.store_next:
             self.model.write_results(
             self.output_dir, f"{self.episode:05d}_{self.total_reward:.3f}"
             )
-        self.store_next = False
-
-    def store_next_episode(self):
-        self.store_next = True
-        self.reset()
+        self.episode += 1
+        self.unwrapped.store_next = False
 
     @property
     def _max_episode_steps(self):
@@ -206,24 +203,24 @@ class OstrichDMWrapper(DMWrapper):
         super().__init__(*args, **kwargs)
 
     def muscle_lengths(self):
-        return self.env.environment.physics.muscle_lengths().copy()
+        return self.unwrapped.environment.physics.muscle_lengths().copy()
 
     def muscle_forces(self):
-        return self.env.environment.physics.muscle_forces().copy()
+        return self.unwrapped.environment.physics.muscle_forces().copy()
 
     def muscle_velocities(self):
-        return self.env.environment.physics.muscle_velocities().copy()
+        return self.unwrapped.environment.physics.muscle_velocities().copy()
 
     def muscle_activity(self):
-        return self.env.environment.physics.muscle_activations().copy()
+        return self.unrapped.environment.physics.muscle_activations().copy()
 
 
 def apply_wrapper(env):
-    if "control" in str(type(env)).lower():
+    if "control" in str(env).lower():
         if env.name == "ostrich-run":
             return OstrichDMWrapper(env)
         return DMWrapper(env)
-    elif "scone" in str(type(env)).lower():
+    elif "scone" in str(env).lower():
         return SconeWrapper(env)
     else:
         return GymWrapper(env)
