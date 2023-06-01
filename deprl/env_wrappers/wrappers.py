@@ -182,7 +182,11 @@ class SconeWrapper(ExceptionWrapper):
         Changed to allow for correct sto saving.
         """
         if not self.unwrapped.has_reset:
+<<<<<<< HEAD
             raise Exception("You have to call reset() once before step()")
+=======
+            raise Exception('You have to call reset() once before step()')
+>>>>>>> d9c3989 (made everything compatible with default sconerl and similar environments)
 
         if self.use_delayed_actuators:
             self.unwrapped.model.set_delayed_actuator_inputs(action)
@@ -197,6 +201,7 @@ class SconeWrapper(ExceptionWrapper):
         self.unwrapped.total_reward += reward
 
         return obs, reward, done, {}
+<<<<<<< HEAD
 =======
         length = self.model.muscle_fiber_length_array()
         return length
@@ -212,6 +217,8 @@ class SconeWrapper(ExceptionWrapper):
     def muscle_activity(self):
         return self.model.muscle_activation_array()
 >>>>>>> 0de73ee (fixed wrapper for sconerl)
+=======
+>>>>>>> d9c3989 (made everything compatible with default sconerl and similar environments)
 
     @property
     def _max_episode_steps(self):
