@@ -114,7 +114,6 @@ def play_scone(agent, environment):
         global_min_reward = min(global_min_reward, reward)
         global_max_reward = max(global_max_reward, reward)
         length += 1
-
         if done or length >= environment.max_episode_steps:
             episodes += 1
 

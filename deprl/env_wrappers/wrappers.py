@@ -163,6 +163,28 @@ class SconeWrapper(ExceptionWrapper):
         self.episode += 1
         self.unwrapped.store_next = False
 
+    def step(self, action):
+        """
+        takes an action and advances environment by 1 step.
+        Changed to allow for correct sto saving.
+        """
+        if not self.unwrapped.has_reset:
+            raise Exception('You have to call reset() once before step()')
+
+        if self.use_delayed_actuators:
+            self.unwrapped.model.set_delayed_actuator_inputs(action)
+        else:
+            self.unwrapped.model.set_actuator_inputs(action)
+
+        self.unwrapped.model.advance_simulation_to(self.time + self.step_size)
+        reward = self.unwrapped._get_rew()
+        obs = self.unwrapped._get_obs()
+        done = self.unwrapped._get_done()
+        self.unwrapped.time += self.step_size
+        self.unwrapped.total_reward += reward
+
+        return obs, reward, done, {}
+
     @property
     def _max_episode_steps(self):
         return 1000
