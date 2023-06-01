@@ -17,7 +17,6 @@ jax = "^0.4.8"
 gym = "0.13.0"
 pandas = "^2.0.1"
 gdown = "^4.7.1"
-sconegym = {path = "../scone-rl"}
 
 [tool.poetry.group.dev.dependencies]
 pudb = "*"
