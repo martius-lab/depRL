@@ -37,12 +37,21 @@ We provide a python package for easy installation:
 ```
 pip install deprl
 ```
-If you would like to use `jax` with CUDA support, which significantly speeds up learning, we recommend running:
+### CUDA
+If you would like to use `jax` with CUDA support, which is recommended for DEP-RL training, we recommend:
 ```
 pip install --upgrade "jax[cuda12_pip]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
 ```
-or similar afterwards.
 
+ ### CPU only
+ As the current version of PyTorch (2.0.1.) defaults to CUDA, on CPU-only machines you might want to run:
+```
+ pip install torch --index-url https://download.pytorch.org/whl/cpu
+```
+after installation.
+ 
+ ### Environments
+ 
 The humanreacher environment can be installed with
 ```
 pip install git+https://github.com/P-Schumacher/warmup.git
