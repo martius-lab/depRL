@@ -1,18 +1,18 @@
 import gym
-import sconegym
+
 import deprl
 
 # create the sconegym env
-env = gym.make("sconegait2d-v0")
+env = gym.make("sconegait3d_90-v4")
 env = deprl.apply_wrapper(env)
-policy = deprl.load('./sconerun/', env)
+policy = deprl.load("./learned_policy/", env)
 
 
 for episode in range(100):
     # store the results of every 10th episode
     # storing results is slow, and should only be done sparsely
     # stored results can be analyzed in SCONE Studio
-    if episode % 5 == 0:
+    if episode % 1 == 0:
         env.store_next_episode()
 
     episode_steps = 0
@@ -30,14 +30,16 @@ for episode in range(100):
         total_reward += reward
 
         # to render results, open a .sto file in SCONE Studio
-        #env.render()
+        # env.render()
         state = next_state
 
         # check if done
         if done or (episode_steps >= 1000):
-            print(f'Episode {episode} finished; steps={episode_steps}; reward={total_reward:0.3f}')
+            print(
+                f"Episode {episode} finished; steps={episode_steps}; reward={total_reward:0.3f}"
+            )
             env.write_now()
             episode += 1
             break
-        
+
 env.close()

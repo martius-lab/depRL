@@ -4,7 +4,11 @@ import time
 import numpy as np
 import torch
 
-from deprl.custom_test_environment import test_dm_control, test_mujoco, test_scone
+from deprl.custom_test_environment import (
+    test_dm_control,
+    test_mujoco,
+    test_scone,
+)
 from deprl.vendor.tonic import logger
 
 
@@ -96,16 +100,26 @@ class Trainer:
             if epoch_steps >= self.epoch_steps:
                 # Evaluate the agent on the test environment.
                 if self.test_environment:
-                    if "control" in str(
-                        type(self.test_environment.environments[0].unwrapped)
-                    ).lower():
+                    if (
+                        "control"
+                        in str(
+                            type(
+                                self.test_environment.environments[0].unwrapped
+                            )
+                        ).lower()
+                    ):
                         _ = test_dm_control(
                             self.test_environment, self.agent, steps, params
                         )
 
-                    elif "scone" in str(
-                        type(self.test_environment.environments[0].unwrapped)
-                    ).lower():
+                    elif (
+                        "scone"
+                        in str(
+                            type(
+                                self.test_environment.environments[0].unwrapped
+                            )
+                        ).lower()
+                    ):
                         _ = test_scone(
                             self.test_environment, self.agent, steps, params
                         )

@@ -137,6 +137,7 @@ class SconeWrapper(ExceptionWrapper):
     """Wrapper for SconeRL, compatible with
     gym=0.13.
     """
+
     def render(self, *args, **kwargs):
         pass
 
@@ -158,7 +159,7 @@ class SconeWrapper(ExceptionWrapper):
     def write_now(self):
         if self.unwrapped.store_next:
             self.model.write_results(
-            self.output_dir, f"{self.episode:05d}_{self.total_reward:.3f}"
+                self.output_dir, f"{self.episode:05d}_{self.total_reward:.3f}"
             )
         self.episode += 1
         self.unwrapped.store_next = False
@@ -169,7 +170,7 @@ class SconeWrapper(ExceptionWrapper):
         Changed to allow for correct sto saving.
         """
         if not self.unwrapped.has_reset:
-            raise Exception('You have to call reset() once before step()')
+            raise Exception("You have to call reset() once before step()")
 
         if self.use_delayed_actuators:
             self.unwrapped.model.set_delayed_actuator_inputs(action)

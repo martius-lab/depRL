@@ -8,7 +8,6 @@ import gdown
 import yaml
 
 from deprl.vendor.tonic import logger
-from deprl import apply_wrapper
 
 
 def prepare_files(orig_params):

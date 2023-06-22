@@ -98,6 +98,7 @@ def test_dm_control(env, agent, steps, params=None, test_episodes=10):
     logger.store("test/max_reward", max_reward, stats=False)
     return metrics
 
+
 def test_scone(env, agent, steps, params=None, test_episodes=10):
     """
     Tests the agent on the test environment.
@@ -142,5 +143,3 @@ def test_scone(env, agent, steps, params=None, test_episodes=10):
         for k, v in metrics.items():
             logger.store(k, v, stats=True)
     return metrics
-
-

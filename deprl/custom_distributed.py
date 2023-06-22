@@ -2,7 +2,6 @@
 import multiprocessing
 
 import numpy as np
-import deprl
 
 
 class Sequential:

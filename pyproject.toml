@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "deprl"
-version = "0.1.0_b0"
+version = "0.1.0_b2"
 description = "DEP-RL, a method for robust control of musculoskeletal systems."
 authors = ["Pierre Schumacher <pierre.schumacher@tuebingen.mpg.de>"]
 license = "MIT"
@@ -21,13 +21,13 @@ gdown = "^4.7.1"
 [tool.poetry.group.dev.dependencies]
 pudb = "*"
 pre-commit = "*"
-wandb = "^0.13.11"
 ostrichrl = {git = "https://github.com/P-Schumacher/ostrichrl.git", branch="fix/setuptools"}
 warmup = {git = "https://github.com/P-Schumacher/warmup.git"}
 gym = "0.13.0"
 free-mujoco-py = "*"
 myosuite = {path = "../myosuite", develop = true}
-sconegym = {path = "../scone-rl", develop = true}
+wandb = "^0.15.4"
+sconegym = {path = "../sconegym-dev", develop = true}
 
 [tool.poetry.scripts]
 log = "deprl.log:main"
