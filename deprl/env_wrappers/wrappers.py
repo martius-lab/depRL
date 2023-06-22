@@ -146,9 +146,12 @@ class SconeWrapper(ExceptionWrapper):
     """
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> 0de73ee (fixed wrapper for sconerl)
+=======
+>>>>>>> 8eac176 (starting compatibility with sconegym-dev)
     def render(self, *args, **kwargs):
         pass
 
@@ -183,10 +186,14 @@ class SconeWrapper(ExceptionWrapper):
         """
         if not self.unwrapped.has_reset:
 <<<<<<< HEAD
+<<<<<<< HEAD
             raise Exception("You have to call reset() once before step()")
 =======
             raise Exception('You have to call reset() once before step()')
 >>>>>>> d9c3989 (made everything compatible with default sconerl and similar environments)
+=======
+            raise Exception("You have to call reset() once before step()")
+>>>>>>> 8eac176 (starting compatibility with sconegym-dev)
 
         if self.use_delayed_actuators:
             self.unwrapped.model.set_delayed_actuator_inputs(action)

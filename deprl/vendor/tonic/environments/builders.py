@@ -67,6 +67,7 @@ def build_environment(
     # Get the default time limit.
     if max_episode_steps == "default":
 <<<<<<< HEAD
+<<<<<<< HEAD
         if hasattr(environment, "_max_episode_steps"):
             max_episode_steps = environment._max_episode_steps
         elif hasattr(environment, "horizon"):
@@ -79,18 +80,24 @@ def build_environment(
             max_episode_steps = 1000
 =======
         if hasattr(environment, '_max_episode_steps'):
+=======
+        if hasattr(environment, "_max_episode_steps"):
+>>>>>>> 8eac176 (starting compatibility with sconegym-dev)
             max_episode_steps = environment._max_episode_steps
-        elif hasattr(environment, 'horizon'):
+        elif hasattr(environment, "horizon"):
             max_episode_steps = environment.horizon
-        elif hasattr(environment, 'max_episode_steps'):
+        elif hasattr(environment, "max_episode_steps"):
             max_episode_steps = environment.max_episode_steps
 
         else:
-            logger.log('No max episode steps found, setting them to 1000')
+            logger.log("No max episode steps found, setting them to 1000")
             max_episode_steps = 1000
 
+<<<<<<< HEAD
 >>>>>>> d9c3989 (made everything compatible with default sconerl and similar environments)
 
+=======
+>>>>>>> 8eac176 (starting compatibility with sconegym-dev)
     # Remove the TimeLimit wrapper if needed.
     if not terminal_timeouts:
         if type(environment) == gym.wrappers.TimeLimit:
