@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 
 import gym
 import numpy as np
+import mujoco_py
 
 import deprl  # noqa
 from deprl.vendor.tonic import logger
@@ -95,13 +96,14 @@ class ExceptionWrapper(AbstractWrapper):
         try:
             observation, reward, done, info = super().step(action)
             if np.any(np.isnan(observation)):
-                raise Exception()
-        except Exception as e:
-            logger.log(f"NaN detected, resetting environment! Exception: {e}")
+                raise mujoco_py.builder.MujocoException()
+        except mujoco_py.builder.MujocoException:
+            logger.log(f"NaN detected, resetting environment!")
 
             observation = self.last_observation
             reward = 0
             done = 1
+            info = {}
             self.reset()
         return observation, reward, done, info
 
