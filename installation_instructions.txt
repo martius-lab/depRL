@@ -10,7 +10,7 @@ python -m deprl.play --path learned_policy
 where 'learned_policy' is a folder that contains a trained policy.
 
 Or you take a look at the example file:
-python example/sconegym_example.py 
+python example/sconegym_example.py
 
 Make sure the learned_policy folder is in a path that the example file can find.
 
@@ -30,5 +30,3 @@ git clone git@github.com:tgeijten/sconegym-dev.git
 cd sconegym-dev
 git checkout -B natural_walking_paper
 python -m pip install -e sconegym-dev
-
-
