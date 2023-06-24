@@ -93,7 +93,7 @@ class ExceptionWrapper(AbstractWrapper):
 
     def step(self, action):
         try:
-            observation, reward, done, info = super().step(action)
+            observation, reward, done, info = self._inner_step(action)
             if np.any(np.isnan(observation)):
                 raise self.error("NaN detected! Resetting.")
         except self.error as e:
@@ -105,6 +105,9 @@ class ExceptionWrapper(AbstractWrapper):
             info = {}
             self.reset()
         return observation, reward, done, info
+
+    def _inner_step(self, action):
+        return super().step(action)
 
 
 class GymWrapper(ExceptionWrapper):
@@ -140,10 +143,20 @@ class GymWrapper(ExceptionWrapper):
         return self.unwrapped.max_episode_steps
 
 
+class CustomSconeException(Exception):
+    """
+    Custom exception class for Scone. The SconePy Interface doesn't define a scone exception at the moment and I have never encountered a simulator-based exception until now. Will update when that is the case.
+    """
+    pass
+
+
 class SconeWrapper(ExceptionWrapper):
     """Wrapper for SconeRL, compatible with
     gym=0.13.
     """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.error = CustomSconeException
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -179,7 +192,7 @@ class SconeWrapper(ExceptionWrapper):
         self.episode += 1
         self.unwrapped.store_next = False
 
-    def step(self, action):
+    def _inner_step(self, action):
         """
         takes an action and advances environment by 1 step.
         Changed to allow for correct sto saving.
@@ -206,7 +219,6 @@ class SconeWrapper(ExceptionWrapper):
         done = self.unwrapped._get_done()
         self.unwrapped.time += self.step_size
         self.unwrapped.total_reward += reward
-
         return obs, reward, done, {}
 <<<<<<< HEAD
 =======
@@ -244,17 +256,17 @@ class DMWrapper(ExceptionWrapper):
         self.error = PhysicsError
 
     def muscle_lengths(self):
-        length = self.env.environment.physics.data.actuator_length
+        length = self.unwrapped.environment.physics.data.actuator_length
         return length
 
     def muscle_forces(self):
-        return self.env.environment.physics.data.actuator_force
+        return self.unwrapped.environment.physics.data.actuator_force
 
     def muscle_velocities(self):
-        return self.env.environment.physics.data.actuator_velocity
+        return self.unwrapped.environment.physics.data.actuator_velocity
 
     def muscle_activity(self):
-        return self.env.environment.physics.data.act
+        return self.unwrapped.environment.physics.data.act
 
     @property
     def _max_episode_steps(self):
