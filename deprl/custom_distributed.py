@@ -141,7 +141,7 @@ class Parallel:
         self.started = False
 
         # fork is default on linux, but not mac
-        multiprocessing.set_start_method('fork')
+        multiprocessing.set_start_method("fork")
         self.output_queue = multiprocessing.Queue()
         self.action_pipes = []
 

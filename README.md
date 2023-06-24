@@ -55,9 +55,9 @@ pip install --upgrade "jax[cuda12_pip]" -f https://storage.googleapis.com/jax-re
  pip install torch --index-url https://download.pytorch.org/whl/cpu
 ```
 after installation.
- 
+
  ### Environments
- 
+
 The humanreacher environment can be installed with
 ```
 pip install git+https://github.com/P-Schumacher/warmup.git

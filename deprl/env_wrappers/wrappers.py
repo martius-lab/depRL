@@ -95,7 +95,7 @@ class ExceptionWrapper(AbstractWrapper):
         try:
             observation, reward, done, info = super().step(action)
             if np.any(np.isnan(observation)):
-                raise self.error('NaN detected! Resetting.')
+                raise self.error("NaN detected! Resetting.")
         except self.error as e:
             logger.log(f"Simulator exception thrown: {e}")
 
@@ -111,9 +111,11 @@ class GymWrapper(ExceptionWrapper):
     """Wrapper for OpenAI Gym and MuJoCo, compatible with
     gym=0.13.
     """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         from mujoco_py.builder import MujocoException
+
         self.error = MujocoException
 
     def render(self, *args, **kwargs):
@@ -204,6 +206,7 @@ class DMWrapper(ExceptionWrapper):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         from dm_control.rl.control import PhysicsError
+
         self.error = PhysicsError
 
     def muscle_lengths(self):
