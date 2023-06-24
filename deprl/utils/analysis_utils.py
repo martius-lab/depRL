@@ -40,7 +40,7 @@ class ScoreKeeper:
             print(f"For {k=} we have score={self.get_score(k)}")
 
     def plot(self, names):
-        if not type(names) is list:
+        if type(names) is not list:
             names = [names]
         fig, axs = plt.subplots(len(names), 1)
         for name in names:
@@ -59,7 +59,9 @@ class ScoreKeeper:
             if self.fig is None:
                 plt.ion()
                 self.fig, self.axs = plt.subplots(len(names), 1)
-                self.lines = [ax.plot(x, d)[0] for ax, d in zip(self.axs, data)]
+                self.lines = [
+                    ax.plot(x, d)[0] for ax, d in zip(self.axs, data)
+                ]
                 # self.axs[0].set_ylim([-500, 0])
                 # self.axs[1].set_ylim([-0.5, 0.2])
                 # self.axs[2].set_ylim([0, 1.1])
@@ -86,31 +88,9 @@ class ScoreKeeper:
 
     def _append_score(self, data_dict):
         for k, v in data_dict.items():
-            if not k in self.data_dict.keys():
+            if k not in self.data_dict.keys():
                 self.data_dict[k] = []
             self.data_dict[k].append(v)
 
     def _clear(self):
         self.data_dict = None
-
-
-def prepare_files(orig_params):
-    params = get_params(orig_params)
-    os.makedirs(params.working_dir, exist_ok=True)
-    return orig_params, params
-
-
-def get_params(orig_params):
-    params = orig_params.copy()
-    for key, val in params.items():
-        if type(params[key]) == dict:
-            params[key] = SimpleNamespace(**val)
-    params = SimpleNamespace(**params)
-    return params
-
-
-def prepare_params():
-    f = open(sys.argv[-1], "r")
-    orig_params = json.load(f)
-    params = prepare_files(orig_params)
-    return orig_params, params

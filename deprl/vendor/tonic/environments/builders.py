@@ -100,6 +100,7 @@ def _flatten_observation(observation):
 
 class ControlSuiteEnvironment(gym.core.Env):
     """Turns a Control Suite environment into a Gym environment."""
+
     def __init__(
         self,
         domain_name,
@@ -133,7 +134,6 @@ class ControlSuiteEnvironment(gym.core.Env):
             action_spec.minimum, action_spec.maximum, dtype=np.float32
         )
         self.error = PhysicsError
-        
 
     def seed(self, seed):
         self.environment.task._random = np.random.RandomState(seed)

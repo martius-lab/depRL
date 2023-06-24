@@ -2,9 +2,9 @@ import argparse
 import os
 import time
 
-import wandb
 import yaml
 
+import wandb
 from deprl.vendor.tonic import utils
 
 
@@ -64,6 +64,7 @@ def main():
     while True:
         processor.update()
         time.sleep(100)
+
 
 if __name__ == "__main__":
     main()
