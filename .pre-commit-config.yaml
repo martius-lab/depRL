@@ -1,6 +1,6 @@
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.1.0
+    rev: v4.4.0
     hooks:
     -   id: check-json
     -   id: check-yaml
@@ -12,7 +12,7 @@ repos:
     -   id: absolufy-imports
         files: 'al4myochallenge/'
 -   repo: https://github.com/ambv/black
-    rev: 23.1.0
+    rev: 23.3.0
     hooks:
     - id: black
       args: [--config=pyproject.toml]
@@ -23,7 +23,14 @@ repos:
       args: [--settings-path=pyproject.toml]
 -   repo: https://github.com/charliermarsh/ruff-pre-commit
     # Ruff version.
-    rev: 'v0.0.254'
+    rev: 'v0.0.274'
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
+-   repo: https://github.com/python-poetry/poetry
+    rev: '1.5.0'  # add version here
+    hooks:
+      - id: poetry-check
+      - id: poetry-lock
+      - id: poetry-export
+        args: ["-f", "requirements.txt", "--without-hashes", "-o", "requirements.txt"]
