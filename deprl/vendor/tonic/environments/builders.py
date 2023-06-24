@@ -100,7 +100,6 @@ def _flatten_observation(observation):
 
 class ControlSuiteEnvironment(gym.core.Env):
     """Turns a Control Suite environment into a Gym environment."""
-
     def __init__(
         self,
         domain_name,
@@ -110,6 +109,7 @@ class ControlSuiteEnvironment(gym.core.Env):
         environment_kwargs=None,
     ):
         from dm_control import suite
+        from dm_control.rl.control import PhysicsError
 
         self.environment = suite.load(
             domain_name=domain_name,
@@ -132,6 +132,8 @@ class ControlSuiteEnvironment(gym.core.Env):
         self.action_space = gym.spaces.Box(
             action_spec.minimum, action_spec.maximum, dtype=np.float32
         )
+        self.error = PhysicsError
+        
 
     def seed(self, seed):
         self.environment.task._random = np.random.RandomState(seed)
@@ -153,7 +155,7 @@ class ControlSuiteEnvironment(gym.core.Env):
             self.last_time_step = time_step
 
         # In case MuJoCo crashed.
-        except Exception as e:
+        except self.error as e:
             path = logger.get_path()
             os.makedirs(path, exist_ok=True)
             save_path = os.path.join(path, "crashes.txt")
