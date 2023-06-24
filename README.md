@@ -1,5 +1,8 @@
 # DEP-RL: Embodied Exploration for Reinforcement Learning in Overactuated and Musculoskeletal Systems
-
+ [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+ [![PyPI](https://img.shields.io/pypi/v/deprl)](https://pypi.org/project/deprl/)
+ [![Downloads](https://pepy.tech/badge/deprl)](https://pepy.tech/project/deprl)
+ 
  This repo contains the code for the paper [DEP-RL: Embodied Exploration for Reinforcement Learning in Overactuated and Musculoskeletal Systems](https://openreview.net/forum?id=C-xa_D3oTj6) paper, published at ICLR 2023 with perfect review scores (8, 8, 8, 10) and a notable-top-25% rating. See [here](https://sites.google.com/view/dep-rl) for videos.
 
 The work was performed by Pierre Schumacher, Daniel F.B. Haeufle, Dieter Büchler, Syn Schmitt and Georg Martius.
@@ -123,9 +126,21 @@ for ep in range(5):
 The humanoid environments were simulated with [SCONE](https://scone.software/doku.php?id=start). A ready-to-use RL package will be released in cooperation with GOATSTREAM at a later date.
 
 ## Source Code Installation
-
 We recommend an installation with [poetry](https://python-poetry.org/) to ensure reproducibility.
-While [TonicRL](https://github.com/fabiopardo/tonic) with PyTorch is used for the RL algorithms, DEP itself is implemented in JAX. We *strongly* recommend GPU-usage to speed up the computation of DEP. On systems without GPUs, give the tensorflow version of TonicRL a try! We alternatively provide a pip_requirements file.
+While [TonicRL](https://github.com/fabiopardo/tonic) with PyTorch is used for the RL algorithms, DEP itself is implemented in `jax`. We *strongly* recommend GPU-usage to speed up the computation of DEP. On systems without GPUs, give the tensorflow version of TonicRL a try! We also provide a requirements file for pip. Please check the instructions for GPU and CPU versions of `torch` and `jax` above.
+
+### Pip
+Just clone the repository and install locally:
+
+```
+git clone https://github.com/martius-lab/depRL.git
+cd depRL
+pip install -r requirements.txt
+pip install -e ./
+```
+
+### Poetry
+
 1. Make sure to install poetry and deactivate all virtual environments.
 2. Clone the environment
 ```
@@ -146,6 +161,7 @@ Ubuntu 20.04 and Ubuntu 22.04
 CUDA 12.0
 poetry 1.4.0
 ```
+ 
 ### Troubleshooting
 * A common error with poetry is a faulty interaction with the python keyring, resulting in a `Failed to unlock the collection!`-error. It could also happen that the dependency solving takes very long (more than 60s), this is caused by the same error.
   If it happens, try to append
@@ -165,7 +181,7 @@ Feel free to open an issue if you encounter any problems.
 
 ## Citation
 
-Please use the following citation if you make use of our work:
+If you find this repository useful, please consider giving a star ⭐ and cite our [paper](https://openreview.net/forum?id=C-xa_D3oTj6)  by using the following BibTeX entrys.
 
 ```
 @inproceedings{schumacher2023:deprl,
