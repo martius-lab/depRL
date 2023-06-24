@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 
 import gym
 import numpy as np
-import mujoco_py
 
 import deprl  # noqa
 from deprl.vendor.tonic import logger
@@ -96,9 +95,9 @@ class ExceptionWrapper(AbstractWrapper):
         try:
             observation, reward, done, info = super().step(action)
             if np.any(np.isnan(observation)):
-                raise mujoco_py.builder.MujocoException()
-        except mujoco_py.builder.MujocoException:
-            logger.log(f"NaN detected, resetting environment!")
+                raise self.error('NaN detected! Resetting.')
+        except self.error as e:
+            logger.log(f"Simulator exception thrown: {e}")
 
             observation = self.last_observation
             reward = 0
@@ -112,6 +111,10 @@ class GymWrapper(ExceptionWrapper):
     """Wrapper for OpenAI Gym and MuJoCo, compatible with
     gym=0.13.
     """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        from mujoco_py.builder import MujocoException
+        self.error = MujocoException
 
     def render(self, *args, **kwargs):
         kwargs["mode"] = "window"
@@ -200,6 +203,8 @@ class DMWrapper(ExceptionWrapper):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        from dm_control.rl.control import PhysicsError
+        self.error = PhysicsError
 
     def muscle_lengths(self):
         length = self.env.environment.physics.data.actuator_length
