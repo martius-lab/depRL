@@ -2,7 +2,7 @@
  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
  [![PyPI](https://img.shields.io/pypi/v/deprl)](https://pypi.org/project/deprl/)
  [![Downloads](https://pepy.tech/badge/deprl)](https://pepy.tech/project/deprl)
- 
+
  This repo contains the code for the paper [DEP-RL: Embodied Exploration for Reinforcement Learning in Overactuated and Musculoskeletal Systems](https://openreview.net/forum?id=C-xa_D3oTj6) paper, published at ICLR 2023 with perfect review scores (8, 8, 8, 10) and a notable-top-25% rating. See [here](https://sites.google.com/view/dep-rl) for videos.
 
 The work was performed by Pierre Schumacher, Daniel F.B. Haeufle, Dieter Büchler, Syn Schmitt and Georg Martius.
@@ -158,7 +158,7 @@ Ubuntu 20.04 and Ubuntu 22.04
 CUDA 12.0
 poetry 1.4.0
 ```
- 
+
 ### Troubleshooting
 * A common error with poetry is a faulty interaction with the python keyring, resulting in a `Failed to unlock the collection!`-error. It could also happen that the dependency solving takes very long (more than 60s), this is caused by the same error.
   If it happens, try to append
