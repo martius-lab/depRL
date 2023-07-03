@@ -33,9 +33,10 @@ def test_mujoco(env, agent, steps, params=None, test_episodes=10):
             # Update metrics
             metrics["test/episode_score"] += info["rewards"][0]
             metrics["test/episode_length"] += 1
-            metrics["test/effort"] += np.mean(
-                np.square(env.environments[0].unwrapped.sim.data.act)
-            )
+            if env.environments[0].sim.model.na > 0:
+                metrics["test/effort"] += np.mean(
+                    np.square(env.environments[0].unwrapped.sim.data.act)
+                )
             metrics["test/terminated"] += int(info["terminations"])
 
             if info["resets"][0]:

@@ -52,14 +52,16 @@ class WandbProcessor:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--path", type=str, default="None")
+    parser.add_argument("--path", type=str)
+    parser.add_argument("--username", type=str)
     parser.add_argument("--project", type=str, default="None")
     args = parser.parse_args()
     config = yaml.load(
         open(os.path.join(args.path[:-7], "config.yaml"), "r"),
         Loader=yaml.FullLoader,
     )
-    wandb.init(project=args.project, entity="rlpractitioner", config=config)
+    print(args.username)
+    wandb.init(project=args.project, entity=args.username, config=config)
     processor = WandbProcessor(args.path)
     while True:
         processor.update()
