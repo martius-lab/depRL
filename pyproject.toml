@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "deprl"
-version = "0.1.3"
+version = "0.1.4"
 description = "DEP-RL, a method for robust control of musculoskeletal systems."
 authors = ["Pierre Schumacher <pierre.schumacher@tuebingen.mpg.de>"]
 license = "MIT"
@@ -26,7 +26,7 @@ ostrichrl = {git = "https://github.com/P-Schumacher/ostrichrl.git", branch="fix/
 warmup = {git = "https://github.com/P-Schumacher/warmup.git"}
 gym = "0.13.0"
 free-mujoco-py = "*"
-myosuite = {path = "../myosuite", develop = true}
+myosuite = "^1.6.1"
 
 [tool.poetry.scripts]
 log = "deprl.log:main"

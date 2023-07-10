@@ -118,3 +118,10 @@ def load_config_and_paths(path, checkpoint="last"):
         config = yaml.load(config_file, Loader=yaml.FullLoader)
     config = argparse.Namespace(**config)
     return config, checkpoint_path
+
+
+def mujoco_render(env, *args, **kwargs):
+    if "mujoco_py" in str(type(env.sim)):
+        env.render(*args, **kwargs)
+    else:
+        env.sim.renderer.render_to_window(*args, **kwargs)

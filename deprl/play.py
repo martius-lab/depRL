@@ -6,7 +6,7 @@ import os
 import numpy as np
 import yaml
 
-from deprl import env_wrappers
+from deprl import env_wrappers, mujoco_render
 
 from .vendor.tonic import logger
 
@@ -16,7 +16,6 @@ def play_gym(agent, environment):
     environment = env_wrappers.apply_wrapper(environment)
     observations = environment.reset()
     tendon_states = environment.tendon_states
-    environment.render()
 
     score = 0
     length = 0
@@ -35,7 +34,7 @@ def play_gym(agent, environment):
             actions = actions[0, :]
         observations, reward, done, info = environment.step(actions)
         tendon_states = environment.tendon_states
-        environment.render()
+        mujoco_render(environment)
 
         steps += 1
         score += reward
