@@ -6,8 +6,10 @@ import numpy as np
 import deprl  # noqa
 from deprl.vendor.tonic import logger
 
+
 class DummyException(Exception):
     pass
+
 
 class AbstractWrapper(gym.Wrapper, ABC):
     def merge_args(self, args):
@@ -119,19 +121,23 @@ class GymWrapper(ExceptionWrapper):
         dummy_counter = 0
         try:
             from mujoco_py.builder import MujocoException
+
             error_mjpy = MujocoException
         except ModuleNotFoundError:
             error_mjpy = DummyException
             dummy_counter += 1
         try:
             from dm_control.rl.control import PhysicsError
+
             error_mj = PhysicsError
         except ModuleNotFoundError:
             error_mj = DummyException
             dummy_counter += 1
 
         if dummy_counter >= 2:
-            logger.log('Neither mujoco nor mujoco_py has been detected. GymWrapper is not catching exceptions correctly.')
+            logger.log(
+                "Neither mujoco nor mujoco_py has been detected. GymWrapper is not catching exceptions correctly."
+            )
         self.error = (error_mjpy, error_mj)
 
     def render(self, *args, **kwargs):

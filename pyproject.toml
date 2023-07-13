@@ -17,13 +17,15 @@ jax = "^0.4.8"
 pandas = "^2.0.1"
 gdown = "^4.7.1"
 gym = "0.13.0"
-myosuite = {path = "../myochallenge_hub/myochallenge_locomotion"}
 
 [tool.poetry.group.dev.dependencies]
 pudb = "*"
 pre-commit = "*"
 wandb = "^0.13.11"
 ostrichrl = {git = "https://github.com/P-Schumacher/ostrichrl.git", branch="fix/setuptools"}
+warmup = {git = "https://github.com/P-Schumacher/warmup.git"}
+myosuite = {path = "../myochallenge_hub/myochallenge_locomotion", develop = true}
+
 
 [tool.poetry.scripts]
 log = "deprl.log:main"
