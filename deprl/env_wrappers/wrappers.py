@@ -6,6 +6,8 @@ import numpy as np
 import deprl  # noqa
 from deprl.vendor.tonic import logger
 
+class DummyException(Exception):
+    pass
 
 class AbstractWrapper(gym.Wrapper, ABC):
     def merge_args(self, args):
@@ -96,9 +98,9 @@ class ExceptionWrapper(AbstractWrapper):
             observation, reward, done, info = super().step(action)
             if np.any(np.isnan(observation)):
                 raise self.error("NaN detected! Resetting.")
+
         except self.error as e:
             logger.log(f"Simulator exception thrown: {e}")
-
             observation = self.last_observation
             reward = 0
             done = 1
@@ -114,9 +116,23 @@ class GymWrapper(ExceptionWrapper):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        from mujoco_py.builder import MujocoException
+        dummy_counter = 0
+        try:
+            from mujoco_py.builder import MujocoException
+            error_mjpy = MujocoException
+        except ModuleNotFoundError:
+            error_mjpy = DummyException
+            dummy_counter += 1
+        try:
+            from dm_control.rl.control import PhysicsError
+            error_mj = PhysicsError
+        except ModuleNotFoundError:
+            error_mj = DummyException
+            dummy_counter += 1
 
-        self.error = MujocoException
+        if dummy_counter >= 2:
+            logger.log('Neither mujoco nor mujoco_py has been detected. GymWrapper is not catching exceptions correctly.')
+        self.error = (error_mjpy, error_mj)
 
     def render(self, *args, **kwargs):
         kwargs["mode"] = "window"
