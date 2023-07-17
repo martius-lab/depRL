@@ -32,7 +32,7 @@ or render the pretrained baselines with:
 
 `python experiments/myosuite_training_files/render_baselines.py`
 
-You have to find your own reward function, of course.
+You have to find your own reward function, of course. These files also require the installation of `myosuite==1.7.0`.
 
 ## Abstract
 Muscle-actuated organisms are capable of learning an unparalleled diversity of
