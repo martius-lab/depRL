@@ -24,7 +24,9 @@ pre-commit = "*"
 wandb = "^0.13.11"
 ostrichrl = {git = "https://github.com/P-Schumacher/ostrichrl.git", branch="fix/setuptools"}
 warmup = {git = "https://github.com/P-Schumacher/warmup.git"}
-myosuite = {path = "../myochallenge_hub/myochallenge_locomotion", develop = true}
+robohive = {path = "../myohub/robohive", develop = true}
+myosuite = "^1.7.0"
+pytest = "^7.4.0"
 
 
 [tool.poetry.scripts]

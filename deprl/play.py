@@ -30,6 +30,9 @@ def play_gym(agent, environment):
         actions = agent.test_step(
             observations, tendon_states=tendon_states, steps=1e6
         )
+        # actions = agent.noisy_test_step(
+        #     observations, tendon_states=tendon_states, steps=1e6
+        # )
         if len(actions.shape) > 1:
             actions = actions[0, :]
         observations, reward, done, info = environment.step(actions)
