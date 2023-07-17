@@ -32,7 +32,7 @@ def prepare_params():
     return orig_params, params
 
 
-def load(path, environment, checkpoint="last"):
+def load(path, environment, checkpoint="last", noisy=False):
     config, checkpoint_path = load_config_and_paths(path, checkpoint)
     header = config.header
     agent = config.agent
@@ -50,10 +50,23 @@ def load(path, environment, checkpoint="last"):
     )
     # Load the weights of the agent form a checkpoint.
     agent.load(checkpoint_path)
+    agent.noisy = noisy
     return agent
 
 
 def load_baseline(environment):
+    if "myoLegWalk" in str(environment):
+        logger.log("Load LegWalk Baseline")
+        return load_baseline_myolegwalk(environment)
+    if "myoChallengeChaseTagP1" in str(environment):
+        logger.log("Load ChaseTagP1 Baseline")
+        return load_baseline_myochasetagp1(environment, noisy=False)
+    if "myoChallengeRelocateP1" in str(environment):
+        logger.log("Load RelocateP1 Baseline")
+        return load_baseline_myorelocatep1(environment)
+
+
+def load_baseline_myolegwalk(environment, noisy=False):
     modelurl = (
         "https://drive.google.com/uc?id=1UkiUozk-PM8JbQCZNoy2Jr2t1StLcAzx"
     )
@@ -69,7 +82,45 @@ def load_baseline(environment):
     if not os.path.exists(modelpath):
         gdown.download(modelurl, modelpath, quiet=False)
         gdown.download(configurl, configpath, quiet=False)
-    return load(foldername, environment)
+    return load(foldername, environment, noisy=noisy)
+
+
+def load_baseline_myochasetagp1(environment, noisy=False):
+    modelurl = (
+        "https://drive.google.com/uc?id=12mEWnwGe7aWzfaHIJT8_qZPINGlPSLfQ"
+    )
+    configurl = (
+        "https://drive.google.com/uc?id=11TRLmNtLMeBQ5H_JZ_tORxl9Idxhq-ec"
+    )
+    foldername = "./baselines_DEPRL/chasetagp1/"
+    if not os.path.exists(foldername):
+        os.makedirs(foldername)
+        os.makedirs(os.path.join(foldername, "checkpoints"))
+    modelpath = os.path.join(foldername, "checkpoints/step_100000000.pt")
+    configpath = os.path.join(foldername, "config.yaml")
+    if not os.path.exists(modelpath):
+        gdown.download(modelurl, modelpath, quiet=False)
+        gdown.download(configurl, configpath, quiet=False)
+    return load(foldername, environment, noisy=noisy)
+
+
+def load_baseline_myorelocatep1(environment, noisy=False):
+    modelurl = (
+        "https://drive.google.com/uc?id=1aBBamewALMxBglkR7nw8gLplKLam3AAO"
+    )
+    configurl = (
+        "https://drive.google.com/uc?id=1UphxBaBLhPplZzhmhZNtkoAcW3M19bmo"
+    )
+    foldername = "./baselines_DEPRL/relocatep1/"
+    if not os.path.exists(foldername):
+        os.makedirs(foldername)
+        os.makedirs(os.path.join(foldername, "checkpoints"))
+    modelpath = os.path.join(foldername, "checkpoints/step_11000000.pt")
+    configpath = os.path.join(foldername, "config.yaml")
+    if not os.path.exists(modelpath):
+        gdown.download(modelurl, modelpath, quiet=False)
+        gdown.download(configurl, configpath, quiet=False)
+    return load(foldername, environment, noisy=noisy)
 
 
 def load_config_and_paths(path, checkpoint="last"):

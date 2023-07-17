@@ -25,8 +25,8 @@ wandb = "^0.13.11"
 ostrichrl = {git = "https://github.com/P-Schumacher/ostrichrl.git", branch="fix/setuptools"}
 warmup = {git = "https://github.com/P-Schumacher/warmup.git"}
 robohive = {path = "../myohub/robohive", develop = true}
-myosuite = "^1.7.0"
 pytest = "^7.4.0"
+myosuite = "^1.7.0"
 
 
 [tool.poetry.scripts]

@@ -4,6 +4,10 @@ import abc
 class Agent(abc.ABC):
     """Abstract class used to build agents."""
 
+    def __init__(self, *args, **kwargs):
+        self.noisy = False
+        super().__init__(*args, **kwargs)
+
     def initialize(self, observation_space, action_space, seed=None):
         pass
 
@@ -34,4 +38,7 @@ class Agent(abc.ABC):
         pass
 
     def __call__(self, observation):
-        return self.test_step(observation, steps=1e6)
+        if not self.noisy:
+            return self.test_step(observation, steps=1e6)
+        else:
+            return self._step(observation).numpy(force=True)
