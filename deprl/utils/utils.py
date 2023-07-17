@@ -60,7 +60,7 @@ def load_baseline(environment):
         return load_baseline_myolegwalk(environment)
     if "myoChallengeChaseTagP1" in str(environment):
         logger.log("Load ChaseTagP1 Baseline")
-        return load_baseline_myochasetagp1(environment, noisy=False)
+        return load_baseline_myochasetagp1(environment, noisy=True)
     if "myoChallengeRelocateP1" in str(environment):
         logger.log("Load RelocateP1 Baseline")
         return load_baseline_myorelocatep1(environment)

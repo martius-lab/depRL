@@ -23,6 +23,17 @@ If you are coming here for the MyoLeg, take a look at this [tutorial](https://gi
 <img src=https://github.com/martius-lab/depRL/assets/24903880/d06200ae-ad35-484c-9d55-83b5235269bc width=350
 </p>
 
+This repository has been updated with training files that have been used for the MyoSuite baselines, as well as pretrained networks.
+Simply try training something:
+
+`python -m deprl.main experiments/myosuite_training_files/myoChaseTag.json`
+
+or render the pretrained baselines with:
+
+`python experiments/myosuite_training_files/render_baselines.py`
+
+You have to find your own reward function, of course.
+
 ## Abstract
 Muscle-actuated organisms are capable of learning an unparalleled diversity of
 dexterous movements despite their vast amount of muscles. Reinforcement learning (RL) on large musculoskeletal models, however, has not been able to show

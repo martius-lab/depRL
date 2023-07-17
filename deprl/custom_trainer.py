@@ -7,6 +7,9 @@ import torch
 from deprl.custom_test_environment import test_dm_control, test_mujoco
 from deprl.vendor.tonic import logger
 
+if "ROBOHIVE_VERBOSITY" not in os.environ:
+    os.environ["ROBOHIVE_VERBOSITY"] = "ALWAYS"
+
 
 class Trainer:
     """Trainer used to train and evaluate an agent on an environment."""
