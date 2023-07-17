@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "deprl"
-version = "0.1.5.0001"
+version = "0.1.7.001"
 description = "DEP-RL, a method for robust control of musculoskeletal systems."
 authors = ["Pierre Schumacher <pierre.schumacher@tuebingen.mpg.de>"]
 license = "MIT"
@@ -17,7 +17,6 @@ pandas = "^2.0.1"
 gdown = "^4.7.1"
 gym = "0.13.0"
 pytest = "^7.4.0"
-torch = "^2.0.1"
 
 [tool.poetry.group.dev.dependencies]
 pudb = "*"

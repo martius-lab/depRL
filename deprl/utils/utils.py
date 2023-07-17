@@ -55,13 +55,19 @@ def load(path, environment, checkpoint="last", noisy=False):
 
 
 def load_baseline(environment):
-    if "myoLegWalk" in str(environment):
+    identifier = (
+        environment.env_name
+        if hasattr(environment, "env_name")
+        else str(environment)
+    )
+    print(identifier)
+    if "myoLegWalk" in identifier:
         logger.log("Load LegWalk Baseline")
         return load_baseline_myolegwalk(environment)
-    if "myoChallengeChaseTagP1" in str(environment):
+    if "myoChallengeChaseTagP1" in identifier:
         logger.log("Load ChaseTagP1 Baseline")
         return load_baseline_myochasetagp1(environment, noisy=True)
-    if "myoChallengeRelocateP1" in str(environment):
+    if "myoChallengeRelocateP1" in identifier:
         logger.log("Load RelocateP1 Baseline")
         return load_baseline_myorelocatep1(environment)
 
