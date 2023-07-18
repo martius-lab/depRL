@@ -43,3 +43,6 @@ class Agent(agents.Agent):
             self.model.load_state_dict(state_dict)
         else:
             self.model.actor.load_state_dict(state_dict)
+
+    def noisy_test_step(self, observations, *args, **kwargs):
+        return self._step(observations).numpy(force=True)

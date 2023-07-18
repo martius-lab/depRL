@@ -1,5 +1,9 @@
 import numpy as np
-from matplotlib import pyplot as plt
+
+try:
+    from matplotlib import pyplot as plt
+except ImportError:
+    pass
 
 
 class ScoreKeeper:

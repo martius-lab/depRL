@@ -26,12 +26,6 @@ def dep_factory(mix, instance):
         def reset(self):
             pass
 
-        def noisy_test_step(self, observations, steps, tendon_states=None):
-            actions = self._step(observations).numpy(force=True)
-            self.last_observations = observations.copy()
-            self.last_actions = actions.copy()
-            return actions
-
     class BaseDep(instance.__class__):
         """
         Dep basis. Here, DEP exploration is only initially used to pre-fill
@@ -70,12 +64,6 @@ def dep_factory(mix, instance):
 
         def dep_step(self, tendon_states, steps):
             return self.expl.step(tendon_states, steps)
-
-        def noisy_test_step(self, observations, steps, tendon_states=None):
-            actions = self._step(observations).numpy(force=True)
-            self.last_observations = observations.copy()
-            self.last_actions = actions.copy()
-            return actions
 
     class DetSwitchDep(BaseDep):
         def __init__(self, *args, **kwargs):

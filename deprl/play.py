@@ -11,7 +11,7 @@ from deprl import env_wrappers, mujoco_render
 from .vendor.tonic import logger
 
 
-def play_gym(agent, environment):
+def play_gym(agent, environment, noisy=False):
     """Launches an agent in a Gym-based environment."""
     environment = env_wrappers.apply_wrapper(environment)
     observations = environment.reset()
@@ -27,12 +27,14 @@ def play_gym(agent, environment):
     episodes = 0
 
     while True:
-        actions = agent.test_step(
-            observations, tendon_states=tendon_states, steps=1e6
-        )
-        # actions = agent.noisy_test_step(
-        #     observations, tendon_states=tendon_states, steps=1e6
-        # )
+        if not noisy:
+            actions = agent.test_step(
+                observations, tendon_states=tendon_states, steps=1e6
+            )
+        else:
+            actions = agent.noisy_test_step(
+                observations, tendon_states=tendon_states, steps=1e6
+            )
         if len(actions.shape) > 1:
             actions = actions[0, :]
         observations, reward, done, info = environment.step(actions)
@@ -162,7 +164,7 @@ def play_control_suite(agent, environment):
     viewer.launch(environment, policy)
 
 
-def play(path, checkpoint, seed, header, agent, environment):
+def play(path, checkpoint, seed, header, agent, environment, noisy):
     """Reloads an agent and an environment from a previous experiment."""
 
     checkpoint_path = None
@@ -253,7 +255,7 @@ def play(path, checkpoint, seed, header, agent, environment):
         agent.load(checkpoint_path)
     if "ontrol" in type(environment).__name__:
         play_control_suite(agent, environment)
-    play_gym(agent, environment)
+    play_gym(agent, environment, noisy)
 
 
 if __name__ == "__main__":
@@ -262,6 +264,7 @@ if __name__ == "__main__":
     parser.add_argument("--path")
     parser.add_argument("--checkpoint", default="last")
     parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument("--noisy", action="store_true")
     parser.add_argument("--header")
     parser.add_argument("--agent")
     parser.add_argument("--environment", "--env")
