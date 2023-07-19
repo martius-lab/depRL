@@ -1,0 +1,42 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: Install env and run tests.
+
+on: workflow_dispatch
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+    - uses: Gr1N/setup-poetry@v8
+    - uses: actions/cache@v2
+      with:
+        path: ~/.cache/pypoetry/virtualenvs
+        key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
+    - run: poetry --version
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        poetry install
+        
+    - name: Run pre-commit hooks
+      run: |
+        poetry run pre-commit run --all-files
+        if [ -n "$(git status --porcelain)" ]; then
+          echo "Files were changed by pre-commit hooks. Aborting commit."
+          exit 1
+        fi
+    - name: Test with pytest
+      run: |
+        pytest
