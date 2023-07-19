@@ -39,4 +39,4 @@ jobs:
         fi
     - name: Test with pytest
       run: |
-        pytest
+        poetry run pytest
