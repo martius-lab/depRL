@@ -35,11 +35,7 @@ jobs:
     - name: Run pre-commit hooks
       run: |
         poetry run pre-commit run --all-files
-        if [ -n "$(git status --porcelain)" ]; then
-          echo "Files were changed by pre-commit hooks. Aborting commit."
-          git diff
-          exit 0
-        fi
+        git diff
     - name: Test with pytest
       run: |
         poetry run pytest
