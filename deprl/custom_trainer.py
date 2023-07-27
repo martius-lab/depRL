@@ -95,17 +95,17 @@ class Trainer:
                     logger.store(
                         "train/episode_length", lengths[i], stats=True
                     )
-                # if adaptive energy cost
-                if hasattr(self.agent.replay, "action_cost"):
-                    logger.store(
-                        "train/action_cost_coeff",
-                        self.agent.replay.action_cost,
-                    )
                     if i == 0:
-                        self.agent.replay.adjust(scores[i])
-                scores[i] = 0
-                lengths[i] = 0
-                episodes += 1
+                        # adaptive energy cost
+                        if hasattr(self.agent.replay, "action_cost"):
+                            logger.store(
+                                "train/action_cost_coeff",
+                                self.agent.replay.action_cost,
+                            )
+                            self.agent.replay.adjust(scores[i])
+                    scores[i] = 0
+                    lengths[i] = 0
+                    episodes += 1
 
             # End of the epoch.
             if epoch_steps >= self.epoch_steps:
