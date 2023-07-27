@@ -15,7 +15,7 @@ def play_gym(agent, environment, noisy=False):
     """Launches an agent in a Gym-based environment."""
     environment = env_wrappers.apply_wrapper(environment)
     observations = environment.reset()
-    tendon_states = environment.tendon_states
+    muscle_states = environment.muscle_states
 
     score = 0
     length = 0
@@ -29,16 +29,16 @@ def play_gym(agent, environment, noisy=False):
     while True:
         if not noisy:
             actions = agent.test_step(
-                observations, tendon_states=tendon_states, steps=1e6
+                observations, muscle_states=muscle_states, steps=1e6
             )
         else:
             actions = agent.noisy_test_step(
-                observations, tendon_states=tendon_states, steps=1e6
+                observations, muscle_states=muscle_states, steps=1e6
             )
         if len(actions.shape) > 1:
             actions = actions[0, :]
         observations, reward, done, info = environment.step(actions)
-        tendon_states = environment.tendon_states
+        muscle_states = environment.muscle_states
         mujoco_render(environment)
 
         steps += 1
@@ -61,6 +61,65 @@ def play_gym(agent, environment, noisy=False):
             print(f"Max reward: {max_reward:,.3f}")
             print(f"Global min reward: {min_reward:,.3f}")
             print(f"Global max reward: {max_reward:,.3f}")
+            environment.reset()
+
+            score = 0
+            length = 0
+            min_reward = float("inf")
+            max_reward = -float("inf")
+
+
+def play_scone(agent, environment, noisy):
+    """Launches an agent in a Gym-based environment."""
+    environment = env_wrappers.apply_wrapper(environment)
+    environment.store_next_episode()
+    observations = environment.reset()
+    muscle_states = environment.muscle_states
+
+    score = 0
+    length = 0
+    min_reward = float("inf")
+    max_reward = -float("inf")
+    global_min_reward = float("inf")
+    global_max_reward = -float("inf")
+    steps = 0
+    episodes = 0
+
+    while True:
+        if not noisy:
+            actions = agent.test_step(
+                observations, muscle_states=muscle_states, steps=1e6
+            )
+        else:
+            actions = agent.noisy_test_step(
+                observations, muscle_states=muscle_states, steps=1e6
+            )
+        if len(actions.shape) > 1:
+            actions = actions[0, :]
+        observations, reward, done, info = environment.step(actions)
+        muscle_states = environment.muscle_states
+
+        steps += 1
+        score += reward
+        min_reward = min(min_reward, reward)
+        max_reward = max(max_reward, reward)
+        global_min_reward = min(global_min_reward, reward)
+        global_max_reward = max(global_max_reward, reward)
+        length += 1
+        if done or length >= environment.max_episode_steps:
+            episodes += 1
+
+            print()
+            print(f"Episodes: {episodes:,}")
+            print(f"Score: {score:,.3f}")
+            print(f"Length: {length:,}")
+            print(f"Terminal: {done:}")
+            print(f"Min reward: {min_reward:,.3f}")
+            print(f"Max reward: {max_reward:,.3f}")
+            print(f"Global min reward: {min_reward:,.3f}")
+            print(f"Global max reward: {max_reward:,.3f}")
+            environment.write_now()
+            environment.store_next_episode()
             environment.reset()
 
             score = 0
@@ -141,8 +200,8 @@ def play_control_suite(agent, environment):
             return self.unwrapped.last_time_step
 
         @property
-        def tendon_states(self):
-            return self.environment.tendon_states
+        def muscle_states(self):
+            return self.environment.muscle_states
 
     # Wrap the environment for the viewer.
     environment = env_wrappers.apply_wrapper(environment)
@@ -153,10 +212,10 @@ def play_control_suite(agent, environment):
         if environment.infos is not None:
             agent.test_update(**environment.infos, steps=environment.steps)
             environment.steps += 1
-        tendon_states = environment.tendon_states
+        muscle_states = environment.muscle_states
         return agent.test_step(
             environment.observations,
-            tendon_states=tendon_states,
+            muscle_states=muscle_states,
             steps=environment.steps,
         )
 
@@ -250,11 +309,13 @@ def play(path, checkpoint, seed, header, agent, environment, noisy):
         seed=seed,
     )
 
-    # Load the weights of the agent form a checkpoint.
+    # Load the weights of the agent from a checkpoint.
     if checkpoint_path:
         agent.load(checkpoint_path)
-    if "ontrol" in type(environment).__name__:
+    if "control" in str(type(environment)).lower():
         play_control_suite(agent, environment)
+    if "scone" in str(type(environment)).lower():
+        play_scone(agent, environment, noisy)
     play_gym(agent, environment, noisy)
 
 

@@ -4,7 +4,11 @@ import time
 import numpy as np
 import torch
 
-from deprl.custom_test_environment import test_dm_control, test_mujoco
+from deprl.custom_test_environment import (
+    test_dm_control,
+    test_mujoco,
+    test_scone,
+)
 from deprl.vendor.tonic import logger
 
 if "ROBOHIVE_VERBOSITY" not in os.environ:
@@ -41,7 +45,7 @@ class Trainer:
         start_time = last_epoch_time = time.time()
 
         # Start the environments.
-        observations, tendon_states = self.environment.start()
+        observations, muscle_states = self.environment.start()
 
         num_workers = len(observations)
         scores = np.zeros(num_workers)
@@ -59,14 +63,14 @@ class Trainer:
                 greedy_episode = None
             assert not np.isnan(observations.sum())
             actions = self.agent.step(
-                observations, self.steps, tendon_states, greedy_episode
+                observations, self.steps, muscle_states, greedy_episode
             )
             assert not np.isnan(actions.sum())
             # raise Exception(f'{type(self.environment.environments[0])}')
             logger.store("train/action", actions, stats=True)
 
             # Take a step in the environments.
-            observations, tendon_states, info = self.environment.step(actions)
+            observations, muscle_states, info = self.environment.step(actions)
             if "env_infos" in info:
                 info.pop("env_infos")
 
@@ -99,14 +103,32 @@ class Trainer:
             if epoch_steps >= self.epoch_steps:
                 # Evaluate the agent on the test environment.
                 if self.test_environment:
-                    if "Control" not in str(
-                        type(self.test_environment.environments[0].unwrapped)
+                    if (
+                        "control"
+                        in str(
+                            type(
+                                self.test_environment.environments[0].unwrapped
+                            )
+                        ).lower()
                     ):
-                        _ = test_mujoco(
+                        _ = test_dm_control(
                             self.test_environment, self.agent, steps, params
                         )
+
+                    elif (
+                        "scone"
+                        in str(
+                            type(
+                                self.test_environment.environments[0].unwrapped
+                            )
+                        ).lower()
+                    ):
+                        _ = test_scone(
+                            self.test_environment, self.agent, steps, params
+                        )
+
                     else:
-                        _ = test_dm_control(
+                        _ = test_mujoco(
                             self.test_environment, self.agent, steps, params
                         )
 

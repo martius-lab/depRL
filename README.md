@@ -34,6 +34,9 @@ or render the pretrained baselines with:
 
 You have to find your own reward function, of course. These files also require the installation of `myosuite==1.7.0`.
 
+## SCONE
+To be filled in.
+
 ## Abstract
 Muscle-actuated organisms are capable of learning an unparalleled diversity of
 dexterous movements despite their vast amount of muscles. Reinforcement learning (RL) on large musculoskeletal models, however, has not been able to show

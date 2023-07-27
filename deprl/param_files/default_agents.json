@@ -1,13 +1,13 @@
 {
 
   "DEP":{
-        "kappa": 10000,
-        "tau":  80,
+        "kappa": 100.0,
+        "tau":  20,
         "bias_rate":  0.00002,
-        "time_dist":  60,
+        "time_dist":  5,
         "normalization":  "independent",
-        "s4avg": 6,
-        "buffer_size": 600,
+        "s4avg": 2,
+        "buffer_size": 200,
         "sensor_delay": 1,
         "regularization": 32,
         "with_learning": true,

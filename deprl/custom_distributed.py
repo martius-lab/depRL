@@ -37,10 +37,10 @@ class Sequential:
     def start(self):
         """Used once to get the initial observations."""
         observations = [env.reset() for env in self.environments]
-        tendon_states = [env.tendon_states for env in self.environments]
+        muscle_states = [env.muscle_states for env in self.environments]
         self.lengths = np.zeros(len(self.environments), int)
         return np.array(observations, np.float32), np.array(
-            tendon_states, np.float32
+            muscle_states, np.float32
         )
 
     def step(self, actions):
@@ -49,11 +49,11 @@ class Sequential:
         resets = []
         terminations = []
         observations = []  # Observations for the actions selection.
-        tendon_states = []
+        muscle_states = []
 
         for i in range(len(self.environments)):
             ob, rew, term, env_info = self.environments[i].step(actions[i])
-            muscle = self.environments[i].tendon_states
+            muscle = self.environments[i].muscle_states
             self.lengths[i] += 1
             # Timeouts trigger resets but are not true terminations.
             reset = term or self.lengths[i] == self._max_episode_steps
@@ -65,21 +65,21 @@ class Sequential:
 
             if reset:
                 ob = self.environments[i].reset()
-                muscle = self.environments[i].tendon_states
+                muscle = self.environments[i].muscle_states
                 self.lengths[i] = 0
 
             observations.append(ob)
-            tendon_states.append(muscle)
+            muscle_states.append(muscle)
 
         observations = np.array(observations, np.float32)
-        tendon_states = np.array(tendon_states, np.float32)
+        muscle_states = np.array(muscle_states, np.float32)
         infos = dict(
             observations=np.array(next_observations, np.float32),
             rewards=np.array(rewards, np.float32),
             resets=np.array(resets, bool),
             terminations=np.array(terminations, bool),
         )
-        return observations, tendon_states, infos
+        return observations, muscle_states, infos
 
     def render(self, mode="human", *args, **kwargs):
         outs = []
@@ -163,15 +163,15 @@ class Parallel:
         assert not self.started
         self.started = True
         observations_list = [None for _ in range(self.worker_groups)]
-        tendon_states_list = [None for _ in range(self.worker_groups)]
+        muscle_states_list = [None for _ in range(self.worker_groups)]
 
         for _ in range(self.worker_groups):
-            index, (observations, tendon_states) = self.output_queue.get()
+            index, (observations, muscle_states) = self.output_queue.get()
             observations_list[index] = observations
-            tendon_states_list[index] = tendon_states
+            muscle_states_list[index] = muscle_states
 
         self.observations_list = np.array(observations_list)
-        self.tendon_states_list = np.array(tendon_states_list)
+        self.muscle_states_list = np.array(muscle_states_list)
         self.next_observations_list = np.zeros_like(self.observations_list)
         self.rewards_list = np.zeros(
             (self.worker_groups, self.workers_per_group), np.float32
@@ -187,7 +187,7 @@ class Parallel:
         )
 
         return np.concatenate(self.observations_list), np.concatenate(
-            self.tendon_states_list
+            self.muscle_states_list
         )
 
     def step(self, actions):
@@ -206,17 +206,17 @@ class Parallel:
             self.rewards_list[index] = infos["rewards"]
             self.resets_list[index] = infos["resets"]
             self.terminations_list[index] = infos["terminations"]
-            self.tendon_states_list[index] = tendon_state
+            self.muscle_states_list[index] = tendon_state
 
         observations = np.concatenate(self.observations_list)
-        tendon_states = np.concatenate(self.tendon_states_list)
+        muscle_states = np.concatenate(self.muscle_states_list)
         infos = dict(
             observations=np.concatenate(self.next_observations_list),
             rewards=np.concatenate(self.rewards_list),
             resets=np.concatenate(self.resets_list),
             terminations=np.concatenate(self.terminations_list),
         )
-        return observations, tendon_states, infos
+        return observations, muscle_states, infos
 
 
 def distribute(

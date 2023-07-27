@@ -15,7 +15,7 @@ class AbstractWrapper(gym.Wrapper, ABC):
     def merge_args(self, args):
         if args is not None:
             for k, v in args.items():
-                setattr(self, k, v)
+                setattr(self.unwrapped, k, v)
 
     def apply_args(self):
         pass
@@ -43,7 +43,7 @@ class AbstractWrapper(gym.Wrapper, ABC):
         pass
 
     @property
-    def tendon_states(self):
+    def muscle_states(self):
         """
         Computes the DEP input. We assume an input
         muscle_length + force_scale * muscle_force
@@ -97,7 +97,7 @@ class ExceptionWrapper(AbstractWrapper):
 
     def step(self, action):
         try:
-            observation, reward, done, info = super().step(action)
+            observation, reward, done, info = self._inner_step(action)
             if np.any(np.isnan(observation)):
                 raise self.error("NaN detected! Resetting.")
 
@@ -110,6 +110,9 @@ class ExceptionWrapper(AbstractWrapper):
             self.reset()
         return observation, reward, done, info
 
+    def _inner_step(self, action):
+        return super().step(action)
+
 
 class GymWrapper(ExceptionWrapper):
     """Wrapper for OpenAI Gym and MuJoCo, compatible with
@@ -118,27 +121,29 @@ class GymWrapper(ExceptionWrapper):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        dummy_counter = 0
+        dummy_counter = 2
         try:
             from mujoco_py.builder import MujocoException
 
             error_mjpy = MujocoException
+            dummy_counter = 0
         except ModuleNotFoundError:
             error_mjpy = DummyException
-            dummy_counter += 1
+
         try:
             from dm_control.rl.control import PhysicsError
 
             error_mj = PhysicsError
+            dummy_counter = 1
+
         except ModuleNotFoundError:
             error_mj = DummyException
-            dummy_counter += 1
 
-        if dummy_counter >= 2:
+        if dummy_counter == 2:
             logger.log(
                 "Neither mujoco nor mujoco_py has been detected. GymWrapper is not catching exceptions correctly."
             )
-        self.error = (error_mjpy, error_mj)
+        self.error = (error_mjpy, error_mj, DummyException)[dummy_counter]
 
     def render(self, *args, **kwargs):
         kwargs["mode"] = "window"
@@ -162,6 +167,77 @@ class GymWrapper(ExceptionWrapper):
         return self.unwrapped.max_episode_steps
 
 
+class CustomSconeException(Exception):
+    """
+    Custom exception class for Scone. The SconePy Interface doesn't define a scone exception
+    at the moment and I have never encountered a simulator-based exception until now.
+    Will update when that is the case.
+    """
+
+    pass
+
+
+class SconeWrapper(ExceptionWrapper):
+    """Wrapper for SconeRL, compatible with
+    gym=0.13.
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.error = CustomSconeException
+
+    def render(self, *args, **kwargs):
+        pass
+
+    def muscle_lengths(self):
+        length = self.unwrapped.model.muscle_fiber_length_array()
+        return length
+
+    def muscle_forces(self):
+        force = self.unwrapped.model.muscle_force_array()
+        return force
+
+    def muscle_velocities(self):
+        velocity = self.unwrapped.model.muscle_fiber_velocity_array()
+        return velocity
+
+    def muscle_activity(self):
+        return self.unwrapped.model.muscle_activation_array()
+
+    def write_now(self):
+        if self.unwrapped.store_next:
+            self.model.write_results(
+                self.output_dir, f"{self.episode:05d}_{self.total_reward:.3f}"
+            )
+        self.episode += 1
+        self.unwrapped.store_next = False
+
+    def _inner_step(self, action):
+        """
+        takes an action and advances environment by 1 step.
+        Changed to allow for correct sto saving.
+        """
+        if not self.unwrapped.has_reset:
+            raise Exception("You have to call reset() once before step()")
+
+        if self.use_delayed_actuators:
+            self.unwrapped.model.set_delayed_actuator_inputs(action)
+        else:
+            self.unwrapped.model.set_actuator_inputs(action)
+
+        self.unwrapped.model.advance_simulation_to(self.time + self.step_size)
+        reward = self.unwrapped._get_rew()
+        obs = self.unwrapped._get_obs()
+        done = self.unwrapped._get_done()
+        self.unwrapped.time += self.step_size
+        self.unwrapped.total_reward += reward
+        return obs, reward, done, {}
+
+    @property
+    def _max_episode_steps(self):
+        return 1000
+
+
 class DMWrapper(ExceptionWrapper):
     """
     Wrapper for general DeepMind ControlSuite environments.
@@ -174,17 +250,17 @@ class DMWrapper(ExceptionWrapper):
         self.error = PhysicsError
 
     def muscle_lengths(self):
-        length = self.env.environment.physics.data.actuator_length
+        length = self.unwrapped.environment.physics.data.actuator_length
         return length
 
     def muscle_forces(self):
-        return self.env.environment.physics.data.actuator_force
+        return self.unwrapped.environment.physics.data.actuator_force
 
     def muscle_velocities(self):
-        return self.env.environment.physics.data.actuator_velocity
+        return self.unwrapped.environment.physics.data.actuator_velocity
 
     def muscle_activity(self):
-        return self.env.environment.physics.data.act
+        return self.unwrapped.environment.physics.data.act
 
     @property
     def _max_episode_steps(self):
@@ -200,24 +276,27 @@ class OstrichDMWrapper(DMWrapper):
         super().__init__(*args, **kwargs)
 
     def muscle_lengths(self):
-        return self.env.environment.physics.muscle_lengths().copy()
+        return self.unwrapped.environment.physics.muscle_lengths().copy()
 
     def muscle_forces(self):
-        return self.env.environment.physics.muscle_forces().copy()
+        return self.unwrapped.environment.physics.muscle_forces().copy()
 
     def muscle_velocities(self):
-        return self.env.environment.physics.muscle_velocities().copy()
+        return self.unwrapped.environment.physics.muscle_velocities().copy()
 
     def muscle_activity(self):
-        return self.env.environment.physics.muscle_activations().copy()
+        return self.unrapped.environment.physics.muscle_activations().copy()
 
 
 def apply_wrapper(env):
-    if "control" in str(type(env)).lower():
+    if "control" in str(env).lower():
         if env.name == "ostrich-run":
             return OstrichDMWrapper(env)
         return DMWrapper(env)
-    return GymWrapper(env)
+    elif "scone" in str(env).lower():
+        return SconeWrapper(env)
+    else:
+        return GymWrapper(env)
 
 
 def env_tonic_compat(env, preid=5, parallel=1, sequential=1):
