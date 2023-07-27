@@ -220,6 +220,11 @@ class SconeWrapper(ExceptionWrapper):
         if not self.unwrapped.has_reset:
             raise Exception("You have to call reset() once before step()")
 
+        if self.unwrapped.clip_actions:
+            action = np.clip(action, 0, 0.5)
+        else:
+            action = np.clip(action, 0, 1.0)
+
         if self.use_delayed_actuators:
             self.unwrapped.model.set_delayed_actuator_inputs(action)
         else:

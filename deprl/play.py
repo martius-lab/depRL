@@ -13,7 +13,6 @@ from .vendor.tonic import logger
 
 def play_gym(agent, environment, noisy=False):
     """Launches an agent in a Gym-based environment."""
-    environment = env_wrappers.apply_wrapper(environment)
     observations = environment.reset()
     muscle_states = environment.muscle_states
 
@@ -71,7 +70,6 @@ def play_gym(agent, environment, noisy=False):
 
 def play_scone(agent, environment, noisy):
     """Launches an agent in a Gym-based environment."""
-    environment = env_wrappers.apply_wrapper(environment)
     environment.store_next_episode()
     observations = environment.reset()
     muscle_states = environment.muscle_states
@@ -204,7 +202,6 @@ def play_control_suite(agent, environment):
             return self.environment.muscle_states
 
     # Wrap the environment for the viewer.
-    environment = env_wrappers.apply_wrapper(environment)
     environment = Wrapper(environment)
 
     def policy(timestep):
@@ -297,11 +294,15 @@ def play(path, checkpoint, seed, header, agent, environment, noisy):
     # Build the environment.
     environment = eval(environment)
     environment.seed(seed)
+    environment = env_wrappers.apply_wrapper(environment)
+
+    if "env_args" in config:
+        environment.merge_args(config.env_args)
+        environment.apply_args()
 
     # Adapt mpo specific settings
-    if "config" in locals():
-        if "mpo_args" in config:
-            agent.set_params(**config.mpo_args)
+    if "mpo_args" in config:
+        agent.set_params(**config.mpo_args)
     # Initialize the agent.
     agent.initialize(
         observation_space=environment.observation_space,

@@ -19,7 +19,8 @@
   "working_dir": "./",
   "id": 0,
   "env_args":{
-  "smooth_types":"square",
+  "smooth_type": "square",
+  "smooth_coeff": 0.097,
   "joint_limit_coeff": 0.1307,
   "nmuscle_coeff": 1.57929,
   "grf_coeff": 0.07281,

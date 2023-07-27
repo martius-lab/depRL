@@ -12,18 +12,18 @@ class AdaptiveEnergyBuffer(Buffer):
 
     def __init__(self, *args, **kwargs):
         # User parameters ----------------
+        # num_acts needs to match your model!
+        self.num_acts = kwargs.pop("num_acts")
         # smoothing parameter
         self.alpha = kwargs.pop("alpha", 0.8)
         # performance threshold that needs to be achieved
         self.threshold = kwargs.pop("threshold", 1000)
         # initial learning rate for the energy cost
-        self.lr_inc = kwargs.pop("lr_inc", 9e-4)
+        self.lr = kwargs.pop("lr", 9e-4)
         # how much the learning rate decreased after a collapse
         self.lr_decimation = kwargs.pop("lr_decimation", 0.9)
         # type of energy cost function
         self.cost_function = kwargs.pop("cost_function", 3)
-        # num_acts needs to match your model!
-        self.num_acts = kwargs.pop("num_acts")
 
         # Initial values ----------------
         self.action_cost = 0.0
@@ -37,7 +37,7 @@ class AdaptiveEnergyBuffer(Buffer):
             "size",
             "buffers",
             "action_cost",
-            "lr_inc",
+            "lr",
             "cdt_avg",
             "score_avg",
         ]
@@ -62,19 +62,19 @@ class AdaptiveEnergyBuffer(Buffer):
     def adjust(self, score):
         self.score_avg = self.alpha * self.score_avg + (1 - self.alpha) * score
         if self.score_avg > self.threshold and self.cdt_avg < 0.5:
-            self.lr_inc = self.lr_inc * self.lr_decimation
-            self.action_cost += self.lr_inc
+            self.lr = self.lr * self.lr_decimation
+            self.action_cost += self.lr
         elif self.score_avg > self.threshold and self.cdt_avg > 0.5:
-            self.action_cost += self.lr_inc
+            self.action_cost += self.lr
         elif self.score_avg < self.threshold:
-            self.action_cost -= self.lr_inc
+            self.action_cost -= self.lr
         else:
             raise Exception
         delta_cdt = [1 if self.score_avg > self.threshold else 0][0]
         self.cdt_avg = self.alpha * self.cdt_avg + (1 - self.alpha) * delta_cdt
         self.action_cost = np.clip(self.action_cost, 0, 100)
         logger.store("train/self.score_avg", self.score_avg)
-        logger.store("train/lr_inc", self.lr_inc)
+        logger.store("train/lr", self.lr)
         logger.store("train/prev_cdt", self.cdt_avg)
         logger.store("train/action_cost_intern", self.action_cost)
 
@@ -85,6 +85,9 @@ class AdaptiveEnergyBuffer(Buffer):
         return batch
 
     def _get_cost(self, observations):
+        """
+        Muscle activity is assumed to be the last observation in the state!
+        """
         acts = observations[:, -self.num_acts :]
         if self.cost_function == 0:
             return 4.0 * np.sum([np.power(acts, k) for k in range(1, 5)])
