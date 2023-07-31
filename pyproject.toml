@@ -11,7 +11,6 @@ python = ">=3.9, <3.11"
 pyyaml = "^6.0"
 numpy = "^1.22.4"
 termcolor = "^2.2.0"
-jaxlib = "^0.4.7"
 pandas = "^2.0.1"
 gdown = "^4.7.1"
 pytest = "^7.4.0"
@@ -27,6 +26,7 @@ wandb = "^0.15.4"
 sconegym = {path = "../sconegym", develop = true}
 # myosuite = {path = "../myosuite", develop = true}
 myosuite = "1.7.0"
+sphinx = "6.0.0"
 
 [tool.poetry.scripts]
 log = "deprl.log:main"
