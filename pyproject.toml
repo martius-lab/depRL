@@ -26,7 +26,8 @@ wandb = "^0.15.4"
 sconegym = {path = "../sconegym", develop = true}
 # myosuite = {path = "../myosuite", develop = true}
 myosuite = "1.7.0"
-sphinx = "6.0.0"
+sphinx = "5.3.0"
+sphinx-rtd-theme = "^1.2.2"
 
 [tool.poetry.scripts]
 log = "deprl.log:main"
