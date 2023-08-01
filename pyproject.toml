@@ -6,8 +6,9 @@ authors = ["Pierre Schumacher <pierre.schumacher@tuebingen.mpg.de>"]
 license = "MIT"
 readme = "README.md"
 
+
 [tool.poetry.dependencies]
-python = ">=3.9, <3.11"
+python = ">=3.9, <=3.11.4"
 pyyaml = "^6.0"
 numpy = "^1.22.4"
 termcolor = "^2.2.0"
@@ -15,31 +16,36 @@ jaxlib = "^0.4.7"
 pandas = "^2.0.1"
 gdown = "^4.7.1"
 pytest = "^7.4.0"
-torch = {version = "^2.0.1+cpu", source = "pytorch-cpu"}
+# torch = {version = "^2.0.1+cpu", source = "pytorch-cpu"}
+torch = "2.0.0"
+
 
 [tool.poetry.group.dev.dependencies]
 pudb = "*"
 pre-commit = "*"
-# ostrichrl = {git = "https://github.com/P-Schumacher/ostrichrl.git", branch="fix/setuptools"}
-# warmup = {git = "https://github.com/P-Schumacher/warmup.git"}
+ostrichrl = {git = "https://github.com/P-Schumacher/ostrichrl.git", branch="fix/setuptools"}
+warmup = {git = "https://github.com/P-Schumacher/warmup.git"}
 gym = "0.13.0"
 wandb = "^0.15.4"
 sconegym = {path = "../sconegym", develop = true}
-# myosuite = {path = "../myosuite", develop = true}
 myosuite = "1.7.0"
+
 
 [tool.poetry.scripts]
 log = "deprl.log:main"
 plot = "deprl.plot:main"
+
 
 [[tool.poetry.source]]
 name = "pytorch-cpu"
 url = "https://download.pytorch.org/whl/cpu"
 priority = "explicit"
 
+
 [tool.black]
 line-length = 79
 target-version = ["py310"]
+
 
 [tool.isort]
 profile = "black"
@@ -50,6 +56,7 @@ include_trailing_comma = true
 force_grid_wrap = 0
 use_parentheses = true
 ensure_newline_before_comments = true
+
 
 [tool.ruff]
 ignore = ["C901", "F403", "F405"]
