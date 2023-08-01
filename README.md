@@ -26,7 +26,7 @@ If you are coming here for the MyoLeg, take a look at this [tutorial](https://gi
 This repository has been updated with training files that have been used for the MyoSuite baselines, as well as pretrained networks.
 Simply try training something:
 
-`python -m deprl.main experiments/myosuite_training_files/myoChaseTag.json`
+`python -m deprl.train experiments/myosuite_training_files/myoChaseTag.json`
 
 or render the pretrained baselines with:
 
@@ -82,8 +82,8 @@ OstrichRL can be installed from [here](https://github.com/vittorione94/ostrichrl
 The major experiments (humanreacher reaching and ostrich running) can be repeated with the config files.
 Simply run from the root folder:
 ```
-python -m deprl.main experiments/ostrich_running_dep.json
-python -m deprl.main experiments/humanreacher.json
+python -m deprl.train experiments/ostrich_running_dep.json
+python -m deprl.train experiments/humanreacher.json
 ```
 to train an agent. Model checkpoints will be saved in the `output` directory.
 The progress can be monitored with:
