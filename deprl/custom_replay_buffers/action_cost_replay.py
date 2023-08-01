@@ -73,15 +73,15 @@ class AdaptiveEnergyBuffer(Buffer):
         delta_cdt = [1 if self.score_avg > self.threshold else 0][0]
         self.cdt_avg = self.alpha * self.cdt_avg + (1 - self.alpha) * delta_cdt
         self.action_cost = np.clip(self.action_cost, 0, 100)
-        logger.store("train/self.score_avg", self.score_avg)
-        logger.store("train/lr", self.lr)
-        logger.store("train/prev_cdt", self.cdt_avg)
-        logger.store("train/action_cost_intern", self.action_cost)
+        logger.store("train/energy_buffer/self.score_avg", self.score_avg)
+        logger.store("train/energy_buffer/lr", self.lr)
+        logger.store("train/energy_buffer/prev_cdt", self.cdt_avg)
+        logger.store("train/energy_buffer/action_cost_intern", self.action_cost)
 
     def _relabel_batch(self, batch, rows, columns):
         cost = self.action_cost * self._get_cost(batch["next_observations"])
         batch["rewards"] = batch["rewards"] - cost
-        logger.store("train/avg_relabel_action_cost", np.mean(cost))
+        logger.store("train/energy_buffer/avg_relabel_action_cost", np.mean(cost))
         return batch
 
     def _get_cost(self, observations):

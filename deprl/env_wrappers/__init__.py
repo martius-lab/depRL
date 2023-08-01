@@ -1,6 +1,7 @@
 from deprl.env_wrappers.scone_wrapper import SconeWrapper
 from deprl.env_wrappers.dm_wrapper import DMWrapper, OstrichDMWrapper
 from deprl.env_wrappers.gym_wrapper import GymWrapper
+import deprl # noqa
 
 
 def apply_wrapper(env):

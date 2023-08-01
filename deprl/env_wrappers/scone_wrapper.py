@@ -60,7 +60,7 @@ class SconeWrapper(ExceptionWrapper):
         else:
             action = np.clip(action, 0, 1.0)
 
-        if self.use_delayed_actuators:
+        if self.unwrapped.use_delayed_actuators:
             self.unwrapped.model.set_delayed_actuator_inputs(action)
         else:
             self.unwrapped.model.set_actuator_inputs(action)

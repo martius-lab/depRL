@@ -59,7 +59,7 @@ class DEP:
             self._reset(observations.shape)
         if len(observations.shape) == 1:
             observations = observations[None, :]
-        return self._get_action(observations)
+        return self._get_action(observations).numpy(force=True)
 
     def set_params(self, param_dict):
         for k, v in param_dict.items():
