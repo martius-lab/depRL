@@ -41,7 +41,7 @@ class Trainer:
         start_time = last_epoch_time = time.time()
 
         # Start the environments.
-        observations, tendon_states = self.environment.start()
+        observations, muscle_states = self.environment.start()
 
         num_workers = len(observations)
         scores = np.zeros(num_workers)
@@ -59,14 +59,14 @@ class Trainer:
                 greedy_episode = None
             assert not np.isnan(observations.sum())
             actions = self.agent.step(
-                observations, self.steps, tendon_states, greedy_episode
+                observations, self.steps, muscle_states, greedy_episode
             )
             assert not np.isnan(actions.sum())
             # raise Exception(f'{type(self.environment.environments[0])}')
             logger.store("train/action", actions, stats=True)
 
             # Take a step in the environments.
-            observations, tendon_states, info = self.environment.step(actions)
+            observations, muscle_states, info = self.environment.step(actions)
             if "env_infos" in info:
                 info.pop("env_infos")
 

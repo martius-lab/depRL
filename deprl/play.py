@@ -15,7 +15,7 @@ def play_gym(agent, environment, noisy=False):
     """Launches an agent in a Gym-based environment."""
     environment = env_wrappers.apply_wrapper(environment)
     observations = environment.reset()
-    tendon_states = environment.tendon_states
+    muscle_states = environment.muscle_states
 
     score = 0
     length = 0
@@ -29,16 +29,16 @@ def play_gym(agent, environment, noisy=False):
     while True:
         if not noisy:
             actions = agent.test_step(
-                observations, tendon_states=tendon_states, steps=1e6
+                observations, muscle_states=muscle_states, steps=1e6
             )
         else:
             actions = agent.noisy_test_step(
-                observations, tendon_states=tendon_states, steps=1e6
+                observations, muscle_states=muscle_states, steps=1e6
             )
         if len(actions.shape) > 1:
             actions = actions[0, :]
         observations, reward, done, info = environment.step(actions)
-        tendon_states = environment.tendon_states
+        muscle_states = environment.muscle_states
         mujoco_render(environment)
 
         steps += 1
@@ -141,8 +141,8 @@ def play_control_suite(agent, environment):
             return self.unwrapped.last_time_step
 
         @property
-        def tendon_states(self):
-            return self.environment.tendon_states
+        def muscle_states(self):
+            return self.environment.muscle_states
 
     # Wrap the environment for the viewer.
     environment = env_wrappers.apply_wrapper(environment)
@@ -153,10 +153,10 @@ def play_control_suite(agent, environment):
         if environment.infos is not None:
             agent.test_update(**environment.infos, steps=environment.steps)
             environment.steps += 1
-        tendon_states = environment.tendon_states
+        muscle_states = environment.muscle_states
         return agent.test_step(
             environment.observations,
-            tendon_states=tendon_states,
+            muscle_states=muscle_states,
             steps=environment.steps,
         )
 
