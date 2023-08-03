@@ -957,14 +957,14 @@ files = [
 [[package]]
 name = "ostrichrl"
 version = "0.1.0"
-description = ""
+description = "OstrichRL"
 optional = false
 python-versions = ">=3.6"
 files = []
 develop = false
 
 [package.dependencies]
-dm_control = "*"
+dm_control = "1.0.12"
 lxml = "*"
 numpy = "*"
 
@@ -972,7 +972,7 @@ numpy = "*"
 type = "git"
 url = "https://github.com/P-Schumacher/ostrichrl.git"
 reference = "fix/setuptools"
-resolved_reference = "2b505acc925dee7a3ec5d75c8e66cb391e66aef4"
+resolved_reference = "dab22c985e52bebd8d21f588f55e2a6a7c0d2a28"
 
 [[package]]
 name = "packaging"
@@ -1727,6 +1727,24 @@ lint = ["docutils-stubs", "flake8 (>=3.5.0)", "flake8-bugbear", "flake8-comprehe
 test = ["cython", "html5lib", "pytest (>=4.6)", "typed_ast"]
 
 [[package]]
+name = "sphinx-copybutton"
+version = "0.5.2"
+description = "Add a copy button to each of your code cells."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "sphinx-copybutton-0.5.2.tar.gz", hash = "sha256:4cf17c82fb9646d1bc9ca92ac280813a3b605d8c421225fd9913154103ee1fbd"},
+    {file = "sphinx_copybutton-0.5.2-py3-none-any.whl", hash = "sha256:fb543fd386d917746c9a2c50360c7905b605726b9355cd26e9974857afeae06e"},
+]
+
+[package.dependencies]
+sphinx = ">=1.8"
+
+[package.extras]
+code-style = ["pre-commit (==2.12.1)"]
+rtd = ["ipython", "myst-nb", "sphinx", "sphinx-book-theme", "sphinx-examples"]
+
+[[package]]
 name = "sphinx-rtd-theme"
 version = "1.2.2"
 description = "Read the Docs theme for Sphinx"
@@ -2110,4 +2128,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9, <=3.11.4"
-content-hash = "611765311828ba0fae5c111dd8a27afcecfe8eb958a7d6e20935ac0eb2502f80"
+content-hash = "709378abf7e5e80ca51f5cc5556e600c39f2b4a02d6bf36b4577ff381fbcdf22"

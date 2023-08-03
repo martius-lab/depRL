@@ -2,12 +2,10 @@
 
 import argparse
 import os
-import sys
 
 import numpy as np
 import yaml
 
-# from pudb import set_trace; set_trace()
 from deprl import env_wrappers, mujoco_render
 
 from .vendor.tonic import logger
@@ -141,9 +139,6 @@ def play_control_suite(agent, environment, num_episodes):
                 resets=np.array([done]),
                 terminations=np.array([term]),
             )
-            if self.episodes >= num_episodes:
-                sys.exit()
-
             return self.unwrapped.last_time_step
 
         @property
@@ -183,6 +178,7 @@ def play(
     """Reloads an agent and an environment from a previous experiment."""
 
     checkpoint_path = None
+    config = None
 
     if path:
         logger.log(f"Loading experiment from {path}")
@@ -254,13 +250,12 @@ def play(
     environment = eval(environment)
     environment.seed(seed)
     environment = env_wrappers.apply_wrapper(environment)
-
-    if "env_args" in config:
+    if config and "env_args" in config:
         environment.merge_args(config.env_args)
         environment.apply_args()
 
     # Adapt mpo specific settings
-    if "mpo_args" in config:
+    if config and "mpo_args" in config:
         agent.set_params(**config.mpo_args)
     # Initialize the agent.
     agent.initialize(
@@ -272,11 +267,15 @@ def play(
     # Load the weights of the agent from a checkpoint.
     if checkpoint_path:
         agent.load(checkpoint_path)
-    if "control" in str(type(environment)).lower():
-        if no_render:
-            logger.log("no_render is only implemented for gym tasks")
+
+    if "control" in str(environment).lower():
+        if no_render or num_episodes != 5:
+            logger.log(
+                "no_render and num_episodes only implemented for gym tasks"
+            )
         play_control_suite(agent, environment, num_episodes)
-    play_gym(agent, environment, noisy, no_render, num_episodes)
+    else:
+        play_gym(agent, environment, noisy, no_render, num_episodes)
 
 
 if __name__ == "__main__":

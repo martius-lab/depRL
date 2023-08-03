@@ -39,7 +39,9 @@ def control_suite_environment(*args, **kwargs):
             domain_name=domain, task_name=task, *args, **kwargs
         )
         time_limit = int(environment.environment._step_limit)
-        environment.spec = SimpleNamespace(max_episode_steps=time_limit)
+        environment.spec = SimpleNamespace(
+            max_episode_steps=time_limit, id="ostrichrl-dmcontrol"
+        )
         return gym.wrappers.TimeLimit(environment, time_limit)
 
     return build_environment(_builder, *args, **kwargs)

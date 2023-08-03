@@ -3,7 +3,7 @@ Installation
 
 .. _installation:
 
-deprl uses the `poetry <https://python-poetry.org>`_ package and dependency manager. If you are not familiar with poetry, you can simply install it either from pypi, i.e.
+deprl uses the `poetry <https://python-poetry.org>`_ package and dependency manager. If you are not familiar with poetry, you can simply install `deprl` either from pypi, i.e.
 
 .. code-block:: bash
 
@@ -24,3 +24,14 @@ The default pypi installation of deprl includes GPU support. If CUDA is not inst
 .. code-block:: bash
 
   pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+
+A poetry installation can be done with:
+
+.. code-block:: bash
+
+  git clone https://github.com/martius-lab/depRL.git
+  cd deprl
+  poetry install
+
+but requires you to setup poetry first.

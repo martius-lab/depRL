@@ -12,8 +12,7 @@
     "seed": 0,
     "name": "Relocate",
     "environment_name": "deprl_baseline_relocate",
-    "checkpoint": "last",
-    "path": "./output"
+    "checkpoint": "last"
   },
   "working_dir": "./baselines_DEPRL",
   "id": 0,

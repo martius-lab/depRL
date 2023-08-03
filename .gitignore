@@ -7,3 +7,5 @@ output/
 dist/
 build/
 baselines_DEPRL/
+_static
+_templates

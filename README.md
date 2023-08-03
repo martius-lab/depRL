@@ -51,14 +51,10 @@ We provide a python package for easy installation:
 ```
 pip install deprl
 ```
-### CUDA
-If you would like to use `jax` with CUDA support, which is recommended for DEP-RL training, we recommend:
-```
-pip install --upgrade "jax[cuda12_pip]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
-```
 
- ### CPU only
- As the current version of PyTorch (2.0.1.) defaults to CUDA, on CPU-only machines you might want to run:
+### CPU only
+ If the default PyTorch version defaults to CUDA and you generate an exception on a CPU-only machine, consider running:
+
 ```
  pip install torch --index-url https://download.pytorch.org/whl/cpu
 ```
