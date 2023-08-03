@@ -2,10 +2,12 @@
 
 import argparse
 import os
+import sys
 
 import numpy as np
 import yaml
 
+# from pudb import set_trace; set_trace()
 from deprl import env_wrappers, mujoco_render
 
 from .vendor.tonic import logger
@@ -167,7 +169,17 @@ def play_control_suite(agent, environment, num_episodes):
     viewer.launch(environment, policy)
 
 
-def play(path, checkpoint, seed, header, agent, environment, noisy, no_render, num_episodes):
+def play(
+    path,
+    checkpoint,
+    seed,
+    header,
+    agent,
+    environment,
+    noisy,
+    no_render,
+    num_episodes,
+):
     """Reloads an agent and an environment from a previous experiment."""
 
     checkpoint_path = None
@@ -262,7 +274,7 @@ def play(path, checkpoint, seed, header, agent, environment, noisy, no_render, n
         agent.load(checkpoint_path)
     if "control" in str(type(environment)).lower():
         if no_render:
-            logger.log('no_render is only implemented for gym tasks')
+            logger.log("no_render is only implemented for gym tasks")
         play_control_suite(agent, environment, num_episodes)
     play_gym(agent, environment, noisy, no_render, num_episodes)
 

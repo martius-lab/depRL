@@ -8,9 +8,9 @@ deprl uses the `poetry <https://python-poetry.org>`_ package and dependency mana
 .. code-block:: bash
 
   pip install deprl
- 
+
 or from source:
- 
+
 .. code-block:: bash
 
   git clone https://github.com/martius-lab/depRL.git
@@ -24,5 +24,3 @@ The default pypi installation of deprl includes GPU support. If CUDA is not inst
 .. code-block:: bash
 
   pip install torch --index-url https://download.pytorch.org/whl/cpu
- 
-

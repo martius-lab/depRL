@@ -9,7 +9,7 @@ Welcome to deprl's documentation!
 .. toctree::
    :maxdepth: 1
    :caption: Contents:
-   
+
    installation
    usage
    myo_baselines
@@ -47,4 +47,3 @@ How to cite
     year={2023},
     url={https://openreview.net/forum?id=C-xa_D3oTj6}
     }
-

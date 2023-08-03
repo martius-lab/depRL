@@ -1,12 +1,14 @@
 import gym
 import myosuite  # noqa
 import numpy as np
-import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 import torch
+
 import deprl
 
+torch.set_default_device("cpu")
+
 SEED = 1
+
 
 def helper_env_loop(env):
     policy = deprl.load_baseline(env)

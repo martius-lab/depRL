@@ -73,7 +73,7 @@ This functon allows you to load a policy checkpoint inside any python script and
   import gym
   import myosuite
   import deprl
-  
+
   folder = 'path/to/your/policy/'
 
   env = gym.make('myoLegWalk-v0'):
@@ -86,4 +86,3 @@ This functon allows you to load a policy checkpoint inside any python script and
           next_obs, reward, done, info = env.step(action)
           env.sim.renderer.render_to_window()
           obs = next_obs
-
