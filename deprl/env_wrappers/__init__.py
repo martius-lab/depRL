@@ -1,3 +1,22 @@
-from deprl.env_wrappers.wrappers import apply_wrapper, env_tonic_compat
+import deprl  # noqa
+from deprl.env_wrappers.dm_wrapper import DMWrapper, OstrichDMWrapper
+from deprl.env_wrappers.gym_wrapper import GymWrapper
 
-__all__ = [apply_wrapper, env_tonic_compat, apply_wrapper]
+
+def apply_wrapper(env):
+    if "control" in str(env).lower():
+        if env.name == "ostrich-run":
+            return OstrichDMWrapper(env)
+        return DMWrapper(env)
+    else:
+        return GymWrapper(env)
+
+
+def env_tonic_compat(env, preid=5, parallel=1, sequential=1):
+    """
+    Applies wrapper for tonic and passes random seed.
+    """
+    return lambda identifier=0: apply_wrapper(eval(env))
+
+
+__all__ = [env_tonic_compat, apply_wrapper]

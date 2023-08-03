@@ -7,15 +7,11 @@ import deprl  # noqa
 from deprl.vendor.tonic import logger
 
 
-class DummyException(Exception):
-    pass
-
-
 class AbstractWrapper(gym.Wrapper, ABC):
     def merge_args(self, args):
         if args is not None:
             for k, v in args.items():
-                setattr(self, k, v)
+                setattr(self.unwrapped, k, v)
 
     def apply_args(self):
         pass
@@ -97,7 +93,7 @@ class ExceptionWrapper(AbstractWrapper):
 
     def step(self, action):
         try:
-            observation, reward, done, info = super().step(action)
+            observation, reward, done, info = self._inner_step(action)
             if np.any(np.isnan(observation)):
                 raise self.error("NaN detected! Resetting.")
 
@@ -110,118 +106,5 @@ class ExceptionWrapper(AbstractWrapper):
             self.reset()
         return observation, reward, done, info
 
-
-class GymWrapper(ExceptionWrapper):
-    """Wrapper for OpenAI Gym and MuJoCo, compatible with
-    gym=0.13.
-    """
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        dummy_counter = 0
-        try:
-            from mujoco_py.builder import MujocoException
-
-            error_mjpy = MujocoException
-        except ModuleNotFoundError:
-            error_mjpy = DummyException
-            dummy_counter += 1
-        try:
-            from dm_control.rl.control import PhysicsError
-
-            error_mj = PhysicsError
-        except ModuleNotFoundError:
-            error_mj = DummyException
-            dummy_counter += 1
-
-        if dummy_counter >= 2:
-            logger.log(
-                "Neither mujoco nor mujoco_py has been detected. GymWrapper is not catching exceptions correctly."
-            )
-        self.error = (error_mjpy, error_mj)
-
-    def render(self, *args, **kwargs):
-        kwargs["mode"] = "window"
-        self.unwrapped.sim.render(*args, **kwargs)
-
-    def muscle_lengths(self):
-        length = self.unwrapped.sim.data.actuator_length
-        return length
-
-    def muscle_forces(self):
-        return self.unwrapped.sim.data.actuator_force
-
-    def muscle_velocities(self):
-        return self.unwrapped.sim.data.actuator_velocity
-
-    def muscle_activity(self):
-        return self.unwrapped.sim.data.act
-
-    @property
-    def _max_episode_steps(self):
-        return self.unwrapped.max_episode_steps
-
-
-class DMWrapper(ExceptionWrapper):
-    """
-    Wrapper for general DeepMind ControlSuite environments.
-    """
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        from dm_control.rl.control import PhysicsError
-
-        self.error = PhysicsError
-
-    def muscle_lengths(self):
-        length = self.env.environment.physics.data.actuator_length
-        return length
-
-    def muscle_forces(self):
-        return self.env.environment.physics.data.actuator_force
-
-    def muscle_velocities(self):
-        return self.env.environment.physics.data.actuator_velocity
-
-    def muscle_activity(self):
-        return self.env.environment.physics.data.act
-
-    @property
-    def _max_episode_steps(self):
-        return self.unwrapped.max_episode_steps
-
-
-class OstrichDMWrapper(DMWrapper):
-    """
-    Wrapper explicitly for the OstrichRL environment.
-    """
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    def muscle_lengths(self):
-        return self.env.environment.physics.muscle_lengths().copy()
-
-    def muscle_forces(self):
-        return self.env.environment.physics.muscle_forces().copy()
-
-    def muscle_velocities(self):
-        return self.env.environment.physics.muscle_velocities().copy()
-
-    def muscle_activity(self):
-        return self.env.environment.physics.muscle_activations().copy()
-
-
-def apply_wrapper(env):
-    if "control" in str(type(env)).lower():
-        if env.name == "ostrich-run":
-            return OstrichDMWrapper(env)
-        return DMWrapper(env)
-    return GymWrapper(env)
-
-
-def env_tonic_compat(env, preid=5, parallel=1, sequential=1):
-    """
-    Applies wrapper for tonic and passes random seed.
-    """
-    return lambda identifier=0: apply_wrapper(eval(env))
+    def _inner_step(self, action):
+        return super().step(action)
