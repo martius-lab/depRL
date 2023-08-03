@@ -11,9 +11,8 @@ from deprl import env_wrappers, mujoco_render
 from .vendor.tonic import logger
 
 
-def play_gym(agent, environment, noisy=False):
+def play_gym(agent, environment, noisy, no_render, num_episodes):
     """Launches an agent in a Gym-based environment."""
-    environment = env_wrappers.apply_wrapper(environment)
     observations = environment.reset()
     muscle_states = environment.muscle_states
 
@@ -39,7 +38,8 @@ def play_gym(agent, environment, noisy=False):
             actions = actions[0, :]
         observations, reward, done, info = environment.step(actions)
         muscle_states = environment.muscle_states
-        mujoco_render(environment)
+        if not no_render:
+            mujoco_render(environment)
 
         steps += 1
         score += reward
@@ -67,9 +67,11 @@ def play_gym(agent, environment, noisy=False):
             length = 0
             min_reward = float("inf")
             max_reward = -float("inf")
+            if episodes >= num_episodes:
+                break
 
 
-def play_control_suite(agent, environment):
+def play_control_suite(agent, environment, num_episodes):
     """Launches an agent in a DeepMind Control Suite-based environment."""
 
     from dm_control import viewer
@@ -137,6 +139,8 @@ def play_control_suite(agent, environment):
                 resets=np.array([done]),
                 terminations=np.array([term]),
             )
+            if self.episodes >= num_episodes:
+                sys.exit()
 
             return self.unwrapped.last_time_step
 
@@ -145,7 +149,6 @@ def play_control_suite(agent, environment):
             return self.environment.muscle_states
 
     # Wrap the environment for the viewer.
-    environment = env_wrappers.apply_wrapper(environment)
     environment = Wrapper(environment)
 
     def policy(timestep):
@@ -164,7 +167,7 @@ def play_control_suite(agent, environment):
     viewer.launch(environment, policy)
 
 
-def play(path, checkpoint, seed, header, agent, environment, noisy):
+def play(path, checkpoint, seed, header, agent, environment, noisy, no_render, num_episodes):
     """Reloads an agent and an environment from a previous experiment."""
 
     checkpoint_path = None
@@ -238,11 +241,15 @@ def play(path, checkpoint, seed, header, agent, environment, noisy):
     # Build the environment.
     environment = eval(environment)
     environment.seed(seed)
+    environment = env_wrappers.apply_wrapper(environment)
+
+    if "env_args" in config:
+        environment.merge_args(config.env_args)
+        environment.apply_args()
 
     # Adapt mpo specific settings
-    if "config" in locals():
-        if "mpo_args" in config:
-            agent.set_params(**config.mpo_args)
+    if "mpo_args" in config:
+        agent.set_params(**config.mpo_args)
     # Initialize the agent.
     agent.initialize(
         observation_space=environment.observation_space,
@@ -250,12 +257,14 @@ def play(path, checkpoint, seed, header, agent, environment, noisy):
         seed=seed,
     )
 
-    # Load the weights of the agent form a checkpoint.
+    # Load the weights of the agent from a checkpoint.
     if checkpoint_path:
         agent.load(checkpoint_path)
-    if "ontrol" in type(environment).__name__:
-        play_control_suite(agent, environment)
-    play_gym(agent, environment, noisy)
+    if "control" in str(type(environment)).lower():
+        if no_render:
+            logger.log('no_render is only implemented for gym tasks')
+        play_control_suite(agent, environment, num_episodes)
+    play_gym(agent, environment, noisy, no_render, num_episodes)
 
 
 if __name__ == "__main__":
@@ -264,7 +273,9 @@ if __name__ == "__main__":
     parser.add_argument("--path")
     parser.add_argument("--checkpoint", default="last")
     parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument("--num_episodes", type=int, default=5)
     parser.add_argument("--noisy", action="store_true")
+    parser.add_argument("--no_render", action="store_true")
     parser.add_argument("--header")
     parser.add_argument("--agent")
     parser.add_argument("--environment", "--env")

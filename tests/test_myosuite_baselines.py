@@ -1,12 +1,12 @@
 import gym
 import myosuite  # noqa
 import numpy as np
+import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 import torch
-
 import deprl
 
 SEED = 1
-
 
 def helper_env_loop(env):
     policy = deprl.load_baseline(env)
@@ -35,7 +35,8 @@ def test_myolegwalk():
     env = gym.make(name, reset_type="random")
     env.seed(SEED)
     torch.manual_seed(SEED)
-    returns, _ = helper_env_loop(env)
+    returns, qpos = helper_env_loop(env)
+    assert np.round(np.mean(qpos), 2) == -1.47
     # assert np.floor(returns[0]) == 3511
 
 
@@ -116,10 +117,10 @@ def test_chasetag_actionrng():
 
 
 if __name__ == "__main__":
-    test_chasetag()
+    # test_chasetag()
     # test_chasetag_actionrng()
     # test_chasetag_obs_rng()
     # test_relocate()
     # test_rng_noise()
-    # test_myolegwalk()
+    test_myolegwalk()
     # test_relocate()

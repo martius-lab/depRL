@@ -43,7 +43,7 @@ class AbstractWrapper(gym.Wrapper, ABC):
         pass
 
     @property
-    def tendon_states(self):
+    def muscle_states(self):
         """
         Computes the DEP input. We assume an input
         muscle_length + force_scale * muscle_force

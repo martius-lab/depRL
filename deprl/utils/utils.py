@@ -60,7 +60,6 @@ def load_baseline(environment):
         if hasattr(environment, "env_name")
         else str(environment)
     )
-    print(identifier)
     if "myoLegWalk" in identifier:
         logger.log("Load LegWalk Baseline")
         return load_baseline_myolegwalk(environment)
