@@ -1,6 +1,15 @@
 from .wrappers import ExceptionWrapper
 
 
+from deprl.vendor.tonic import logger
+
+from .wrappers import ExceptionWrapper
+
+
+class DummyException(Exception):
+    pass
+
+
 class GymWrapper(ExceptionWrapper):
     """Wrapper for OpenAI Gym and MuJoCo, compatible with
     gym=0.13.

@@ -1,5 +1,4 @@
 from .wrappers import ExceptionWrapper
-import numpy as np
 
 
 class DMWrapper(ExceptionWrapper):

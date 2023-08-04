@@ -2,6 +2,7 @@
  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
  [![PyPI](https://img.shields.io/pypi/v/deprl)](https://pypi.org/project/deprl/)
  [![Downloads](https://pepy.tech/badge/deprl)](https://pepy.tech/project/deprl)
+ [![Documentation Status](https://readthedocs.org/projects/deprl/badge/?version=latest)](https://deprl.readthedocs.io/en/latest/?badge=latest)
 
  This repo contains the code for the paper [DEP-RL: Embodied Exploration for Reinforcement Learning in Overactuated and Musculoskeletal Systems](https://openreview.net/forum?id=C-xa_D3oTj6) paper, published at ICLR 2023 with perfect review scores (8, 8, 8, 10) and a notable-top-25% rating. See [here](https://sites.google.com/view/dep-rl) for videos.
 
@@ -54,14 +55,10 @@ We provide a python package for easy installation:
 ```
 pip install deprl
 ```
-### CUDA
-If you would like to use `jax` with CUDA support, which is recommended for DEP-RL training, we recommend:
-```
-pip install --upgrade "jax[cuda12_pip]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
-```
 
- ### CPU only
- As the current version of PyTorch (2.0.1.) defaults to CUDA, on CPU-only machines you might want to run:
+### CPU only
+ If the default PyTorch version defaults to CUDA and you generate an exception on a CPU-only machine, consider running:
+
 ```
  pip install torch --index-url https://download.pytorch.org/whl/cpu
 ```

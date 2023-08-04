@@ -198,7 +198,7 @@ class Parallel:
         for _ in range(self.worker_groups):
             index, (
                 observations,
-                tendon_state,
+                muscle_states,
                 infos,
             ) = self.output_queue.get()
             self.observations_list[index] = observations
@@ -206,7 +206,7 @@ class Parallel:
             self.rewards_list[index] = infos["rewards"]
             self.resets_list[index] = infos["resets"]
             self.terminations_list[index] = infos["terminations"]
-            self.muscle_states_list[index] = tendon_state
+            self.muscle_states_list[index] = muscle_states
 
         observations = np.concatenate(self.observations_list)
         muscle_states = np.concatenate(self.muscle_states_list)

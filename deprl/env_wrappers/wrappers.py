@@ -7,10 +7,6 @@ import deprl  # noqa
 from deprl.vendor.tonic import logger
 
 
-class DummyException(Exception):
-    pass
-
-
 class AbstractWrapper(gym.Wrapper, ABC):
     def merge_args(self, args):
         if args is not None:
@@ -112,5 +108,3 @@ class ExceptionWrapper(AbstractWrapper):
 
     def _inner_step(self, action):
         return super().step(action)
-
-

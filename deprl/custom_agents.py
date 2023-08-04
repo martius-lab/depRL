@@ -146,7 +146,6 @@ def dep_factory(mix, instance):
         def test_step(
             self, observations, steps, muscle_states=None, greedy_episode=False
         ):
-            # return self.dep_step(muscle_states, steps)[0, :]
             return self.dep_step(muscle_states, steps)
 
     if mix == 1:
