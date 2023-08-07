@@ -15,7 +15,7 @@ or from source:
 
   git clone https://github.com/martius-lab/depRL.git
   cd deprl
-  pip install -e .
+  pip install .
   pip install -r requirements.txt
 
 
