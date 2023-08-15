@@ -141,7 +141,10 @@ class Parallel:
         self.started = False
 
         # fork is default on linux, but not mac
-        multiprocessing.set_start_method("fork")
+        try:
+            multiprocessing.set_start_method("fork")
+        except RuntimeError:
+            logger.log('Warning: Multiprocessing contexg set multiple times.')
         self.output_queue = multiprocessing.Queue()
         self.action_pipes = []
 
