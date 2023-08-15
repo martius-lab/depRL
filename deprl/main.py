@@ -223,7 +223,7 @@ def train(
         exec(after_training)
 
 
-if __name__ == "__main__":
+def main():
     try:
         torch.zeros((0, 1), device="cuda")
         torch.set_default_tensor_type("torch.cuda.FloatTensor")
@@ -240,3 +240,7 @@ if __name__ == "__main__":
             else train_params["env_args"]
         )
     train(orig_params, **train_params)
+
+
+if __name__ == "__main__":
+    main()
