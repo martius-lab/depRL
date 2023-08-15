@@ -1,5 +1,5 @@
 """Builders for distributed training."""
-import multiprocessing
+import multiprocessing 
 
 from deprl.vendor.tonic import logger
 import numpy as np
@@ -140,23 +140,19 @@ class Parallel:
         self.action_space = dummy_environment.action_space
         del dummy_environment
         self.started = False
-
-        # fork is default on linux, but not mac
-        try:
-            multiprocessing.set_start_method("fork")
-        except RuntimeError:
-            logger.log('Warning: Multiprocessing contexg set multiple times.')
-        self.output_queue = multiprocessing.Queue()
+        context = multiprocessing.get_context('fork')
+        # logger.log('Warning: Multiprocessing contexg set multiple times.')
+        self.output_queue = context.Queue()
         self.action_pipes = []
 
         for i in range(self.worker_groups):
-            pipe, worker_end = multiprocessing.Pipe()
+            pipe, worker_end = context.Pipe()
             self.action_pipes.append(pipe)
             group_seed = (
                 seed * (self.worker_groups * self.workers_per_group)
                 + i * self.workers_per_group
             )
-            process = multiprocessing.Process(
+            process = context.Process(
                 target=proc, args=(worker_end, i, group_seed)
             )
             process.daemon = True
@@ -255,3 +251,5 @@ def build_env_from_dict(build_dict):
         return env_tonic_compat(**build_dict)
     else:
         return lambda identifier=0: build_dict()
+
+

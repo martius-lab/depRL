@@ -8,7 +8,6 @@ from deprl import main, play
 
 SEED = 1
 
-
 def test_play():
     name = "myoLegWalk-v0"
     env = gym.make(name, reset_type="random")
