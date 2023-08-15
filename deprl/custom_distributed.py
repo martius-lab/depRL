@@ -1,6 +1,7 @@
 """Builders for distributed training."""
 import multiprocessing
 
+from deprl.vendor.tonic import logger
 import numpy as np
 
 
