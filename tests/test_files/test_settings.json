@@ -9,7 +9,7 @@
     "before_training": "",
     "after_training": "",
     "parallel": 2,
-    "sequential": 2,
+    "sequential": 1,
     "seed": 0,
     "name": "myoLeg",
     "environment_name": "deprl_baseline",
