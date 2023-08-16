@@ -5,6 +5,26 @@ from deprl.vendor.tonic import logger
 import numpy as np
 
 
+def proc(action_pipe, output_queue, seed, build_dict, max_episode_steps, index, workers, env_args):
+    """Process holding a sequential group of environments."""
+    envs = Sequential(
+        build_dict,
+        max_episode_steps,
+        workers,
+        index,
+        env_args
+    )
+    envs.initialize(seed)
+
+    observations = envs.start()
+    output_queue.put((index, observations))
+
+    while True:
+        actions = action_pipe.recv()
+        out = envs.step(actions)
+        output_queue.put((index, out))
+
+
 class Sequential:
     """A group of environments used in sequence."""
 
@@ -113,24 +133,6 @@ class Parallel:
         self.env_args = env_args
 
     def initialize(self, seed):
-        def proc(action_pipe, index, seed):
-            """Process holding a sequential group of environments."""
-            envs = Sequential(
-                self.build_dict,
-                self._max_episode_steps,
-                self.workers_per_group,
-                index,
-                self.env_args,
-            )
-            envs.initialize(seed)
-
-            observations = envs.start()
-            self.output_queue.put((index, observations))
-
-            while True:
-                actions = action_pipe.recv()
-                out = envs.step(actions)
-                self.output_queue.put((index, out))
 
         dummy_environment = build_env_from_dict(self.build_dict)()
         dummy_environment.merge_args(self.env_args)
@@ -140,10 +142,11 @@ class Parallel:
         self.action_space = dummy_environment.action_space
         del dummy_environment
         self.started = False
-        context = multiprocessing.get_context('fork')
-        # logger.log('Warning: Multiprocessing contexg set multiple times.')
+        # this prevents issues with GH actions and multiple start method inits
+        context = multiprocessing.get_context('spawn')
         self.output_queue = context.Queue()
         self.action_pipes = []
+        self.processes = []
 
         for i in range(self.worker_groups):
             pipe, worker_end = context.Pipe()
@@ -152,11 +155,24 @@ class Parallel:
                 seed * (self.worker_groups * self.workers_per_group)
                 + i * self.workers_per_group
             )
-            process = context.Process(
-                target=proc, args=(worker_end, i, group_seed)
-            )
-            process.daemon = True
-            process.start()
+            
+            # required for spawnstart_method
+            proc_kwargs= {
+                'action_pipe': worker_end,
+                'output_queue': self.output_queue,
+                'seed': group_seed,
+                'build_dict': self.build_dict,
+                'max_episode_steps': self._max_episode_steps,
+                'index': i,
+                'workers': self.workers_per_group,
+                'env_args': self.env_args if hasattr(self, 'env_args') else None
+            }
+
+            self.processes.append(context.Process(
+                target=proc, kwargs=proc_kwargs
+            ))
+            self.processes[-1].daemon = True
+            self.processes[-1].start()
 
     def start(self):
         """Used once to get the initial observations."""
@@ -218,6 +234,10 @@ class Parallel:
         )
         return observations, muscle_states, infos
 
+    def close(self):
+        self.proc.terminate()
+
+
 
 def distribute(
     build_dict, worker_groups=1, workers_per_group=1, env_args=None
@@ -251,5 +271,3 @@ def build_env_from_dict(build_dict):
         return env_tonic_compat(**build_dict)
     else:
         return lambda identifier=0: build_dict()
-
-

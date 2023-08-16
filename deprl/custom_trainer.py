@@ -147,7 +147,14 @@ class Trainer:
                 current_time = time.time()
 
             if stop_training:
+                self.close_mp_envs()
                 return scores
+
+    def close_mp_envs(self):
+        for index in range(len(self.environment.processes)):
+            self.environment.processes[index].terminate()
+            self.environment.action_pipes[index].close()
+        self.environment.output_queue.close()
 
     def save_time(self, path, epochs, episodes):
         time_path = self.get_path(path, "time")
