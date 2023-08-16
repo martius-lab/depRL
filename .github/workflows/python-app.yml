@@ -75,5 +75,5 @@ jobs:
     - name: Run Test environment
       run: |
         conda activate $CONDA_DEFAULT_ENV
-        python3 -m pytest ./tests/
+        python3 -m pytest ./tests/ -s
         
