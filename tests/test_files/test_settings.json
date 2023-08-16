@@ -2,7 +2,7 @@
 {
  "tonic": {
     "header": "import deprl, gym, myosuite",
-    "agent": "deprl.custom_agents.dep_factory(3, deprl.custom_mpo_torch.TunedMPO())(replay=deprl.replays.buffers.Buffer(return_steps=3, batch_size=256, steps_between_batches=1000, batch_iterations=30, steps_before_batches=2e5))",
+    "agent": "deprl.custom_agents.dep_factory(3, deprl.custom_mpo_torch.TunedMPO())(replay=deprl.replays.buffers.Buffer(return_steps=3, batch_size=256, steps_between_batches=1000, batch_iterations=30, steps_before_batches=2e5, size=1e4))",
     "environment": "deprl.environments.Gym('myoLegWalk-v0', scaled_actions=False, reset_type='random')",
     "test_environment": null,
     "trainer": "deprl.custom_trainer.Trainer(steps=int(2e3), epoch_steps=int(1e3), save_steps=int(1e3))",
