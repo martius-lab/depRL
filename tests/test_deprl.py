@@ -1,12 +1,15 @@
+import shutil
+import sys
+
 import gym
 import myosuite  # noqa
 import torch
 
-import sys, shutil
 import deprl
 from deprl import main, play
 
 SEED = 1
+
 
 def test_play():
     name = "myoLegWalk-v0"
@@ -27,11 +30,12 @@ def test_play():
     )
     play.play(**kwargs)
 
+
 def test_train():
-    config_path = './tests/test_files/test_settings.json'
+    config_path = "./tests/test_files/test_settings.json"
     sys.argv.append(config_path)
     main.main()
-    shutil.rmtree('./tests/test_DEPRL', ignore_errors=True)
+    shutil.rmtree("./tests/test_DEPRL", ignore_errors=True)
 
 
 if __name__ == "__main__":

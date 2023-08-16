@@ -23,7 +23,7 @@ jobs:
   build:
     env:
       DISPLAY: :0
-  
+
     defaults:
       run:
         shell: bash -l {0}
@@ -50,8 +50,8 @@ jobs:
       run: |
         sudo apt-get update -y -qq
         sudo apt-get install -y xvfb x11-xserver-utils
-        sudo /usr/bin/Xvfb $DISPLAY -screen 0 1280x1024x24 &               
-        
+        sudo /usr/bin/Xvfb $DISPLAY -screen 0 1280x1024x24 &
+
     - name: Enable Conda
       uses: conda-incubator/setup-miniconda@v2
       with:
@@ -71,9 +71,8 @@ jobs:
         pip3 install -e .
         pip3 install myosuite==1.7.0
         pip3 install pytest
-      
+
     - name: Run Test environment
       run: |
         conda activate $CONDA_DEFAULT_ENV
         python3 -m pytest ./tests/
-        

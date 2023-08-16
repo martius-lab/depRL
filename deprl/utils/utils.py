@@ -2,8 +2,8 @@ import argparse
 import json
 import os
 import sys
-from types import SimpleNamespace
 from contextlib import contextmanager
+from types import SimpleNamespace
 
 import gdown
 import yaml
@@ -189,8 +189,7 @@ def stdout_suppression():
     with open(os.devnull, "w") as devnull:
         old_stdout = sys.stdout
         sys.stdout = devnull
-        try: 
+        try:
             yield
         finally:
             sys.stdout = old_stdout
-

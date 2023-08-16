@@ -1,6 +1,6 @@
 """Environment builders for popular domains."""
 
-import sys, os
+import os
 from types import SimpleNamespace
 
 import gym.wrappers
