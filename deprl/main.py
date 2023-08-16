@@ -151,6 +151,7 @@ def train(
         parallel,
         sequential,
         env_args=env_args,
+        header=header
     )
     environment.initialize(seed=seed)
     # Build the testing environment.
