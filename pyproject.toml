@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "deprl"
-version = "0.2.0"
+version = "0.3.0"
 description = "DEP-RL, a method for robust control of musculoskeletal systems."
 authors = ["Pierre Schumacher <pierre.schumacher@tuebingen.mpg.de>"]
 license = "MIT"
@@ -8,7 +8,7 @@ readme = "README.md"
 
 
 [tool.poetry.dependencies]
-python = ">=3.9, <=3.11.4"
+python = ">=3.8, <=3.11.4"
 pyyaml = "^6.0"
 numpy = "^1.22.4"
 termcolor = "^2.2.0"

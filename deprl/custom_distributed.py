@@ -3,13 +3,44 @@ import multiprocessing
 
 import numpy as np
 
+from deprl.utils import stdout_suppression
+
+
+def proc(
+    action_pipe,
+    output_queue,
+    seed,
+    build_dict,
+    max_episode_steps,
+    index,
+    workers,
+    env_args,
+    header,
+):
+    """Process holding a sequential group of environments."""
+    envs = Sequential(
+        build_dict, max_episode_steps, workers, index, env_args, header
+    )
+    envs.initialize(seed)
+
+    observations = envs.start()
+    output_queue.put((index, observations))
+
+    while True:
+        actions = action_pipe.recv()
+        out = envs.step(actions)
+        output_queue.put((index, out))
+
 
 class Sequential:
     """A group of environments used in sequence."""
 
     def __init__(
-        self, build_dict, max_episode_steps, workers, index=0, env_args=None
+        self, build_dict, max_episode_steps, workers, index, env_args, header
     ):
+        if header is not None:
+            with stdout_suppression():
+                exec(header)
         if hasattr(build_env_from_dict(build_dict)().unwrapped, "environment"):
             # its a deepmind env
             self.environments = [
@@ -103,34 +134,17 @@ class Parallel:
         worker_groups,
         workers_per_group,
         max_episode_steps,
-        env_args=None,
+        env_args,
+        header,
     ):
         self.build_dict = build_dict
         self.worker_groups = worker_groups
         self.workers_per_group = workers_per_group
         self._max_episode_steps = max_episode_steps
         self.env_args = env_args
+        self.header = header
 
     def initialize(self, seed):
-        def proc(action_pipe, index, seed):
-            """Process holding a sequential group of environments."""
-            envs = Sequential(
-                self.build_dict,
-                self._max_episode_steps,
-                self.workers_per_group,
-                index,
-                self.env_args,
-            )
-            envs.initialize(seed)
-
-            observations = envs.start()
-            self.output_queue.put((index, observations))
-
-            while True:
-                actions = action_pipe.recv()
-                out = envs.step(actions)
-                self.output_queue.put((index, out))
-
         dummy_environment = build_env_from_dict(self.build_dict)()
         dummy_environment.merge_args(self.env_args)
         dummy_environment.apply_args()
@@ -139,24 +153,41 @@ class Parallel:
         self.action_space = dummy_environment.action_space
         del dummy_environment
         self.started = False
-
-        # fork is default on linux, but not mac
-        multiprocessing.set_start_method("fork")
-        self.output_queue = multiprocessing.Queue()
+        # this prevents issues with GH actions and multiple start method inits
+        # spawn works across all operating systems
+        context = multiprocessing.get_context("spawn")
+        self.output_queue = context.Queue()
         self.action_pipes = []
+        self.processes = []
 
         for i in range(self.worker_groups):
-            pipe, worker_end = multiprocessing.Pipe()
+            pipe, worker_end = context.Pipe()
             self.action_pipes.append(pipe)
             group_seed = (
                 seed * (self.worker_groups * self.workers_per_group)
                 + i * self.workers_per_group
             )
-            process = multiprocessing.Process(
-                target=proc, args=(worker_end, i, group_seed)
+
+            # required for spawnstart_method
+            proc_kwargs = {
+                "action_pipe": worker_end,
+                "output_queue": self.output_queue,
+                "seed": group_seed,
+                "build_dict": self.build_dict,
+                "max_episode_steps": self._max_episode_steps,
+                "index": i,
+                "workers": self.workers_per_group,
+                "env_args": self.env_args
+                if hasattr(self, "env_args")
+                else None,
+                "header": self.header,
+            }
+
+            self.processes.append(
+                context.Process(target=proc, kwargs=proc_kwargs)
             )
-            process.daemon = True
-            process.start()
+            self.processes[-1].daemon = True
+            self.processes[-1].start()
 
     def start(self):
         """Used once to get the initial observations."""
@@ -218,9 +249,16 @@ class Parallel:
         )
         return observations, muscle_states, infos
 
+    def close(self):
+        self.proc.terminate()
+
 
 def distribute(
-    build_dict, worker_groups=1, workers_per_group=1, env_args=None
+    build_dict,
+    worker_groups=1,
+    workers_per_group=1,
+    env_args=None,
+    header=None,
 ):
     """Distributes workers over parallel and sequential groups."""
 
@@ -230,10 +268,12 @@ def distribute(
 
     if worker_groups < 2:
         return Sequential(
-            build_dict,
+            build_dict=build_dict,
             max_episode_steps=max_episode_steps,
             workers=workers_per_group,
             env_args=env_args,
+            header=header,
+            index=0,
         )
     return Parallel(
         build_dict,
@@ -241,6 +281,7 @@ def distribute(
         workers_per_group=workers_per_group,
         max_episode_steps=max_episode_steps,
         env_args=env_args,
+        header=header,
     )
 
 
