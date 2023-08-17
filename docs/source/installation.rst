@@ -1,5 +1,6 @@
 Installation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+As of right now, `deprl` has been tested with python 3.8 - 3.11, Windows, Macos and Ubuntu.
 
 .. _installation:
 
