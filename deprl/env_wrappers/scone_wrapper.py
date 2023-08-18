@@ -1,5 +1,6 @@
-from .wrappers import ExceptionWrapper
 import numpy as np
+
+from .wrappers import ExceptionWrapper
 
 
 class CustomSconeException(Exception):

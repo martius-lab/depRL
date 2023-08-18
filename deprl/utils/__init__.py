@@ -3,6 +3,13 @@ from deprl.utils.utils import (
     load_baseline,
     mujoco_render,
     prepare_params,
+    stdout_suppression,
 )
 
-__all__ = [prepare_params, load, load_baseline, mujoco_render]
+__all__ = [
+    prepare_params,
+    load,
+    load_baseline,
+    mujoco_render,
+    stdout_suppression,
+]

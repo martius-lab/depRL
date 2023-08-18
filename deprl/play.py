@@ -11,7 +11,7 @@ from deprl import env_wrappers, mujoco_render
 from .vendor.tonic import logger
 
 
-def play_gym(agent, environment, noisy, no_render, num_episodes):
+def play_gym(agent, environment, noisy, num_episodes, no_render):
     """Launches an agent in a Gym-based environment."""
     observations = environment.reset()
     muscle_states = environment.muscle_states
@@ -331,12 +331,6 @@ def play(
     # Load the weights of the agent from a checkpoint.
     if checkpoint_path:
         agent.load(checkpoint_path)
-    if "control" in str(type(environment)).lower():
-        play_control_suite(agent, environment)
-    if "scone" in str(type(environment)).lower():
-        play_scone(agent, environment, noisy)
-    play_gym(agent, environment, noisy)
-
     if "control" in str(environment).lower():
         if no_render or num_episodes != 5:
             logger.log(
@@ -344,9 +338,9 @@ def play(
             )
         play_control_suite(agent, environment)
     elif "scone" in str(type(environment)).lower():
-        play_scone(agent, environment, noisy, no_render)
+        play_scone(agent, environment, noisy, num_episodes, no_render)
     else:
-        play_gym(agent, environment, noisy, no_render, num_episodes)
+        play_gym(agent, environment, noisy, num_episodes, no_render)
 
 
 if __name__ == "__main__":

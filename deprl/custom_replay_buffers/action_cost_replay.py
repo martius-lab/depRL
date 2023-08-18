@@ -76,12 +76,16 @@ class AdaptiveEnergyBuffer(Buffer):
         logger.store("train/energy_buffer/self.score_avg", self.score_avg)
         logger.store("train/energy_buffer/lr", self.lr)
         logger.store("train/energy_buffer/prev_cdt", self.cdt_avg)
-        logger.store("train/energy_buffer/action_cost_intern", self.action_cost)
+        logger.store(
+            "train/energy_buffer/action_cost_intern", self.action_cost
+        )
 
     def _relabel_batch(self, batch, rows, columns):
         cost = self.action_cost * self._get_cost(batch["next_observations"])
         batch["rewards"] = batch["rewards"] - cost
-        logger.store("train/energy_buffer/avg_relabel_action_cost", np.mean(cost))
+        logger.store(
+            "train/energy_buffer/avg_relabel_action_cost", np.mean(cost)
+        )
         return batch
 
     def _get_cost(self, observations):

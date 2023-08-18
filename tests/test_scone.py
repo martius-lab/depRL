@@ -1,18 +1,13 @@
-import os
 
 import gym
-import sconegym
-import numpy as np
 import torch
 
-import deprl
 
 SEED = 1
 
 
 def helper_env_loop(env):
     returns = []
-    qpos = []
     for ep in range(1):
         ret = 0
         env.seed(SEED)
@@ -29,19 +24,20 @@ def helper_env_loop(env):
 
 
 def test_envs():
-    for name in ['sconegaith0918-v0', 
-                 'sconegaith1622-v0',
-                 'sconegaith2190-v0',
-                 'sconegaith0918S2-v0',
-                 'sconegaith1622S2-v0',
-                 'sconegaith2190S2-v0',
-                 'sconegaith0918_delay-v0']:
+    for name in [
+        "sconegaith0918-v0",
+        "sconegaith1622-v0",
+        "sconegaith2190-v0",
+        "sconegaith0918S2-v0",
+        "sconegaith1622S2-v0",
+        "sconegaith2190S2-v0",
+        "sconegaith0918_delay-v0",
+    ]:
         env = gym.make(name)
         env.seed(SEED)
         torch.manual_seed(SEED)
-        returns = helper_env_loop(env)
+        helper_env_loop(env)
         # assert np.floor(returns[0]) == 3511
-
 
 
 if __name__ == "__main__":
