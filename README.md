@@ -4,6 +4,8 @@
  [![Downloads](https://pepy.tech/badge/deprl)](https://pepy.tech/project/deprl)
  [![Documentation Status](https://readthedocs.org/projects/deprl/badge/?version=latest)](https://deprl.readthedocs.io/en/latest/?badge=latest)
 
+Please read the [docs](https://deprl.readthedocs.io/en/latest/?badge=latest).
+
  This repo contains the code for the paper [DEP-RL: Embodied Exploration for Reinforcement Learning in Overactuated and Musculoskeletal Systems](https://openreview.net/forum?id=C-xa_D3oTj6) paper, published at ICLR 2023 with perfect review scores (8, 8, 8, 10) and a notable-top-25% rating. See [here](https://sites.google.com/view/dep-rl) for videos.
 
 The work was performed by Pierre Schumacher, Daniel F.B. Haeufle, Dieter Büchler, Syn Schmitt and Georg Martius.
