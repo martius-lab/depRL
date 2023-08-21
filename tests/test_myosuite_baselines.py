@@ -66,8 +66,6 @@ def test_rng():
     for i in range(3):
         env.reset()
         policies.append(env.opponent.opponent_policy)
-    # for x, y in zip(policies, ['repeller', 'random', 'random']):
-    #     assert(x == y)
 
 
 def test_rng_noise():
@@ -96,7 +94,6 @@ def test_chasetag_obs_rng():
         for i in range(20):
             obs, *_ = env.step(env.np_random.normal(0, 1, size=(80,)))
         diff += np.abs(old_obs - obs)
-    print(f"{diff=}")
 
 
 def test_chasetag_actionrng():
