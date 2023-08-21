@@ -2,15 +2,12 @@ import shutil
 import sys
 
 import gym
-from deprl.vendor.tonic import logger
 import myosuite  # noqa
 import torch
-from myosuite.envs.myo.walk_v0 import WalkEnvV0
-from myosuite.envs import myo
-
 
 import deprl
 from deprl import main, play
+from deprl.vendor.tonic import logger
 
 SEED = 1
 
@@ -45,6 +42,7 @@ def test_train():
 def test_exception():
     class TestException(Exception):
         pass
+
     class ExceptionTester(gym.Wrapper):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
@@ -54,24 +52,19 @@ def test_exception():
         def step(self, action):
             self.exception_steps += 1
             if not self.exception_steps % self.exception_limit:
-                raise TestException('Artificial Exception initiated')
+                raise TestException("Artificial Exception initiated")
             return self.env.step(action)
 
-    env = ExceptionTester(gym.make('myoLegWalk-v0'))
+    env = ExceptionTester(gym.make("myoLegWalk-v0"))
     env.reset()
     for i in range(1000):
         try:
             env.step(env.action_space.sample())
         except TestException as e:
-            logger.log(f'TestError is: {e}')
-
-
-
-
+            logger.log(f"TestError is: {e}")
 
 
 if __name__ == "__main__":
-
     test_exception()
     test_train()
     test_play()
