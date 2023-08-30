@@ -1,4 +1,9 @@
 import numpy as np
+import torch
+from deprl.vendor.tonic.utils import logger
+
+
+NPARTITIONS = 10
 
 
 class Buffer:
@@ -97,3 +102,70 @@ class Buffer:
             yield {k: self.buffers[k][rows, columns] for k in keys}
 
         self.last_steps = steps
+
+    def save(self, path):
+           logger.log('Saving buffer')
+           if hasattr(self, 'buffers'):
+               for field in self.checkpoint_fields:
+                   if not field == 'buffers':
+                       save_path = self.get_path(path, field)
+                       torch.save(getattr(self, field), save_path)
+                   else:
+                       self.save_buffer_incrementally(path)
+
+    def save_buffer_incrementally(self, path):
+        """
+        Helps saving big buffers that would otherwise fill up
+        system RAM completely.
+        """
+        for i in range(NPARTITIONS):
+            partition = int(self.max_size / NPARTITIONS)
+            save_path = self.get_path(path, f'buffer_{i * partition}')
+            buffer_save_dict = {}
+            for k,v in self.buffers.items():
+                if len(v.shape) > 2:
+                    buffer_save_dict[k] = v[i * partition: i * partition + partition, :, :]
+                else:
+                    buffer_save_dict[k] = v[i * partition: i * partition + partition, :]
+            torch.save(buffer_save_dict, save_path)
+
+    def load_buffer_incrementally(self, path, load_fn):
+        """
+        Helps loading big buffers that would otherwise fill up
+        system RAM completely.
+        """
+        for i in range(NPARTITIONS):
+            partition = int(self.max_size / NPARTITIONS)
+            load_path = self.get_path(path, f'buffer_{i * partition}')
+            buffer_load_dict = load_fn(load_path)
+            if self.buffers is None:
+                self.create_empty_buffer(buffer_load_dict)
+            for k,v in buffer_load_dict.items():
+                if len(v.shape) > 2:
+                    self.buffers[k][i * partition: i * partition + partition, :, :] = v
+                else:
+                    self.buffers[k][i * partition: i * partition + partition, :] = v
+
+    def create_empty_buffer(self, buffer_load_dict):
+        self.buffers = {}
+        for k, v in buffer_load_dict.items():
+            if len(v.shape) > 2:
+                self.buffers[k] = np.full((self.max_size, v.shape[-2], v.shape[-1]), np.nan, np.float32)
+            else:
+                self.buffers[k] = np.full((self.max_size, v.shape[-1]), np.nan, np.float32)
+
+    def load(self, load_fn, path):
+        logger.log('Loading buffer')
+        try:
+            if hasattr(self, 'buffers'):
+                for field in self.checkpoint_fields:
+                    if not field == 'buffers':
+                        buffer_path = self.get_path(path, field)
+                        setattr(self, field, load_fn(buffer_path))
+                    else:
+                        self.load_buffer_incrementally(path, load_fn)
+        except Exception as e:
+            print(f'Error in buffer loading, it is freshly initialized: {e}')
+
+    def get_path(self, path, post_fix):
+        return path.split('step')[0] + post_fix + '.pt'
