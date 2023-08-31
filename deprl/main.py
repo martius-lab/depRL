@@ -9,6 +9,7 @@ import yaml
 from deprl import custom_distributed
 from deprl.utils import prepare_params
 from deprl.vendor import tonic
+from deprl.vendoer.tonic import logger
 
 
 def maybe_load_checkpoint(
@@ -225,11 +226,14 @@ def train(
 
 
 def main():
-    try:
-        torch.zeros((0, 1), device="cuda")
-        torch.set_default_tensor_type("torch.cuda.FloatTensor")
-    except Exception as e:
-        print(f"No cuda detected, running on cpu: {e}")
+    # use CUDA or apple metal
+    if torch.cuda.is_available():
+        torch.set_default_device("cuda")
+    elif torch.backends.mps.is_available():
+        torch.set_default_device("mps")
+    else:
+        logger.log("No CUDA or MPS detected, running on CPU")
+
     orig_params, params = prepare_params()
     train_params = dict(orig_params["tonic"])
     train_params["path"] = orig_params["working_dir"]
