@@ -39,7 +39,7 @@ def test_train():
     main.main()
 
 
-@pytest.mark.order(1)
+@pytest.mark.order(2)
 def test_load():
     config_path = "./tests/test_files/test_settings_load.json"
     sys.argv.append(config_path)
