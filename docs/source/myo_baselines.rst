@@ -1,14 +1,12 @@
-
-MyoSuite Baselines
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 .. _myobaselines:
 
+MyoSuite baselines
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 We include several pretrained baselines for MyoSuite and MyoChallenge2023 environments. This includes straight walking for `myoLegWalk-v0`, standing for `myoChallengeChaseTagP1-v0` and cube lifting for `myoChallengeRelocateP1-v0`.
 
-To try the baselines, you need to first install `myosuite==1.7.0`.
+To try the baselines, you need to first install `myosuite==2.0.1`.
 You can play with the pre-trained baselines by using the code in this section. To train agents yourself, go to the Configuration Files section.
 
 

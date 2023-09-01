@@ -92,31 +92,3 @@ It allows two additional CLI arguments:
               Once wandb is configured, you can leave this blank.
 
 
-Useful functions
-.................................
-
-deprl also provide some useful code-level functions that you can use inside your python script.
-
-load
-`````````````````````````````````
-This functon allows you to load a policy checkpoint inside any python script and just play with it. It is assumed that the passed env has `action_space` and `observation_space` attributes.
-Note that we assume that the last subdirectory is given as a folder. Check the :ref:`play` docs for further information.
-
-.. code-block:: python
-
-  import gym
-  import myosuite
-  import deprl
-
-  folder = 'myoLegWalk_20230514/myoLeg/'
-
-  env = gym.make('myoLegWalk-v0'):
-  policy = deprl.load(folder, env)
-
-  for ep in range(5):
-      obs = env.reset()
-      for i in range(1000):
-          action = policy(obs)
-          next_obs, reward, done, info = env.step(action)
-          env.sim.renderer.render_to_window()
-          obs = next_obs
