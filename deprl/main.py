@@ -9,7 +9,7 @@ import yaml
 from deprl import custom_distributed
 from deprl.utils import prepare_params
 from deprl.vendor import tonic
-from deprl.vendoer.tonic import logger
+from deprl.vendor.tonic import logger
 
 
 def maybe_load_checkpoint(
@@ -95,6 +95,7 @@ def train(
     checkpoint,
     path,
     preid=0,
+    full_save=False,
     env_args=None,
 ):
     """Trains an agent on an environment."""
@@ -206,7 +207,7 @@ def train(
     trainer = trainer or "tonic.Trainer()"
     trainer = eval(trainer)
     trainer.initialize(
-        agent=agent, environment=environment, test_environment=test_environment
+        agent=agent, environment=environment, test_environment=test_environment, full_save=full_save
     )
 
     # Run some code before training.

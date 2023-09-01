@@ -27,6 +27,8 @@ class Buffer:
         self.discount_factor = discount_factor
         self.steps_before_batches = steps_before_batches
         self.steps_between_batches = steps_between_batches
+        # buffers HAS to be last, we need the others before to load it properly
+        self.checkpoint_fields = ['index', 'num_workers', 'max_size', 'size','buffers']
 
     def initialize(self, seed=None):
         self.np_random = np.random.RandomState(seed)

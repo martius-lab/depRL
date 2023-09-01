@@ -1,5 +1,6 @@
 import shutil
 import sys
+import pytest
 
 import gym
 import myosuite  # noqa
@@ -31,7 +32,16 @@ def test_play():
     play.play(**kwargs)
 
 
+
+@pytest.mark.order1
 def test_train():
+    config_path = "./tests/test_files/test_settings.json"
+    sys.argv.append(config_path)
+    main.main()
+
+
+@pytest.mark.order2
+def test_load():
     config_path = "./tests/test_files/test_settings.json"
     sys.argv.append(config_path)
     main.main()

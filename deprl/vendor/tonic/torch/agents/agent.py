@@ -16,17 +16,19 @@ class Agent(agents.Agent):
             random.seed(seed)
             torch.manual_seed(seed)
 
-    def save(self, path):
+    def save(self, path, full_save=True):
         path = path + '.pt'
         logger.log(f'\nSaving weights to {path}')
         os.makedirs(os.path.dirname(path), exist_ok=True)
         torch.save(self.model.state_dict(), path)
-        self.save_optimizer(path)
-        self.save_buffer(path)
-        self.save_observation_normalizer(path)
-        self.save_return_normalizer(path)
+        if full_save:
+            logger.log('Saving full model')
+            self.save_optimizer(path)
+            self.save_buffer(path)
+            self.save_observation_normalizer(path)
+            self.save_return_normalizer(path)
 
-    def load(self, path, play=False):
+    def load(self, path, only_checkpoint=False):
         path = path + '.pt'
         logger.log(f'\nLoading weights from {path}')
         if not torch.cuda.is_available():
@@ -38,14 +40,14 @@ class Agent(agents.Agent):
         except Exception as e:
             logger.log('Error, not loading model')
             logger.log(f'{e=}')
-        if not play:
+        if not only_checkpoint:
             try:
                 self.load_optimizer(load_fn, path)
                 self.load_buffer(load_fn, path)
                 self.load_observation_normalizer(load_fn, path)
                 self.load_return_normalizer(load_fn, path)
             except Exception as e:
-                logger.log(f'Failure in loading model components: {e}')
+                logger.log(f'Could not find full model, only loading policy checkpoint.')
 
     def save_return_normalizer(self, path):
         if self.model.return_normalizer is not None:
