@@ -1,9 +1,9 @@
 import shutil
 import sys
-import pytest
 
 import gym
 import myosuite  # noqa
+import pytest
 import torch
 
 import deprl
@@ -32,17 +32,16 @@ def test_play():
     play.play(**kwargs)
 
 
-
-@pytest.mark.order1
+@pytest.mark.order(1)
 def test_train():
     config_path = "./tests/test_files/test_settings.json"
     sys.argv.append(config_path)
     main.main()
 
 
-@pytest.mark.order2
+@pytest.mark.order(1)
 def test_load():
-    config_path = "./tests/test_files/test_settings.json"
+    config_path = "./tests/test_files/test_settings_load.json"
     sys.argv.append(config_path)
     main.main()
     shutil.rmtree("./tests/test_DEPRL", ignore_errors=True)
@@ -50,4 +49,5 @@ def test_load():
 
 if __name__ == "__main__":
     test_train()
-    test_play()
+    test_load()
+    # # test_play()

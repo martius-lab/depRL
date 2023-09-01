@@ -90,5 +90,3 @@ It allows two additional CLI arguments:
 --project    The name of the wandb project to which the data should be uploaded.
 --user       The name of the wandb user that it should be uploaded to.
               Once wandb is configured, you can leave this blank.
-
-

@@ -13,7 +13,8 @@
     "environment_name": "humanreacher_pointing_dep",
     "test_environment": null,
     "checkpoint": "last",
-    "path": ""
+    "path": "",
+    "full_save": 1
   },
 
   "DEP":{

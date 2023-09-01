@@ -14,8 +14,8 @@ numpy = "^1.22.4"
 termcolor = "^2.2.0"
 pandas = "^2.0.1"
 gdown = "^4.7.1"
-torch = {version = "^2.0.1+cpu", source = "pytorch-cpu"}
-# torch = "^2.0.0"
+# torch = {version = "^2.0.1+cpu", source = "pytorch-cpu"}
+torch = "^2.0.0"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -30,7 +30,7 @@ sphinx = "5.3.0"
 sphinx-rtd-theme = "^1.2.2"
 pytest = "^7.4.0"
 sphinx-copybutton = "^0.5.2"
-pytest-ordering = "^0.6"
+pytest-order = "^1.1.0"
 
 
 [tool.poetry.scripts]

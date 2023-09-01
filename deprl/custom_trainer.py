@@ -30,7 +30,9 @@ class Trainer:
         self.show_progress = show_progress
         self.replace_checkpoint = replace_checkpoint
 
-    def initialize(self, agent, environment, test_environment=None, full_save=False):
+    def initialize(
+        self, agent, environment, test_environment=None, full_save=False
+    ):
         self.full_save = full_save
         self.agent = agent
         self.environment = environment
@@ -142,7 +144,7 @@ class Trainer:
                 save_path = os.path.join(path, checkpoint_name)
                 self.agent.save(save_path, full_save=self.full_save)
                 # logger.save(save_path)
-                # self.save_time(save_path, epochs, episodes)
+                self.save_time(save_path, epochs, episodes)
                 steps_since_save = self.steps % self.save_steps
                 current_time = time.time()
 

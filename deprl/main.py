@@ -24,6 +24,24 @@ def maybe_load_checkpoint(
 ):
     if os.path.isdir(checkpoint_path):
         tonic.logger.log(f"Loading experiment from {eff_path}")
+        try:
+            time_dict = torch.load(
+                os.path.join(eff_path, "checkpoints/time.pt")
+            )
+        except FileNotFoundError as e:
+            tonic.logger.log(
+                f"Error in loading, starting fresh. Error was: {e}"
+            )
+            checkpoint_path = None
+            return (
+                header,
+                agent,
+                environment,
+                trainer,
+                time_dict,
+                checkpoint_path,
+            )
+
         # Use no checkpoint, the agent is freshly created.
         if checkpoint == "none":
             tonic.logger.log("Not loading any weights")
@@ -207,7 +225,10 @@ def train(
     trainer = trainer or "tonic.Trainer()"
     trainer = eval(trainer)
     trainer.initialize(
-        agent=agent, environment=environment, test_environment=test_environment, full_save=full_save
+        agent=agent,
+        environment=environment,
+        test_environment=test_environment,
+        full_save=full_save,
     )
 
     # Run some code before training.
