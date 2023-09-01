@@ -13,7 +13,8 @@
     "seed": 0,
     "name": "myoLeg",
     "environment_name": "deprl_baseline",
-    "checkpoint": "last"
+    "checkpoint": "last",
+    "full_save": 1
   },
   "working_dir": "./tests/test_DEPRL",
   "id": 0,

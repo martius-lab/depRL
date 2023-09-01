@@ -1,8 +1,7 @@
-Configuration files
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 .. _config_files:
 
+Configuration files
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 deprl uses json files to configure training runs. The `experiments <https://github.com/martius-lab/depRL/tree/main/experiments>`_ folder in the main github directory contains training settings for several experiments.
 For the MyoSuite and the MyoChallenge2023, you can find settings files `here <https://github.com/martius-lab/depRL/tree/main/experiments/myosuite_training_files>`_.
@@ -54,7 +53,8 @@ In this section, we'll start with an example settings file, explain the main pur
       "name": "myoLeg",
       "environment_name": "deprl_baseline",
       "checkpoint": "last",
-      "path": "./output"
+      "path": "./output",
+      "full_save": 1,
     },
 
     "working_dir": "./baselines_DEPRL",

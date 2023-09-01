@@ -50,7 +50,7 @@ def load(path, environment, checkpoint="last", noisy=False):
         action_space=environment.action_space,
     )
     # Load the weights of the agent form a checkpoint.
-    agent.load(checkpoint_path)
+    agent.load(checkpoint_path, only_checkpoint=True)
     agent.noisy = noisy
     return agent
 

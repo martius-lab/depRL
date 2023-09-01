@@ -29,7 +29,7 @@ class Agent(abc.ABC):
         """Informs the agent of the latest transitions during testing."""
         pass
 
-    def save(self, path):
+    def save(self, path, full_save=False):
         """Saves the agent weights during training."""
         pass
 

@@ -14,6 +14,7 @@ Welcome to deprl's documentation!
    usage
    myo_baselines
    config_files
+   loading_checkpoints
 
 
 .. note::

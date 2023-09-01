@@ -13,7 +13,8 @@
     "name": "myoChasetag",
     "environment_name": "deprl_baseline_chasetag",
     "checkpoint": "last",
-    "path": "./output"
+    "path": "./output",
+    "full_save": 1
   },
   "working_dir": "./baselines_DEPRL",
   "id": 0,

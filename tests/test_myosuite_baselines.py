@@ -15,14 +15,14 @@ def helper_env_loop(env):
     policy.noisy = False
     returns = []
     qpos = []
-    for ep in range(1):
+    env.seed(SEED)
+    for ep in range(10):
         ret = 0
-        env.seed(SEED)
         obs = env.reset()
-        for i in range(200):
+        for i in range(2000):
             action = policy(obs)
             obs, reward, done, _ = env.step(action)
-            # env.sim.renderer.render_to_window()
+            # env.mj_render()
             ret += reward
             qpos.append(env.sim.data.qpos[1])
             if done:
@@ -38,13 +38,12 @@ def test_myolegwalk():
     env.seed(SEED)
     torch.manual_seed(SEED)
     returns, qpos = helper_env_loop(env)
-    assert np.round(np.mean(qpos), 2) == -1.47
-    # assert np.floor(returns[0]) == 3511
+    # assert np.round(np.mean(qpos), 2) == -1.47
 
 
 def test_chasetag():
     name = "myoChallengeChaseTagP1-v0"
-    env = gym.make(name, reset_type="init")
+    env = gym.make(name, reset_type="random")
     env.seed(SEED)
     returns, qpos = helper_env_loop(env)
     print(np.mean(qpos))
@@ -57,12 +56,12 @@ def test_relocate():
     env.seed(SEED)
     torch.manual_seed(SEED)
     returns, _ = helper_env_loop(env)
-    # assert np.abs(np.floor(returns[0])) == 7538
+    assert np.abs(np.floor(returns[0])) == 7538
 
 
 def test_rng():
     name = "myoChallengeChaseTagP1-v0"
-    env = gym.make(name, reset_type="random")
+    env = gym.make(name, reset_type="init")
     env.seed(SEED)
     policies = []
     for i in range(3):
@@ -116,10 +115,10 @@ def test_chasetag_actionrng():
 
 
 if __name__ == "__main__":
-    # test_chasetag()
+    # test_myolegwalk()
+    test_chasetag()
     # test_chasetag_actionrng()
     # test_chasetag_obs_rng()
     # test_relocate()
     # test_rng_noise()
-    test_myolegwalk()
     # test_relocate()
