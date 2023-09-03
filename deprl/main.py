@@ -9,6 +9,7 @@ import yaml
 from deprl import custom_distributed
 from deprl.utils import prepare_params
 from deprl.vendor import tonic
+from deprl.vendor.tonic import logger
 
 
 def maybe_load_checkpoint(
@@ -23,6 +24,24 @@ def maybe_load_checkpoint(
 ):
     if os.path.isdir(checkpoint_path):
         tonic.logger.log(f"Loading experiment from {eff_path}")
+        try:
+            time_dict = torch.load(
+                os.path.join(eff_path, "checkpoints/time.pt")
+            )
+        except FileNotFoundError as e:
+            tonic.logger.log(
+                f"Error in loading, starting fresh. Error was: {e}"
+            )
+            checkpoint_path = None
+            return (
+                header,
+                agent,
+                environment,
+                trainer,
+                time_dict,
+                checkpoint_path,
+            )
+
         # Use no checkpoint, the agent is freshly created.
         if checkpoint == "none":
             tonic.logger.log("Not loading any weights")
@@ -94,6 +113,7 @@ def train(
     checkpoint,
     path,
     preid=0,
+    full_save=False,
     env_args=None,
 ):
     """Trains an agent on an environment."""
@@ -205,7 +225,10 @@ def train(
     trainer = trainer or "tonic.Trainer()"
     trainer = eval(trainer)
     trainer.initialize(
-        agent=agent, environment=environment, test_environment=test_environment
+        agent=agent,
+        environment=environment,
+        test_environment=test_environment,
+        full_save=full_save,
     )
 
     # Run some code before training.
@@ -225,11 +248,14 @@ def train(
 
 
 def main():
-    try:
-        torch.zeros((0, 1), device="cuda")
-        torch.set_default_tensor_type("torch.cuda.FloatTensor")
-    except Exception as e:
-        print(f"No cuda detected, running on cpu: {e}")
+    # use CUDA or apple metal
+    if torch.cuda.is_available():
+        torch.set_default_device("cuda")
+    elif torch.backends.mps.is_available():
+        torch.set_default_device("mps")
+    else:
+        logger.log("No CUDA or MPS detected, running on CPU")
+
     orig_params, params = prepare_params()
     train_params = dict(orig_params["tonic"])
     train_params["path"] = orig_params["working_dir"]

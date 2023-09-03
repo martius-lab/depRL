@@ -1,5 +1,6 @@
 
 import gym
+import sconegym
 import torch
 
 
