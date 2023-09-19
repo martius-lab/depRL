@@ -26,17 +26,17 @@ def helper_env_loop(env):
 
 def test_envs():
     for name in [
-        "sconegaith0918-v0",
-        "sconegaith1622-v0",
-        "sconegaith2190-v0",
-        "sconegaith0918S2-v0",
-        "sconegaith1622S2-v0",
-        "sconegaith2190S2-v0",
-        "sconegaith0918_delay-v0",
+        "sconewalk_h0918-v0",
+        "sconewalk_h1622-v0",
+        "sconewalk_h2190-v0",
+        "sconerun_h0918-v0",
+        "sconerun_h1622-v0",
+        "sconerun_h2190-v0",
     ]:
         env = gym.make(name)
         env.seed(SEED)
         torch.manual_seed(SEED)
+        print(f'Testing {name=}')
         helper_env_loop(env)
         # assert np.floor(returns[0]) == 3511
 
