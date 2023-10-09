@@ -4,6 +4,7 @@ from deprl.utils.utils import (
     mujoco_render,
     prepare_params,
     stdout_suppression,
+    load_config_and_paths,
 )
 
 __all__ = [
@@ -12,4 +13,5 @@ __all__ = [
     load_baseline,
     mujoco_render,
     stdout_suppression,
+    load_config_and_paths
 ]

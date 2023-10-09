@@ -254,38 +254,46 @@ class Parallel:
 
 
 def distribute(
-    build_dict,
-    worker_groups=1,
-    workers_per_group=1,
-    env_args=None,
-    header=None,
+    environment,
+    tonic_conf,
+    env_args,
+    parallel=None,
+    sequential=None,
 ):
     """Distributes workers over parallel and sequential groups."""
+    # TODO CHECK ID
+    build_dict = dict(
+        env=environment,
+        id=0,
+        parallel=tonic_conf['parallel'] if parallel is None else parallel,
+        sequential=tonic_conf['sequential'] if sequential is None else sequential,
+    )
 
     dummy_environment = build_env_from_dict(build_dict)()
     max_episode_steps = dummy_environment._max_episode_steps
     del dummy_environment
 
-    if worker_groups < 2:
+    if tonic_conf['parallel'] < 2:
         return Sequential(
             build_dict=build_dict,
             max_episode_steps=max_episode_steps,
-            workers=workers_per_group,
+            workers=build_dict['sequential'],
             env_args=env_args,
-            header=header,
+            header=tonic_conf['header'],
             index=0,
         )
     return Parallel(
         build_dict,
-        worker_groups=worker_groups,
-        workers_per_group=workers_per_group,
+        worker_groups=build_dict['parallel'],
+        workers_per_group=build_dict['sequential'],
         max_episode_steps=max_episode_steps,
         env_args=env_args,
-        header=header,
+        header=tonic_conf['header'],
     )
 
 
 def build_env_from_dict(build_dict):
+    assert not build_dict['env'] is None
     if type(build_dict) == dict:
         from deprl import env_tonic_compat
 
