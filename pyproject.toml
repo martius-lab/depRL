@@ -8,7 +8,7 @@ readme = "README.md"
 
 
 [tool.poetry.dependencies]
-python = ">=3.8, <=3.11.4"
+python = ">=3.8, <=3.11"
 pyyaml = "^6.0"
 numpy = "^1.22.4"
 termcolor = "^2.2.0"
@@ -25,7 +25,7 @@ ostrichrl = {git = "https://github.com/P-Schumacher/ostrichrl.git", branch="fix/
 warmup = {git = "https://github.com/P-Schumacher/warmup.git"}
 gym = "0.13.0"
 wandb = "^0.15.4"
-myosuite = "^2.0.0"
+myosuite = "*"
 sphinx = "5.3.0"
 sphinx-rtd-theme = "^1.2.2"
 pytest = "^7.4.0"
