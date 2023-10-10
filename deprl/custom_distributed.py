@@ -9,7 +9,7 @@ from deprl.utils import stdout_suppression
 def proc(
     action_pipe,
     output_queue,
-    seed,
+    group_seed,
     build_dict,
     max_episode_steps,
     index,
@@ -19,9 +19,9 @@ def proc(
 ):
     """Process holding a sequential group of environments."""
     envs = Sequential(
-        build_dict, max_episode_steps, workers, index, env_args, header
+        build_dict, max_episode_steps, workers, env_args, header
     )
-    envs.initialize(seed)
+    envs.initialize(group_seed)
 
     observations = envs.start()
     output_queue.put((index, observations))
@@ -36,12 +36,12 @@ class Sequential:
     """A group of environments used in sequence."""
 
     def __init__(
-        self, build_dict, max_episode_steps, workers, index, env_args, header
+        self, build_dict, max_episode_steps, workers, env_args, header
     ):
         if header is not None:
             with stdout_suppression():
                 exec(header)
-        if hasattr(build_env_from_dict(build_dict)().unwrapped, "environment"):
+        if hasattr(build_env_from_dict(build_dict).unwrapped, "environment"):
             # its a deepmind env
             self.environments = [
                 build_env_from_dict(build_dict)() for i in range(workers)
@@ -49,7 +49,7 @@ class Sequential:
         else:
             # its a gym env
             self.environments = [
-                build_env_from_dict(build_dict)(identifier=index * workers + i)
+                build_env_from_dict(build_dict)
                 for i in range(workers)
             ]
         if env_args is not None:
@@ -62,6 +62,7 @@ class Sequential:
         self.num_workers = workers
 
     def initialize(self, seed):
+        # group seed is given, the others are determined from it
         for i, environment in enumerate(self.environments):
             environment.seed(seed + i)
 
@@ -145,7 +146,7 @@ class Parallel:
         self.header = header
 
     def initialize(self, seed):
-        dummy_environment = build_env_from_dict(self.build_dict)()
+        dummy_environment = build_env_from_dict(self.build_dict)
         dummy_environment.merge_args(self.env_args)
         dummy_environment.apply_args()
 
@@ -164,15 +165,15 @@ class Parallel:
             pipe, worker_end = context.Pipe()
             self.action_pipes.append(pipe)
             group_seed = (
-                seed * (self.worker_groups * self.workers_per_group)
+                seed * self.workers_per_group
                 + i * self.workers_per_group
             )
 
-            # required for spawnstart_method
+            # required for spawnstart_method for macos and windows
             proc_kwargs = {
                 "action_pipe": worker_end,
                 "output_queue": self.output_queue,
-                "seed": group_seed,
+                "group_seed": group_seed,
                 "build_dict": self.build_dict,
                 "max_episode_steps": self._max_episode_steps,
                 "index": i,
@@ -264,39 +265,39 @@ def distribute(
     # TODO CHECK ID
     build_dict = dict(
         env=environment,
-        id=0,
-        parallel=tonic_conf['parallel'] if parallel is None else parallel,
-        sequential=tonic_conf['sequential'] if sequential is None else sequential,
+        parallel=tonic_conf["parallel"] if parallel is None else parallel,
+        sequential=tonic_conf["sequential"]
+        if sequential is None
+        else sequential,
     )
 
-    dummy_environment = build_env_from_dict(build_dict)()
+    dummy_environment = build_env_from_dict(build_dict)
     max_episode_steps = dummy_environment._max_episode_steps
     del dummy_environment
 
-    if tonic_conf['parallel'] < 2:
+    if tonic_conf["parallel"] < 2:
         return Sequential(
             build_dict=build_dict,
             max_episode_steps=max_episode_steps,
-            workers=build_dict['sequential'],
+            workers=build_dict["sequential"],
             env_args=env_args,
-            header=tonic_conf['header'],
-            index=0,
+            header=tonic_conf["header"],
         )
     return Parallel(
         build_dict,
-        worker_groups=build_dict['parallel'],
-        workers_per_group=build_dict['sequential'],
+        worker_groups=build_dict["parallel"],
+        workers_per_group=build_dict["sequential"],
         max_episode_steps=max_episode_steps,
         env_args=env_args,
-        header=tonic_conf['header'],
+        header=tonic_conf["header"],
     )
 
 
 def build_env_from_dict(build_dict):
-    assert not build_dict['env'] is None
+    assert build_dict["env"] is not None
     if type(build_dict) == dict:
         from deprl import env_tonic_compat
 
         return env_tonic_compat(**build_dict)
     else:
-        return lambda identifier=0: build_dict()
+        return build_dict()

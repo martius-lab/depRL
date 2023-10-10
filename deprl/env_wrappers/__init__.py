@@ -16,7 +16,7 @@ def env_tonic_compat(env, id=5, parallel=1, sequential=1):
     """
     Applies wrapper for tonic and passes random seed.
     """
-    return lambda identifier=0: apply_wrapper(eval(env))
+    return apply_wrapper(eval(env))
 
 
 __all__ = [env_tonic_compat, apply_wrapper]

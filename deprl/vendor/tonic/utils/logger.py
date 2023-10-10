@@ -1,11 +1,11 @@
 import datetime
-import pandas as pd
 import os
 import time
-import torch
 
 import numpy as np
+import pandas as pd
 import termcolor
+import torch
 import yaml
 
 current_logger = None
@@ -250,21 +250,23 @@ def error(msg, color="red"):
 
 def save(path):
     logger = get_current_logger()
-    log_dict = {'stat_keys': logger.stat_keys,
-                'known_keys': logger.known_keys,
-                'console_formats': logger.console_formats,
-                'final_keys': logger.final_keys}
-    log_path = create_path(path, 'logger')
+    log_dict = {
+        "stat_keys": logger.stat_keys,
+        "known_keys": logger.known_keys,
+        "console_formats": logger.console_formats,
+        "final_keys": logger.final_keys,
+    }
+    log_path = create_path(path, "logger")
     torch.save(log_dict, log_path)
 
 
 def load(path, time_dict):
     logger = get_current_logger()
-    log_path = create_path(path, 'logger')
+    log_path = create_path(path, "logger")
     log_dict = torch.load(log_path)
     for k, v in log_dict.items():
         setattr(logger, k, v)
-    filter_csv_by_steps(logger.log_file_path, time_dict['steps'])
+    filter_csv_by_steps(logger.log_file_path, time_dict["steps"])
 
 
 def filter_csv_by_steps(csv_file, threshold):
@@ -273,11 +275,11 @@ def filter_csv_by_steps(csv_file, threshold):
         df = pd.read_csv(csv_file)
 
         # Ensure the 'train/steps' column exists
-        if 'train/steps' not in df.columns:
+        if "train/steps" not in df.columns:
             return "Error: 'train/steps' column not found in the CSV file."
 
         # Filter rows where 'train/steps' is less than or equal to the threshold
-        filtered_df = df[df['train/steps'] <= threshold]
+        filtered_df = df[df["train/steps"] <= threshold]
 
         # Save the filtered DataFrame back to the CSV file
         filtered_df.to_csv(csv_file, index=False)
@@ -288,4 +290,4 @@ def filter_csv_by_steps(csv_file, threshold):
 
 
 def create_path(path, post_fix):
-    return path.split('step')[0] + post_fix + '.pt'
+    return path.split("step")[0] + post_fix + ".pt"
