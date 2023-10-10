@@ -18,9 +18,7 @@ def proc(
     header,
 ):
     """Process holding a sequential group of environments."""
-    envs = Sequential(
-        build_dict, max_episode_steps, workers, env_args, header
-    )
+    envs = Sequential(build_dict, max_episode_steps, workers, env_args, header)
     envs.initialize(group_seed)
 
     observations = envs.start()
@@ -49,8 +47,7 @@ class Sequential:
         else:
             # its a gym env
             self.environments = [
-                build_env_from_dict(build_dict)
-                for i in range(workers)
+                build_env_from_dict(build_dict) for i in range(workers)
             ]
         if env_args is not None:
             [x.merge_args(env_args) for x in self.environments]
@@ -165,8 +162,7 @@ class Parallel:
             pipe, worker_end = context.Pipe()
             self.action_pipes.append(pipe)
             group_seed = (
-                seed * self.workers_per_group
-                + i * self.workers_per_group
+                seed * self.workers_per_group + i * self.workers_per_group
             )
 
             # required for spawnstart_method for macos and windows
@@ -262,31 +258,28 @@ def distribute(
     sequential=None,
 ):
     """Distributes workers over parallel and sequential groups."""
-    # TODO CHECK ID
+    parallel = tonic_conf["parallel"] if parallel is None else parallel
+    sequential = tonic_conf["sequential"] if sequential is None else sequential
     build_dict = dict(
-        env=environment,
-        parallel=tonic_conf["parallel"] if parallel is None else parallel,
-        sequential=tonic_conf["sequential"]
-        if sequential is None
-        else sequential,
+        env=environment, parallel=parallel, sequential=sequential
     )
 
     dummy_environment = build_env_from_dict(build_dict)
     max_episode_steps = dummy_environment._max_episode_steps
     del dummy_environment
 
-    if tonic_conf["parallel"] < 2:
+    if parallel < 2:
         return Sequential(
             build_dict=build_dict,
             max_episode_steps=max_episode_steps,
-            workers=build_dict["sequential"],
+            workers=sequential,
             env_args=env_args,
             header=tonic_conf["header"],
         )
     return Parallel(
         build_dict,
-        worker_groups=build_dict["parallel"],
-        workers_per_group=build_dict["sequential"],
+        worker_groups=parallel,
+        workers_per_group=sequential,
         max_episode_steps=max_episode_steps,
         env_args=env_args,
         header=tonic_conf["header"],

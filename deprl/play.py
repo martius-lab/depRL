@@ -230,12 +230,11 @@ def play(
         arguments_path = os.path.join(path, "config.yaml")
         with open(arguments_path, "r") as config_file:
             config = yaml.load(config_file, Loader=yaml.FullLoader)
-        config = argparse.Namespace(**config)
 
-        header = header or config.header
-        agent = agent or config.agent
-        environment = environment or config.test_environment
-        environment = environment or config.environment
+        header = header or config["tonic"]["header"]
+        agent = agent or config["tonic"]["agent"]
+        environment = environment or config["tonic"]["test_environment"]
+        environment = environment or config["tonic"]["environment"]
 
     # Run the header first, e.g. to load an ML framework.
     if header:
@@ -251,12 +250,12 @@ def play(
     environment.seed(seed)
     environment = env_wrappers.apply_wrapper(environment)
     if config and "env_args" in config:
-        environment.merge_args(config.env_args)
+        environment.merge_args(config["env_args"])
         environment.apply_args()
 
     # Adapt mpo specific settings
     if config and "mpo_args" in config:
-        agent.set_params(**config.mpo_args)
+        agent.set_params(**config["mpo_args"])
     # Initialize the agent.
     agent.initialize(
         observation_space=environment.observation_space,

@@ -48,6 +48,6 @@ def test_load():
 
 
 if __name__ == "__main__":
-    test_train()
-    test_load()
-    # # test_play()
+    # test_train()
+    # test_load()
+    test_play()

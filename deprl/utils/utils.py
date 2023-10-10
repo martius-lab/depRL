@@ -1,4 +1,3 @@
-import argparse
 import json
 import os
 import sys
@@ -19,15 +18,15 @@ def prepare_params():
 
 def load(path, environment, checkpoint="last"):
     config, checkpoint_path, _ = load_config_and_paths(path, checkpoint)
-    header = config['tonic']['header']
-    agent = config['tonic']['agent']
+    header = config["tonic"]["header"]
+    agent = config["tonic"]["agent"]
     # Run the header
     exec(header)
     # Build the agent.
     agent = eval(agent)
     # Adapt mpo specific settings
     if "mpo_args" in config:
-        agent.set_params(**config['mpo_args'])
+        agent.set_params(**config["mpo_args"])
     # Initialize the agent.
     agent.initialize(
         observation_space=environment.observation_space,
@@ -41,21 +40,20 @@ def load(path, environment, checkpoint="last"):
 def load_time_dict(checkpoint_path):
     try:
         return torch.load(os.path.join(checkpoint_path, "time.pt"))
-    except FileNotFoundError as e:
+    except FileNotFoundError:
         logger.log(
-            f"Error in full loading. Was the previous checkpoint saved with  <'full_save': True>?"
+            "Error in full loading. Was the previous checkpoint saved with  <'full_save': True>?"
         )
-        logger.log(f"Only loading policy checkpoint.")
+        logger.log("Only loading policy checkpoint.")
         return None
 
 
 def load_config_and_paths(checkpoint_path, checkpoint="last"):
-    if checkpoint_path.split('/')[-1] != 'checkpoints':
-        checkpoint_path += 'checkpoints'
-    logger.log(f"Loading experiment from {checkpoint_path}")
+    if checkpoint_path.split("/")[-1] != "checkpoints":
+        checkpoint_path += "checkpoints"
     if not os.path.isdir(checkpoint_path):
-        logger.error(f"{checkpoint_path} is not a directory. Not loading anything.")
         return None, None, None
+    logger.log(f"Loading experiment from {checkpoint_path}")
     time_dict = load_time_dict(checkpoint_path)
 
     # List all the checkpoints.
