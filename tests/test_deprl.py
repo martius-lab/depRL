@@ -76,4 +76,4 @@ def test_exception():
 if __name__ == "__main__":
     test_exception()
     test_train()
-    test_play()
+    test_load()
