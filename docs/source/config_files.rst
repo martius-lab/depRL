@@ -53,12 +53,10 @@ In this section, we'll start with an example settings file, explain the main pur
       "name": "myoLeg",
       "environment_name": "deprl_baseline",
       "checkpoint": "last",
-      "path": "./output",
       "full_save": 1,
     },
 
     "working_dir": "./baselines_DEPRL",
-    "id": 0,
     "env_args":{},
     "DEP":{
       "test_episode_every": 3,
