@@ -9,3 +9,4 @@ build/
 baselines_DEPRL/
 _static
 _templates
+.DS_Store

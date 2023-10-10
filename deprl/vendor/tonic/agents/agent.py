@@ -37,8 +37,8 @@ class Agent(abc.ABC):
         """Reloads the agent weights from a checkpoint."""
         pass
 
-    def __call__(self, observation):
-        if not self.noisy:
+    def __call__(self, observation, noisy=False):
+        if not noisy:
             return self.test_step(observation, steps=1e6)
         else:
             return self._step(observation).numpy(force=True)
