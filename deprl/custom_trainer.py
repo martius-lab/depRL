@@ -142,8 +142,11 @@ class Trainer:
                             os.remove(os.path.join(path, file))
                 checkpoint_name = f"step_{self.steps}"
                 save_path = os.path.join(path, checkpoint_name)
+                # save agent checkpoint
                 self.agent.save(save_path, full_save=self.full_save)
-                # logger.save(save_path)
+                # save logger checkpoint
+                logger.save(save_path)
+                # save time iteration dict
                 self.save_time(save_path, epochs, episodes)
                 steps_since_save = self.steps % self.save_steps
                 current_time = time.time()

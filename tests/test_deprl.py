@@ -77,4 +77,3 @@ if __name__ == "__main__":
     test_exception()
     test_train()
     test_load()
-    # # test_play()
