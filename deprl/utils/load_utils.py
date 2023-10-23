@@ -1,8 +1,10 @@
+import os
+
 import gdown
 import torch
 import yaml
+
 from deprl.vendor.tonic import logger
-import os
 
 
 def load(path, environment, checkpoint="last"):

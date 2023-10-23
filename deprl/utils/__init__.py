@@ -1,14 +1,5 @@
-from deprl.utils.utils import (
-    mujoco_render,
-    prepare_params,
-    stdout_suppression,
-)
-
-from deprl.utils.load_utils import (
-    load_checkpoint,
-    load,
-    load_baseline,
-)
+from deprl.utils.load_utils import load, load_baseline, load_checkpoint
+from deprl.utils.utils import mujoco_render, prepare_params, stdout_suppression
 
 __all__ = [
     prepare_params,

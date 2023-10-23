@@ -21,7 +21,6 @@ def train(
     if "header" in tonic_conf:
         exec(tonic_conf["header"])
 
-
     # Build the training environment.
     _environment = tonic_conf["environment"]
     environment = custom_distributed.distribute(
@@ -74,9 +73,13 @@ def train(
     if hasattr(agent, "expl") and "DEP" in config:
         agent.expl.set_params(config["DEP"])
 
-
     # Initialize the logger to get paths
-    logger.initialize(script_path=__file__, config=config, test_env=test_environment, resume=tonic_conf["resume"])
+    logger.initialize(
+        script_path=__file__,
+        config=config,
+        test_env=test_environment,
+        resume=tonic_conf["resume"],
+    )
     path = logger.get_path()
 
     # Process the checkpoint path same way as in tonic_conf.play

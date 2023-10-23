@@ -1,6 +1,6 @@
+import datetime
 import os
 import time
-import datetime
 
 import numpy as np
 import pandas as pd
@@ -8,13 +8,12 @@ import termcolor
 import torch
 import yaml
 
-
 current_logger = None
 
 
 def get_sorted_folders(folders):
     def get_datetime_key(s):
-        date_time_str = s.split('.')[0] + s.split('.')[1]
+        date_time_str = s.split(".")[0] + s.split(".")[1]
         try:
             # Assuming date_time_str is in the format "YYMMDDHHMMSS"
             dt = time.strptime(date_time_str, "%y%m%d%H%M%S")
@@ -30,40 +29,46 @@ def get_sorted_folders(folders):
 def create_results_path(config, env):
     if env is None or env.results_dir is None:
         return os.path.join(
-                            config['working_dir'],
-                            config['tonic']['name'],
-                            get_datetime()
+            config["working_dir"], config["tonic"]["name"], get_datetime()
         )
     return os.path.join(
         env.results_dir,
-        config['tonic']['name'],
-        get_datetime() + f'.{env.unwrapped.model.name()}'
+        config["tonic"]["name"],
+        get_datetime() + f".{env.unwrapped.model.name()}",
     )
 
 
 def create_resumed_results_path(config, env):
     if env is None or env.results_dir is None:
-        path = os.path.join(config['working_dir'],
-                            config['tonic']['name'])
+        path = os.path.join(config["working_dir"], config["tonic"]["name"])
     else:
-        path = os.path.join(env.results_dir,
-                            config['tonic']['name'])
+        path = os.path.join(env.results_dir, config["tonic"]["name"])
     folders = [x for x in os.walk(path)]
     if len(folders) != 0:
-        log('Found earlier run, continuing training.')
+        log("Found earlier run, continuing training.")
         folder = get_sorted_folders(folders[0][1])[-1]
         return os.path.join(path, folder)
     else:
-        return os.path.join(path,
-                            get_datetime())
+        return os.path.join(path, get_datetime())
 
 
 class Logger:
     """Logger used to display and save logs, and save experiment configs."""
 
-    def __init__(self, width=60, script_path=None, config=None, test_env=None, resume=False):
+    def __init__(
+        self,
+        width=60,
+        script_path=None,
+        config=None,
+        test_env=None,
+        resume=False,
+    ):
         env = test_env.environments[0] if test_env is not None else None
-        self.path = create_resumed_results_path(config, env) if resume else create_results_path(config, env)
+        self.path = (
+            create_resumed_results_path(config, env)
+            if resume
+            else create_results_path(config, env)
+        )
         self.log_file_path = os.path.join(self.path, "log.csv")
 
         # Save the launch script.
@@ -345,5 +350,5 @@ def get_datetime():
     # Get the current date and time
     now = datetime.datetime.now()
     # Format the date and time as "YYMMDD.HHMMSS"
-    formatted_datetime = now.strftime('%y%m%d.%H%M%S')
+    formatted_datetime = now.strftime("%y%m%d.%H%M%S")
     return formatted_datetime

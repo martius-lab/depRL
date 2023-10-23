@@ -4,7 +4,6 @@ import sys
 from contextlib import contextmanager
 
 
-
 def prepare_params():
     f = open(sys.argv[-1], "r")
     config = json.load(f)

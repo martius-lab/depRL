@@ -1,7 +1,6 @@
-
 import gym
-import sconegym
 
+import sconegym  # noqa
 
 SEED = 1
 
@@ -34,7 +33,7 @@ def test_envs():
     ]:
         env = gym.make(name)
         env.seed(SEED)
-        print(f'Testing {name=}')
+        print(f"Testing {name=}")
         helper_env_loop(env)
         # assert np.floor(returns[0]) == 3511
 
