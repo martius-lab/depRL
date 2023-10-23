@@ -9,15 +9,43 @@ from deprl.utils import load_config_and_paths, prepare_params
 from deprl.vendor.tonic import logger
 
 
+def create_results_path(config, env):
+    if env is None:
+        return os.path.join(
+                            config['working_dir'],
+                            config['tonic']['name'],
+                            get_datetime()
+        )
+    if not env is None and not env.results_dir is None:
+        return os.path.join(
+            env.results_dir,
+            config['tonic']['name'],
+            get_datetime() + f'.{env.unwrapped.model.name()}'
+        )
+
+
+
+
 def train(
     config,
+    resume,
 ):
     """
     Trains an agent on an environment.
     """
     tonic_conf = config["tonic"]
 
-    path = os.path.join(config["working_dir"], tonic_conf["name"])
+    # Run the header first, e.g. to load an ML framework.
+    if "header" in tonic_conf:
+        exec(tonic_conf["header"])
+
+
+    # used to get directories from scone/hyfydy if scone/hyfydy is used
+    test_env = eval(config["tonic"]["environment"])
+
+    # Initialize the logger to get paths
+    logger.initialize(script_path=__file__, config=config, test_env=test_env, resume=resume)
+    path = logger.get_path()
 
     # Process the checkpoint path same way as in tonic_conf.play
     checkpoint_path = os.path.join(path, "checkpoints")
@@ -31,12 +59,11 @@ def train(
     time_dict = time_dict if loaded_time_dict is None else loaded_time_dict
     config = config if loaded_config is None else loaded_config
 
-    # Run the header first, e.g. to load an ML framework.
-    if "header" in tonic_conf:
-        exec(tonic_conf["header"])
     # In case no env_args are passed via the config
     if "env_args" not in config or config["env_args"] is None:
         config["env_args"] = {}
+
+
     # Build the training environment.
     _environment = tonic_conf["environment"]
     environment = custom_distributed.distribute(
@@ -44,8 +71,8 @@ def train(
         tonic_conf=tonic_conf,
         env_args=config["env_args"],
     )
-    # TODO check if this neesd to be changed
     environment.initialize(seed=tonic_conf["seed"])
+
     # Build the testing environment.
     _test_environment = (
         tonic_conf["test_environment"]
@@ -80,12 +107,11 @@ def train(
         action_space=environment.action_space,
         seed=tonic_conf["seed"],
     )
+
     # Set DEP parameters
     if hasattr(agent, "expl") and "DEP" in config:
         agent.expl.set_params(config["DEP"])
 
-    # Initialize the logger to save data to the path environment/name/seed.
-    logger.initialize(path, script_path=__file__, config=config)
 
     if checkpoint_path:
         # Load the logger from a checkpoint.
@@ -129,7 +155,7 @@ def main():
         logger.log("No CUDA or MPS detected, running on CPU")
 
     config = prepare_params()
-    train(config)
+    train(config, resume=False)
 
 
 if __name__ == "__main__":

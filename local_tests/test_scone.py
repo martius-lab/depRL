@@ -1,7 +1,6 @@
 
 import gym
 import sconegym
-import torch
 
 
 SEED = 1
@@ -35,7 +34,6 @@ def test_envs():
     ]:
         env = gym.make(name)
         env.seed(SEED)
-        torch.manual_seed(SEED)
         print(f'Testing {name=}')
         helper_env_loop(env)
         # assert np.floor(returns[0]) == 3511

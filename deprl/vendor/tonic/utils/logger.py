@@ -1,4 +1,3 @@
-import datetime
 import os
 import time
 
@@ -7,15 +6,37 @@ import pandas as pd
 import termcolor
 import torch
 import yaml
+import datetime
+
 
 current_logger = None
+
+
+def create_results_path(config, env):
+    if env is None:
+        return os.path.join(
+                            config['working_dir'],
+                            config['tonic']['name'],
+                            get_datetime()
+        )
+    if not env is None and not env.results_dir is None:
+        return os.path.join(
+            env.results_dir,
+            config['tonic']['name'],
+            get_datetime() + f'.{env.unwrapped.model.name()}'
+        )
+
+
+def create_resumed_results_path(config, env):
+    pass
 
 
 class Logger:
     """Logger used to display and save logs, and save experiment configs."""
 
-    def __init__(self, path=None, width=60, script_path=None, config=None):
-        self.path = path or str(time.time())
+    def __init__(self, width=60, script_path=None, config=None, test_env=None, resume=False):
+        env = test_env if test_env is not None else None
+        self.path = create_resumed_results_path(config, env) if resume else create_results_path(config, env)
         self.log_file_path = os.path.join(self.path, "log.csv")
 
         # Save the launch script.
@@ -291,3 +312,11 @@ def filter_csv_by_steps(csv_file, threshold):
 
 def create_path(path, post_fix):
     return path.split("step")[0] + post_fix + ".pt"
+
+
+def get_datetime():
+    # Get the current date and time
+    now = datetime.datetime.now()
+    # Format the date and time as "YYMMDD.HHMMSS"
+    formatted_datetime = now.strftime('%y%m%d.%H%M%S')
+    return formatted_datetime

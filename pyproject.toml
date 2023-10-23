@@ -14,7 +14,6 @@ numpy = "^1.22.4"
 termcolor = "^2.2.0"
 pandas = "^2.0.1"
 gdown = "^4.7.1"
-torch = "^2.0.0"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -30,7 +29,7 @@ pytest = "^7.4.0"
 sphinx-copybutton = "^0.5.2"
 pytest-order = "^1.1.0"
 sconegym = {path = "../sconegym", develop = true}
-# myosuite = "^2.1.3"
+myosuite = "^2.1.3"
 
 
 [tool.poetry.scripts]

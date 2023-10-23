@@ -77,3 +77,7 @@ class SconeWrapper(ExceptionWrapper):
     @property
     def _max_episode_steps(self):
         return 1000
+
+    @property
+    def results_dir(self):
+        return self.unwrapped.results_dir

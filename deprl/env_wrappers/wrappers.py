@@ -74,6 +74,10 @@ class AbstractWrapper(gym.Wrapper, ABC):
             * ((f - self.min_force) / (self.max_force - self.min_force + 0.1))
         ).copy()
 
+    @property
+    def results_dir(self):
+        return None
+
 
 class ExceptionWrapper(AbstractWrapper):
     """
