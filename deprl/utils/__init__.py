@@ -5,7 +5,7 @@ from deprl.utils.utils import (
 )
 
 from deprl.utils.load_utils import (
-    load_config_and_paths,
+    load_checkpoint,
     load,
     load_baseline,
 )
@@ -16,5 +16,5 @@ __all__ = [
     stdout_suppression,
     load,
     load_baseline,
-    load_config_and_paths,
+    load_checkpoint,
 ]

@@ -5,30 +5,12 @@ import traceback
 import torch
 
 from deprl import custom_distributed
-from deprl.utils import load_config_and_paths, prepare_params
+from deprl.utils import load_checkpoint, prepare_params
 from deprl.vendor.tonic import logger
-
-
-def create_results_path(config, env):
-    if env is None:
-        return os.path.join(
-                            config['working_dir'],
-                            config['tonic']['name'],
-                            get_datetime()
-        )
-    if not env is None and not env.results_dir is None:
-        return os.path.join(
-            env.results_dir,
-            config['tonic']['name'],
-            get_datetime() + f'.{env.unwrapped.model.name()}'
-        )
-
-
 
 
 def train(
     config,
-    resume,
 ):
     """
     Trains an agent on an environment.
@@ -38,30 +20,6 @@ def train(
     # Run the header first, e.g. to load an ML framework.
     if "header" in tonic_conf:
         exec(tonic_conf["header"])
-
-
-    # used to get directories from scone/hyfydy if scone/hyfydy is used
-    test_env = eval(config["tonic"]["environment"])
-
-    # Initialize the logger to get paths
-    logger.initialize(script_path=__file__, config=config, test_env=test_env, resume=resume)
-    path = logger.get_path()
-
-    # Process the checkpoint path same way as in tonic_conf.play
-    checkpoint_path = os.path.join(path, "checkpoints")
-
-    time_dict = {"steps": 0, "epochs": 0, "episodes": 0}
-    (
-        loaded_config,
-        checkpoint_path,
-        loaded_time_dict,
-    ) = load_config_and_paths(checkpoint_path, checkpoint="last")
-    time_dict = time_dict if loaded_time_dict is None else loaded_time_dict
-    config = config if loaded_config is None else loaded_config
-
-    # In case no env_args are passed via the config
-    if "env_args" not in config or config["env_args"] is None:
-        config["env_args"] = {}
 
 
     # Build the training environment.
@@ -94,6 +52,10 @@ def train(
     )
     test_environment.initialize(seed=tonic_conf["seed"] + 1000000)
 
+    # In case no env_args are passed via the config
+    if "env_args" not in config or config["env_args"] is None:
+        config["env_args"] = {}
+
     # Build the agent.
     if "agent" not in tonic_conf or tonic_conf["agent"] is None:
         raise ValueError("No agent specified.")
@@ -112,6 +74,21 @@ def train(
     if hasattr(agent, "expl") and "DEP" in config:
         agent.expl.set_params(config["DEP"])
 
+
+    # Initialize the logger to get paths
+    logger.initialize(script_path=__file__, config=config, test_env=test_environment, resume=tonic_conf["resume"])
+    path = logger.get_path()
+
+    # Process the checkpoint path same way as in tonic_conf.play
+    checkpoint_path = os.path.join(path, "checkpoints")
+
+    time_dict = {"steps": 0, "epochs": 0, "episodes": 0}
+    (
+        _,
+        checkpoint_path,
+        loaded_time_dict,
+    ) = load_checkpoint(checkpoint_path, checkpoint="last")
+    time_dict = time_dict if loaded_time_dict is None else loaded_time_dict
 
     if checkpoint_path:
         # Load the logger from a checkpoint.
@@ -155,7 +132,7 @@ def main():
         logger.log("No CUDA or MPS detected, running on CPU")
 
     config = prepare_params()
-    train(config, resume=False)
+    train(config)
 
 
 if __name__ == "__main__":
