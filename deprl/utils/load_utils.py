@@ -6,7 +6,7 @@ import os
 
 
 def load(path, environment, checkpoint="last"):
-    config, checkpoint_path, _ = load_config_and_paths(path, checkpoint)
+    config, checkpoint_path, _ = load_checkpoint(path, checkpoint)
     header = config["tonic"]["header"]
     agent = config["tonic"]["agent"]
     # Run the header
@@ -37,7 +37,10 @@ def load_time_dict(checkpoint_path):
         return None
 
 
-def load_config_and_paths(checkpoint_path, checkpoint="last"):
+def load_checkpoint(checkpoint_path, checkpoint="last"):
+    """
+    Checkpoint loading for main() function.
+    """
     if checkpoint_path.split("/")[-1] != "checkpoints":
         checkpoint_path += "checkpoints"
     if not os.path.isdir(checkpoint_path):
@@ -85,6 +88,8 @@ def load_config_and_paths(checkpoint_path, checkpoint="last"):
     with open(arguments_path, "r") as config_file:
         config = yaml.load(config_file, Loader=yaml.FullLoader)
     return config, checkpoint_path, time_dict
+
+
 # All kinds of pretrained baselines
 def load_baseline(environment):
     identifier = (
