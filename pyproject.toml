@@ -27,7 +27,6 @@ sphinx = "5.3.0"
 sphinx-rtd-theme = "^1.2.2"
 pytest = "^7.4.0"
 sphinx-copybutton = "^0.5.2"
-pytest-order = "^1.1.0"
 sconegym = {path = "../sconegym", develop = true}
 myosuite = "^2.1.3"
 

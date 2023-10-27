@@ -12,7 +12,8 @@
     "seed": 0,
     "name": "myoLeg",
     "checkpoint": "last",
-    "full_save": 1
+    "full_save": 1,
+    "resume": 1
   },
   "working_dir": "./tests/test_DEPRL",
   "id": 0,

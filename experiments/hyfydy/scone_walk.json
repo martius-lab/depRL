@@ -12,7 +12,8 @@
     "seed": 0,
     "name": "sconerun_test_run_command",
     "checkpoint": "last",
-    "full_save": 1
+    "full_save": 1,
+    "resume": 1
   },
 
   "working_dir": "IGNORED_FOR_HYFYDY",

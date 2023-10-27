@@ -13,7 +13,7 @@
     "name": "myoLeg",
     "checkpoint": "last",
     "full_save": 1,
-    "resume": 1
+    "resume": 0
   },
   "working_dir": "./tests/test_DEPRL",
   "id": 0,
