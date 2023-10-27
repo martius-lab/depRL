@@ -453,7 +453,7 @@ def plot(
         legend_frame.set_linewidth(0)
         fig.tight_layout(pad=0, w_pad=0, h_pad=1.0)
         fig.canvas.draw()
-        renderer = legend_ax.get_renderer_cache()
+        renderer = ax.figure.canvas.get_renderer()
         h_packer = legend.get_children()[0].get_children()[1]
         target_width = h_packer.get_extent(renderer)[0]
         current_width = sum(

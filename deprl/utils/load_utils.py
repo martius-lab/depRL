@@ -108,6 +108,9 @@ def load_baseline(environment):
     if "myoChallengeRelocateP1" in identifier:
         logger.log("Load RelocateP1 Baseline")
         return load_baseline_myorelocatep1(environment)
+    if "sconerun_h2190" in identifier:
+        logger.log("Load SconeRun H2190 Baseline")
+        return load_baseline_sconerun_h2190(environment)
 
 
 def load_baseline_myolegwalk(environment):
@@ -160,6 +163,25 @@ def load_baseline_myorelocatep1(environment):
         os.makedirs(foldername)
         os.makedirs(os.path.join(foldername, "checkpoints"))
     modelpath = os.path.join(foldername, "checkpoints/step_11000000.pt")
+    configpath = os.path.join(foldername, "config.yaml")
+    if not os.path.exists(modelpath):
+        gdown.download(modelurl, modelpath, quiet=False)
+        gdown.download(configurl, configpath, quiet=False)
+    return load(foldername, environment)
+
+
+def load_baseline_sconerun_h2190(environment):
+    modelurl = (
+        "https://drive.google.com/uc?id=1vdt4JZkefl_MA8PSotQNkgoJhajSZMGq"
+    )
+    configurl = (
+        "https://drive.google.com/uc?id=18mECgv2I7UnA8m4RuhRjdKZr8L7y3p5T"
+    )
+    foldername = "./baselines_DEPRL/sconerun_h2190/"
+    if not os.path.exists(foldername):
+        os.makedirs(foldername)
+        os.makedirs(os.path.join(foldername, "checkpoints"))
+    modelpath = os.path.join(foldername, "checkpoints/step_99000000.pt")
     configpath = os.path.join(foldername, "config.yaml")
     if not os.path.exists(modelpath):
         gdown.download(modelurl, modelpath, quiet=False)
