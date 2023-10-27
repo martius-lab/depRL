@@ -23,18 +23,24 @@ Take a look at the config_files header in the docs for more information on how t
 This function also creates an output folder with the trained policy checkpoints, as well as a `log.csv` file that contains all information that was logged during the training process and a `config.yaml` that contains training settings.
 Here is an example folder structure for a baseline we trained, we will refer to this structure in later sections.
 
+ .. note::
+ The saving mechanism for SCONE and Hyfydy is slightly different, which improves integration with the remaining SCONE features. When a sconegym experiment is detected, the experiment is automatically saved to the results folder defined in the SCONE interface.
 
 .. code-block:: bash
 
  myoLegWalk_20230514/
+     │
      ├── myoLeg/
-     │   ├── config.yaml
-     │   ├── log.csv
-     │   ├── checkpoints/
-     │   │   ├── step_1000000.pt
-     │   │   ├── step_2000000.pt
-     │   │   └── ...
-     │   └── ...
+     │   │
+     │   └───230514.142312/
+     │       │
+     │       ├── config.yaml
+     │       ├── log.csv
+     │       ├── checkpoints/
+     │       │   ├── step_1000000.pt
+     │       │   ├── step_2000000.pt
+     │       │   └── ...
+     │       └── ...
      └── ...
 
 Usage:
@@ -53,7 +59,7 @@ Note that the last folder in the experiment subdirectory has to be given to the 
 
 .. code-block:: bash
 
-   python -m deprl.play --path myoLegWalk_20230514/myoLeg/
+   python -m deprl.play --path myoLegWalk_20230514/myoLeg/230514.142312/
 
 On top of the commands included by TonicRL, deprl also provides some additional arguments:
 
@@ -70,8 +76,7 @@ Usage:
 
 .. code-block:: bash
 
- python -m deprl.plot --path myoLegWalk_20230514/myoLeg/
-
+ python -m deprl.plot --path myoLegWalk_20230514/myoLeg/230514.142312/
 
 
 log - log training data to wandb
@@ -83,7 +88,7 @@ Usage:
 
 .. code-block:: bash
 
-   python -m deprl.log --path myoLegWalk_20230514/myoLeg/log.csv
+   python -m deprl.log --path myoLegWalk_20230514/myoLeg/230514.142312/log.csv
 
 It allows two additional CLI arguments:
 

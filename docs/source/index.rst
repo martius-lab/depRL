@@ -12,6 +12,7 @@ Welcome to deprl's documentation!
 
    installation
    usage
+   hyfydy_baselines
    myo_baselines
    config_files
    loading_checkpoints
@@ -47,4 +48,15 @@ How to cite
     booktitle={The Eleventh International Conference on Learning Representations },
     year={2023},
     url={https://openreview.net/forum?id=C-xa_D3oTj6}
-    }
+  }
+
+.. code-block:: bibtex
+
+  @misc{schumacher2023natural,
+    title={Natural and Robust Walking using Reinforcement Learning without Demonstrations in High-Dimensional Musculoskeletal Models}, 
+    author={Pierre Schumacher and Thomas Geijtenbeek and Vittorio Caggiano and Vikash Kumar and Syn Schmitt and Georg Martius and Daniel F. B. Haeufle},
+    year={2023},
+    eprint={2309.02976},
+    archivePrefix={arXiv},
+    primaryClass={cs.RO}
+  }
