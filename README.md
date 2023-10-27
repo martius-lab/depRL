@@ -38,7 +38,7 @@ or render the pretrained baselines with:
 You have to find your own reward function, of course. These files also require the installation of `myosuite==1.7.0`.
 
 ## SCONE
-To be filled in.
+We include several pre-trained baselines and configuration files to train the policies from our preprint on natural and robust walking with reinforcement learning.
 
 ## Abstract
 Muscle-actuated organisms are capable of learning an unparalleled diversity of
@@ -203,5 +203,16 @@ If you find this repository useful, please consider giving a star ⭐ and cite o
   doi = {},
   url = {https://openreview.net/forum?id=C-xa_D3oTj6},
   month_numeric = {5}
+}
+```
+
+```
+@misc{schumacher2023natural,
+      title={Natural and Robust Walking using Reinforcement Learning without Demonstrations in High-Dimensional Musculoskeletal Models}, 
+      author={Pierre Schumacher and Thomas Geijtenbeek and Vittorio Caggiano and Vikash Kumar and Syn Schmitt and Georg Martius and Daniel F. B. Haeufle},
+      year={2023},
+      eprint={2309.02976},
+      archivePrefix={arXiv},
+      primaryClass={cs.RO}
 }
 ```
