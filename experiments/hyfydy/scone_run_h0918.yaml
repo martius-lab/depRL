@@ -8,12 +8,12 @@ tonic:
   environment: "deprl.environments.Gym('sconerun_h0918-v0', scaled_actions=False)"
   full_save: 1
   name: "sconerun_h0918"
-  resume: false
+  resume: true
   seed: 0
   parallel: 20
   sequential: 10
   test_environment: null
-  trainer: "deprl.custom_trainer.Trainer(steps=int(5e8), epoch_steps=int(2e5), save_steps=int(2e5))"
+  trainer: "deprl.custom_trainer.Trainer(steps=int(5e8), epoch_steps=int(2e5), save_steps=int(1e6))"
 
 working_dir: "IGNORED_FOR_HYFYDY"
 id: 0
