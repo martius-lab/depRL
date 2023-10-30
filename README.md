@@ -208,7 +208,7 @@ If you find this repository useful, please consider giving a star ⭐ and cite o
 
 ```
 @misc{schumacher2023natural,
-      title={Natural and Robust Walking using Reinforcement Learning without Demonstrations in High-Dimensional Musculoskeletal Models}, 
+      title={Natural and Robust Walking using Reinforcement Learning without Demonstrations in High-Dimensional Musculoskeletal Models},
       author={Pierre Schumacher and Thomas Geijtenbeek and Vittorio Caggiano and Vikash Kumar and Syn Schmitt and Georg Martius and Daniel F. B. Haeufle},
       year={2023},
       eprint={2309.02976},

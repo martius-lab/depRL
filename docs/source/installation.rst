@@ -16,8 +16,7 @@ or from source:
 
   git clone https://github.com/martius-lab/depRL.git
   cd deprl
-  pip install .
-  pip install -r requirements.txt
+  pip install -e .
 
 
 The default pypi installation of deprl includes GPU support. If CUDA is not installed on your system, try the CPU version explicitly with:
@@ -26,6 +25,13 @@ The default pypi installation of deprl includes GPU support. If CUDA is not inst
 
   pip install torch --index-url https://download.pytorch.org/whl/cpu
 
+If you have any missing requirements, try calling:
+
+.. code-block:: bash
+
+  pip install -r requirements.txt
+
+but that should normally not be necessary.
 
 A poetry installation can be done with:
 

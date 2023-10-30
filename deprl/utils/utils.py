@@ -1,16 +1,18 @@
-import json, yaml
+import json
 import os
 import sys
 from contextlib import contextmanager
 
+import yaml
+
 
 def prepare_params():
-    if 'json' in sys.argv[-1]:
+    if "json" in sys.argv[-1]:
         f = open(sys.argv[-1], "r")
         config = json.load(f)
-    elif 'yaml' in sys.argv[-1]:
-        with open(sys.argv[-1], 'r') as stream:
-                config = yaml.safe_load(stream)
+    elif "yaml" in sys.argv[-1]:
+        with open(sys.argv[-1], "r") as stream:
+            config = yaml.safe_load(stream)
     else:
         raise NotImplementedError
     return config

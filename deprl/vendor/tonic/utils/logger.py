@@ -31,6 +31,7 @@ def create_results_path(config, env):
         return os.path.join(
             config["working_dir"], config["tonic"]["name"], get_datetime()
         )
+    # Scone experiments are saved in results_dir
     return os.path.join(
         env.results_dir,
         config["tonic"]["name"],
