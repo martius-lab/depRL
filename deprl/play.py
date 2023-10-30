@@ -7,6 +7,7 @@ import numpy as np
 import yaml
 
 from deprl import env_wrappers, mujoco_render
+from deprl.utils import load_checkpoint
 
 from .vendor.tonic import logger
 
@@ -72,8 +73,12 @@ def play_gym(agent, environment, noisy, num_episodes, no_render):
                 break
 
 
-def play_scone(agent, environment, noisy, num_episodes, no_render):
+def play_scone(agent, environment, noisy, num_episodes, no_render, path, checkpoint_path):
     """Launches an agent in a Gym-based environment."""
+    path = path.split('/')
+    checkpoint_step = checkpoint_path.split('step_')[1]
+    path = os.path.join(*path[3:-1], f'run_checkpoint_{checkpoint_step}')
+    environment.set_output_dir(path)
     if not no_render:
         environment.store_next_episode()
     observations = environment.reset()
@@ -246,55 +251,10 @@ def play(
 
     if path:
         logger.log(f"Loading experiment from {path}")
-
-        # Use no checkpoint, the agent is freshly created.
-        if checkpoint == "none" or agent is not None:
-            logger.log("Not loading any weights")
-
-        else:
-            checkpoint_path = os.path.join(path, "checkpoints")
-            if not os.path.isdir(checkpoint_path):
-                logger.error(f"{checkpoint_path} is not a directory")
-                checkpoint_path = None
-
-            # List all the checkpoints.
-            checkpoint_ids = []
-            for file in os.listdir(checkpoint_path):
-                if file[:5] == "step_":
-                    checkpoint_id = file.split(".")[0]
-                    checkpoint_ids.append(int(checkpoint_id[5:]))
-
-            if checkpoint_ids:
-                # Use the last checkpoint.
-                if checkpoint == "last":
-                    checkpoint_id = max(checkpoint_ids)
-                    checkpoint_path = os.path.join(
-                        checkpoint_path, f"step_{checkpoint_id}"
-                    )
-
-                # Use the specified checkpoint.
-                else:
-                    checkpoint_id = int(checkpoint)
-                    if checkpoint_id in checkpoint_ids:
-                        checkpoint_path = os.path.join(
-                            checkpoint_path, f"step_{checkpoint_id}"
-                        )
-                    else:
-                        logger.error(
-                            f"Checkpoint {checkpoint_id} "
-                            f"not found in {checkpoint_path}"
-                        )
-                        checkpoint_path = None
-
-            else:
-                logger.error(f"No checkpoint found in {checkpoint_path}")
-                checkpoint_path = None
-
-        # Load the experiment configuration.
-        arguments_path = os.path.join(path, "config.yaml")
-        with open(arguments_path, "r") as config_file:
-            config = yaml.load(config_file, Loader=yaml.FullLoader)
-
+        # Load config file and checkpoint path from folder
+        checkpoint_path = os.path.join(path, 'checkpoints')
+        config, checkpoint_path, _ = load_checkpoint(checkpoint_path, checkpoint)
+        # Get important info from config
         header = header or config["tonic"]["header"]
         agent = agent or config["tonic"]["agent"]
         environment = environment or config["tonic"]["test_environment"]
@@ -337,7 +297,7 @@ def play(
             )
         play_control_suite(agent, environment)
     elif "scone" in str(type(environment)).lower():
-        play_scone(agent, environment, noisy, num_episodes, no_render)
+        play_scone(agent, environment, noisy, num_episodes, no_render, path, checkpoint_path)
     else:
         play_gym(agent, environment, noisy, num_episodes, no_render)
 

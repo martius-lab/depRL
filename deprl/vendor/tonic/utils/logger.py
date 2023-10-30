@@ -42,15 +42,17 @@ def create_results_path(config, env):
 def create_resumed_results_path(config, env):
     if env is None or env.results_dir is None:
         path = os.path.join(config["working_dir"], config["tonic"]["name"])
+        postfix = None
     else:
         path = os.path.join(env.results_dir, config["tonic"]["name"])
+        postfix = f".{env.unwrapped.model.name()}"
     folders = [x for x in os.walk(path)]
     if len(folders) != 0:
         log("Found earlier run, continuing training.")
         folder = get_sorted_folders(folders[0][1])[-1]
         return os.path.join(path, folder)
     else:
-        return os.path.join(path, get_datetime())
+        return os.path.join(path, get_datetime()) if postfix is None else os.path.join(path, get_datetime() + postfix)
 
 
 class Logger:
