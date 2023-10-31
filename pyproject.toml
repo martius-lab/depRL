@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "deprl"
-version = "0.3.2"
+version = "0.3.3b0"
 description = "DEP-RL, a method for robust control of musculoskeletal systems."
 authors = ["Pierre Schumacher <pierre.schumacher@tuebingen.mpg.de>"]
 license = "MIT"
@@ -16,14 +16,13 @@ pandas = "^2.0.1"
 gdown = "^4.7.1"
 gym = "0.13.0"
 wandb = "^0.15.4"
-torch = "2.1.0"
+# torch = {version="2.1.0", source="pytorch-cpu"}
+torch = "^2.1.0"
 
 
 [tool.poetry.group.dev.dependencies]
 pudb = "*"
 pre-commit = "*"
-# ostrichrl = {git = "https://github.com/P-Schumacher/ostrichrl.git", branch="fix/setuptools"}
-# warmup = {git = "https://github.com/P-Schumacher/warmup.git"}
 sphinx = "5.3.0"
 sphinx-rtd-theme = "^1.2.2"
 pytest = "^7.4.0"

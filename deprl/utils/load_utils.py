@@ -172,7 +172,7 @@ def load_baseline_myorelocatep1(environment):
 
 def load_baseline_sconerun_h2190(environment):
     modelurl = (
-        "https://drive.google.com/uc?id=1vdt4JZkefl_MA8PSotQNkgoJhajSZMGq"
+        "https://drive.google.com/uc?id=1WZ9rkI3W58zVzUtkXgM0MVjrEEiiiOzk"
     )
     configurl = (
         "https://drive.google.com/uc?id=18mECgv2I7UnA8m4RuhRjdKZr8L7y3p5T"
@@ -181,7 +181,7 @@ def load_baseline_sconerun_h2190(environment):
     if not os.path.exists(foldername):
         os.makedirs(foldername)
         os.makedirs(os.path.join(foldername, "checkpoints"))
-    modelpath = os.path.join(foldername, "checkpoints/step_99000000.pt")
+    modelpath = os.path.join(foldername, "checkpoints/step_10000000.pt")
     configpath = os.path.join(foldername, "config.yaml")
     if not os.path.exists(modelpath):
         gdown.download(modelurl, modelpath, quiet=False)
