@@ -126,6 +126,9 @@ def train(
 
 
 def set_tensor_device():
+    # TODO remove
+    torch.set_default_device("cpu")
+    return
     # use CUDA or apple metal
     if torch.cuda.is_available():
         torch.set_default_device("cuda")
@@ -140,6 +143,7 @@ def set_tensor_device():
 def main():
     config = prepare_params()
     if "cpu_override" in config["tonic"] and config["tonic"]["cpu_override"]:
+        torch.set_default_device("cpu")
         logger.log("Manually forcing CPU run.")
     else:
         set_tensor_device()
