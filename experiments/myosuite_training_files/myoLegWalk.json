@@ -13,7 +13,8 @@
     "name": "myoLeg",
     "environment_name": "deprl_baseline",
     "checkpoint": "last",
-    "full_save": 1
+    "full_save": 1,
+    "resume": 1,
   },
   "working_dir": "./baselines_DEPRL",
   "id": 0,
