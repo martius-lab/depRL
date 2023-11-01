@@ -52,7 +52,11 @@ def create_resumed_results_path(config, env):
         folder = get_sorted_folders(folders[0][1])[-1]
         return os.path.join(path, folder)
     else:
-        return os.path.join(path, get_datetime()) if postfix is None else os.path.join(path, get_datetime() + postfix)
+        return (
+            os.path.join(path, get_datetime())
+            if postfix is None
+            else os.path.join(path, get_datetime() + postfix)
+        )
 
 
 class Logger:

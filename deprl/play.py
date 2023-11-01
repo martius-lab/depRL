@@ -4,7 +4,6 @@ import argparse
 import os
 
 import numpy as np
-import yaml
 
 from deprl import env_wrappers, mujoco_render
 from deprl.utils import load_checkpoint
@@ -73,11 +72,13 @@ def play_gym(agent, environment, noisy, num_episodes, no_render):
                 break
 
 
-def play_scone(agent, environment, noisy, num_episodes, no_render, path, checkpoint_path):
+def play_scone(
+    agent, environment, noisy, num_episodes, no_render, path, checkpoint_path
+):
     """Launches an agent in a Gym-based environment."""
-    path = path.split('/')
-    checkpoint_step = checkpoint_path.split('step_')[1]
-    path = os.path.join(*path[3:-1], f'run_checkpoint_{checkpoint_step}')
+    path = path.split("/")
+    checkpoint_step = checkpoint_path.split("step_")[1]
+    path = os.path.join(*path[3:-1], f"run_checkpoint_{checkpoint_step}")
     environment.set_output_dir(path)
     if not no_render:
         environment.store_next_episode()
@@ -252,8 +253,10 @@ def play(
     if path:
         logger.log(f"Loading experiment from {path}")
         # Load config file and checkpoint path from folder
-        checkpoint_path = os.path.join(path, 'checkpoints')
-        config, checkpoint_path, _ = load_checkpoint(checkpoint_path, checkpoint)
+        checkpoint_path = os.path.join(path, "checkpoints")
+        config, checkpoint_path, _ = load_checkpoint(
+            checkpoint_path, checkpoint
+        )
         # Get important info from config
         header = header or config["tonic"]["header"]
         agent = agent or config["tonic"]["agent"]
@@ -297,7 +300,15 @@ def play(
             )
         play_control_suite(agent, environment)
     elif "scone" in str(type(environment)).lower():
-        play_scone(agent, environment, noisy, num_episodes, no_render, path, checkpoint_path)
+        play_scone(
+            agent,
+            environment,
+            noisy,
+            num_episodes,
+            no_render,
+            path,
+            checkpoint_path,
+        )
     else:
         play_gym(agent, environment, noisy, num_episodes, no_render)
 

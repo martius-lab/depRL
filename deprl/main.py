@@ -139,8 +139,8 @@ def set_tensor_device():
 
 def main():
     config = prepare_params()
-    if 'cpu_override' in config['tonic'] and config['tonic']['cpu_override']:
-        logger.log('Manually forcing CPU run.')
+    if "cpu_override" in config["tonic"] and config["tonic"]["cpu_override"]:
+        logger.log("Manually forcing CPU run.")
     else:
         set_tensor_device()
     train(config)

@@ -1,5 +1,4 @@
 import gym
-
 import sconegym  # noqa
 
 SEED = 1

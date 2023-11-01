@@ -17,7 +17,7 @@ gdown = "^4.7.1"
 gym = "0.13.0"
 wandb = "^0.15.4"
 # torch = {version="2.1.0", source="pytorch-cpu"}
-torch = "^2.1.0"
+torch = ">=2.1.0"
 
 
 [tool.poetry.group.dev.dependencies]
