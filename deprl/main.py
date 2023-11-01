@@ -126,9 +126,6 @@ def train(
 
 
 def set_tensor_device():
-    # TODO remove
-    torch.set_default_device("cpu")
-    return
     # use CUDA or apple metal
     if torch.cuda.is_available():
         torch.set_default_device("cuda")
