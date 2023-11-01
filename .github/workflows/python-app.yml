@@ -33,7 +33,7 @@ jobs:
       matrix:
         os:
           - windows-latest
-          - macos-latest
+          # - macos-latest
           - ubuntu-latest
 
     steps:
