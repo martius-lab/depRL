@@ -111,6 +111,7 @@ def load_baseline(environment):
     if "sconerun_h2190" in identifier:
         logger.log("Load SconeRun H2190 Baseline")
         return load_baseline_sconerun_h2190(environment)
+    raise NotImplementedError("The chosen environment has no pre-trained baseline.")
 
 
 def load_baseline_myolegwalk(environment):
