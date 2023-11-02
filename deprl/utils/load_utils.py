@@ -43,6 +43,8 @@ def load_checkpoint(checkpoint_path, checkpoint="last"):
     """
     Checkpoint loading for main() function.
     """
+    if not os.path.exists(os.path.join(path, 'config.yaml')):
+        raise FileNotFoundError(f'The given path does not contain a <config.yaml> file: {path}')
     if checkpoint_path.split("/")[-1] != "checkpoints":
         checkpoint_path += "checkpoints"
     if not os.path.isdir(checkpoint_path):
