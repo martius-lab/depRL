@@ -43,6 +43,7 @@ def load_checkpoint(checkpoint_path, checkpoint="last"):
     """
     Checkpoint loading for main() function.
     """
+    path = checkpoint_path if not 'checkpoints' in checkpoint_path else os.path.split('checkpoints')[0]
     if not os.path.exists(os.path.join(path, 'config.yaml')):
         raise FileNotFoundError(f'The given path does not contain a <config.yaml> file: {path}')
     if checkpoint_path.split("/")[-1] != "checkpoints":
@@ -110,6 +111,21 @@ def load_baseline(environment):
     if "myoChallengeRelocateP1" in identifier:
         logger.log("Load RelocateP1 Baseline")
         return load_baseline_myorelocatep1(environment)
+    if "sconewalk_h0918" in identifier:
+        logger.log("Load SconeWalk H0918 Baseline")
+        return load_baseline_sconewalk_h0918(environment)
+    if "sconewalk_h1622" in identifier:
+        logger.log("Load SconeWalk H1622 Baseline")
+        return load_baseline_sconewalk_h1622(environment)
+    if "sconewalk_h2190" in identifier:
+        logger.log("Load SconeWalk H2190 Baseline")
+        return load_baseline_sconewalk_h2190(environment)
+    if "sconerun_h0918" in identifier:
+        logger.log("Load SconeRun H0918 Baseline")
+        return load_baseline_sconerun_h0918(environment)
+    if "sconerun_h1622" in identifier:
+        logger.log("Load SconeRun H1622 Baseline")
+        return load_baseline_sconerun_h1622(environment)
     if "sconerun_h2190" in identifier:
         logger.log("Load SconeRun H2190 Baseline")
         return load_baseline_sconerun_h2190(environment)
@@ -118,6 +134,7 @@ def load_baseline(environment):
     )
 
 
+# MyoSuite Baselines
 def load_baseline_myolegwalk(environment):
     modelurl = (
         "https://drive.google.com/uc?id=1UkiUozk-PM8JbQCZNoy2Jr2t1StLcAzx"
@@ -168,6 +185,102 @@ def load_baseline_myorelocatep1(environment):
         os.makedirs(foldername)
         os.makedirs(os.path.join(foldername, "checkpoints"))
     modelpath = os.path.join(foldername, "checkpoints/step_11000000.pt")
+    configpath = os.path.join(foldername, "config.yaml")
+    if not os.path.exists(modelpath):
+        gdown.download(modelurl, modelpath, quiet=False)
+        gdown.download(configurl, configpath, quiet=False)
+    return load(foldername, environment)
+
+
+# Hyfydy Baselines
+def load_baseline_sconewalk_h0918(environment):
+    modelurl = (
+        "https://drive.google.com/uc?id=154Tvq3QI3WJbybXL2OrePwaJQqnLNTCA"
+    )
+    configurl = (
+        "https://drive.google.com/uc?id=1hlgK3JdjKe0F3-JOsoZHhdpOoxwtfpoc"
+    )
+    foldername = "./baselines_DEPRL/sconewalk_h0918/"
+    if not os.path.exists(foldername):
+        os.makedirs(foldername)
+        os.makedirs(os.path.join(foldername, "checkpoints"))
+    modelpath = os.path.join(foldername, "checkpoints/step_10000000.pt")
+    configpath = os.path.join(foldername, "config.yaml")
+    if not os.path.exists(modelpath):
+        gdown.download(modelurl, modelpath, quiet=False)
+        gdown.download(configurl, configpath, quiet=False)
+    return load(foldername, environment)
+
+
+def load_baseline_sconewalk_h1622(environment):
+    modelurl = (
+        "https://drive.google.com/uc?id=1OAEkEu8fPkJdWL3AgO4Clw61L2Vjnx0O"
+    )
+    configurl = (
+        "https://drive.google.com/uc?id=1ygFFYAOpifC_EV017v_H9EZnDu-hOfRO"
+    )
+    foldername = "./baselines_DEPRL/sconewalk_h1622/"
+    if not os.path.exists(foldername):
+        os.makedirs(foldername)
+        os.makedirs(os.path.join(foldername, "checkpoints"))
+    modelpath = os.path.join(foldername, "checkpoints/step_37000000.pt")
+    configpath = os.path.join(foldername, "config.yaml")
+    if not os.path.exists(modelpath):
+        gdown.download(modelurl, modelpath, quiet=False)
+        gdown.download(configurl, configpath, quiet=False)
+    return load(foldername, environment)
+
+
+def load_baseline_sconewalk_h2190(environment):
+    modelurl = (
+        "https://drive.google.com/uc?id=1BOgohxezyJTrEXnTg3_IX5_-FoP9_Tdm"
+    )
+    configurl = (
+        "https://drive.google.com/uc?id=1khC-55_nfz5uMsRUJN8QYjac3UEUlhEh"
+    )
+    foldername = "./baselines_DEPRL/sconewalk_h2190/"
+    if not os.path.exists(foldername):
+        os.makedirs(foldername)
+        os.makedirs(os.path.join(foldername, "checkpoints"))
+    modelpath = os.path.join(foldername, "checkpoints/step_67000000.pt")
+    configpath = os.path.join(foldername, "config.yaml")
+    if not os.path.exists(modelpath):
+        gdown.download(modelurl, modelpath, quiet=False)
+        gdown.download(configurl, configpath, quiet=False)
+    return load(foldername, environment)
+
+
+def load_baseline_sconerun_h0918(environment):
+    modelurl = (
+        "https://drive.google.com/uc?id=1WZ9rkI3W58zVzUtkXgM0MVjrEEiiiOzk"
+    )
+    configurl = (
+        "https://drive.google.com/uc?id=18mECgv2I7UnA8m4RuhRjdKZr8L7y3p5T"
+    )
+    foldername = "./baselines_DEPRL/sconerun_h0918/"
+    if not os.path.exists(foldername):
+        os.makedirs(foldername)
+        os.makedirs(os.path.join(foldername, "checkpoints"))
+    modelpath = os.path.join(foldername, "checkpoints/step_10000000.pt")
+    configpath = os.path.join(foldername, "config.yaml")
+    if not os.path.exists(modelpath):
+        gdown.download(modelurl, modelpath, quiet=False)
+        gdown.download(configurl, configpath, quiet=False)
+    return load(foldername, environment)
+
+
+def load_baseline_sconerun_h1622(environment):
+    modelurl = (
+        "https://drive.google.com/uc?id=1WZ9rkI3W58zVzUtkXgM0MVjrEEiiiOzk"
+    )
+    configurl = (
+        "https://drive.google.com/uc?id=18mECgv2I7UnA8m4RuhRjdKZr8L7y3p5T"
+    )
+    foldername = "./baselines_DEPRL/sconerun_h1622/"
+    if not os.path.exists(foldername):
+        os.makedirs(foldername)
+        os.makedirs(os.path.join(foldername, "checkpoints"))
+    modelpath = os.path.join(foldername, "checkpoints/step_10000000.pt")
     configpath = os.path.join(foldername, "config.yaml")
     if not os.path.exists(modelpath):
         gdown.download(modelurl, modelpath, quiet=False)
