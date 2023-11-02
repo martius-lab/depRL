@@ -43,13 +43,20 @@ def load_checkpoint(checkpoint_path, checkpoint="last"):
     """
     Checkpoint loading for main() function.
     """
-    path = checkpoint_path if not 'checkpoints' in checkpoint_path else os.path.split('checkpoints')[0]
-    if not os.path.exists(os.path.join(path, 'config.yaml')):
-        raise FileNotFoundError(f'The given path does not contain a <config.yaml> file: {path}')
-    if checkpoint_path.split("/")[-1] != "checkpoints":
-        checkpoint_path += "checkpoints"
     if not os.path.isdir(checkpoint_path):
         return None, None, None
+
+    path = (
+        checkpoint_path
+        if "checkpoints" not in checkpoint_path
+        else checkpoint_path.split("checkpoints")[0]
+    )
+    if not os.path.exists(os.path.join(path, "config.yaml")):
+        raise FileNotFoundError(
+            f"The given path does not contain a <config.yaml> file: {path}"
+        )
+    if checkpoint_path.split("/")[-1] != "checkpoints":
+        checkpoint_path += "checkpoints"
     logger.log(f"Loading experiment from {checkpoint_path}")
     time_dict = load_time_dict(checkpoint_path)
 

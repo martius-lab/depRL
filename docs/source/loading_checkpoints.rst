@@ -43,6 +43,7 @@ When you start a training run, a folder inside `working_dir/name` with the curre
         python -m deprl.main experiments/settings.json
 
 .. _continue_training:
+
 If in the config file you have the setting `"tonic.resume": True` then the most recent run in the specified `working_dir/name` will be loaded, where recency is determined by the time and date in the foldername. If `resume` is `False`, then a new folder with the current date and time will be created. Make sure you enabled the `full_save` argument in the config file, see :ref:`config_files`.
 This will continue training from the chosen checkpoint. The `full_save` argument ensures that not only the policy, but also the replay buffer as well as the optimizer and normalizer states are saved, which are required to continue training. The settings for the continued training run are in this case loaded from the file provided to your main function, not from the settings in your output folder.
 
@@ -65,11 +66,16 @@ Now you might cancel training at some point. If you would like to continue, simp
 and training will continue.
 
 .. note::
-   1. The output folder should not change between calls.
-   2. You must have enabled the option `full_save` during initial training, otherwise only the actor policy will be loaded.
-   3. `resume` should be enabled during loading.
-   3. If the training time becomes larger than the maximum training steps that you specified, you can edit the settings file in the folder and increase the `Trainer(steps=T)` value.
-   4. Don't cancel training while saving is in progress as this might corrupt large files.
+
+   * The output folder should not change between calls.
+
+   * You must have enabled the option `full_save` during initial training, otherwise only the actor policy will be loaded.
+
+   * `resume` should be enabled during loading.
+
+   * If the training time becomes larger than the maximum training steps that you specified, you can edit the settings file in the folder and increase the `Trainer(steps=T)` value.
+
+   * Don't cancel training while saving is in progress as this might corrupt large files.
 
 
 Loading and visualizing a single checkpoint

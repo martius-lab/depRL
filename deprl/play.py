@@ -80,6 +80,9 @@ def play_scone(
     checkpoint_step = checkpoint_path.split("step_")[1]
     path = os.path.join(*path[3:-1], f"run_checkpoint_{checkpoint_step}")
     environment.set_output_dir(path)
+    logger.log(
+        f"Saving sto files to {os.path.join(environment.results_dir, environment.output_dir)}"
+    )
     if not no_render:
         environment.store_next_episode()
     observations = environment.reset()

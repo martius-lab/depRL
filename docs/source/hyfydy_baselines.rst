@@ -1,4 +1,4 @@
-.. _myobaselines:
+.. _hyfydybaselines:
 
 
 Hyfydy baselines
