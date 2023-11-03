@@ -7,8 +7,25 @@ import numpy as np
 
 from deprl import env_wrappers, mujoco_render
 from deprl.utils import load_checkpoint
+from deprl.vendor.tonic import logger
 
-from .vendor.tonic import logger
+
+def set_scone_save_path(checkpoint_path, env, name):
+    prefix = env.results_dir
+    if checkpoint_path.startswith(prefix):
+        path = os.path.join(
+            *checkpoint_path[len(prefix) :]
+            .lstrip(os.path.sep)
+            .split(os.sep)[:-2]
+        )
+    else:
+        path = name
+    checkpoint_step = checkpoint_path.split("step_")[1]
+    path = os.path.join(path, f"run_checkpoint_{checkpoint_step}")
+    env.set_output_dir(path)
+    logger.log(
+        f"Saving sto files to {os.path.join(env.results_dir, env.output_dir)}"
+    )
 
 
 def play_gym(agent, environment, noisy, num_episodes, no_render):
@@ -73,16 +90,10 @@ def play_gym(agent, environment, noisy, num_episodes, no_render):
 
 
 def play_scone(
-    agent, environment, noisy, num_episodes, no_render, path, checkpoint_path
+    agent, environment, noisy, num_episodes, no_render, checkpoint_path, name
 ):
     """Launches an agent in a Gym-based environment."""
-    path = path.split("/")
-    checkpoint_step = checkpoint_path.split("step_")[1]
-    path = os.path.join(*path[3:-1], f"run_checkpoint_{checkpoint_step}")
-    environment.set_output_dir(path)
-    logger.log(
-        f"Saving sto files to {os.path.join(environment.results_dir, environment.output_dir)}"
-    )
+    set_scone_save_path(checkpoint_path, environment, name)
     if not no_render:
         environment.store_next_episode()
     observations = environment.reset()
@@ -250,21 +261,19 @@ def play(
 ):
     """Reloads an agent and an environment from a previous experiment."""
 
-    checkpoint_path = None
-    config = None
-
-    if path:
-        logger.log(f"Loading experiment from {path}")
-        # Load config file and checkpoint path from folder
-        checkpoint_path = os.path.join(path, "checkpoints")
-        config, checkpoint_path, _ = load_checkpoint(
-            checkpoint_path, checkpoint
+    logger.log(f"Loading experiment from {path}")
+    # Load config file and checkpoint path from folder
+    checkpoint_path = os.path.join(path, "checkpoints")
+    config, checkpoint_path, _ = load_checkpoint(checkpoint_path, checkpoint)
+    if config is None:
+        raise Exception(
+            f"No <config.yaml> found in path, trying to load from: {path}"
         )
-        # Get important info from config
-        header = header or config["tonic"]["header"]
-        agent = agent or config["tonic"]["agent"]
-        environment = environment or config["tonic"]["test_environment"]
-        environment = environment or config["tonic"]["environment"]
+    # Get important info from config
+    header = header or config["tonic"]["header"]
+    agent = agent or config["tonic"]["agent"]
+    environment = environment or config["tonic"]["test_environment"]
+    environment = environment or config["tonic"]["environment"]
 
     # Run the header first, e.g. to load an ML framework.
     if header:
@@ -309,8 +318,8 @@ def play(
             noisy,
             num_episodes,
             no_render,
-            path,
             checkpoint_path,
+            config["tonic"]["name"],
         )
     else:
         play_gym(agent, environment, noisy, num_episodes, no_render)
