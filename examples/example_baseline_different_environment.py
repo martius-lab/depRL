@@ -6,18 +6,16 @@ import deprl
 env = gym.make("sconewalk_h1622-v0")
 
 # pretrained baselines
-# env = gym.make("sconewalk_h1622-v0")
-# env = gym.make("sconewalk_h2190-v0")
-
 policy = deprl.load_baseline(env)
 
 # example of loading baseline but executing with another model
-# env = gym.make("sconewalk_h1622-v1")
+# NOTE they need to have an identical observation space
+env = gym.make("sconewalk_h1622-v1")
 
 env.seed(0)
 for ep in range(10):
     if ep % 1 == 0:
-        env.store_next_episode()  # Store results of every 10th episode
+        env.store_next_episode()  # Store results of every Nth episode
 
     ep_steps = 0
     ep_tot_reward = 0

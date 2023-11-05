@@ -55,7 +55,7 @@ def load_checkpoint(checkpoint_path, checkpoint="last"):
         raise FileNotFoundError(
             f"The given path does not contain a <config.yaml> file: {path}"
         )
-    if checkpoint_path.split("/")[-1] != "checkpoints":
+    if checkpoint_path.split(os.sep)[-1] != "checkpoints":
         checkpoint_path += "checkpoints"
     logger.log(f"Loading experiment from {checkpoint_path}")
     time_dict = load_time_dict(checkpoint_path)

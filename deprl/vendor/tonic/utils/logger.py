@@ -8,6 +8,8 @@ import termcolor
 import torch
 import yaml
 
+from deprl.vendor.tonic.utils import normalize_path_decorator
+
 current_logger = None
 
 
@@ -26,6 +28,7 @@ def get_sorted_folders(folders):
     return sorted_folders
 
 
+@normalize_path_decorator
 def create_results_path(config, env):
     if env is None or env.results_dir is None:
         return os.path.join(
@@ -39,6 +42,7 @@ def create_results_path(config, env):
     )
 
 
+@normalize_path_decorator
 def create_resumed_results_path(config, env):
     if env is None or env.results_dir is None:
         path = os.path.join(config["working_dir"], config["tonic"]["name"])
