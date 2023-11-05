@@ -11,6 +11,48 @@ from deprl.utils import load_checkpoint
 from .vendor.tonic import logger
 
 
+def check_args(args):
+    if args["path"] is None and args["checkpoint_file"] is None:
+        raise Exception(
+            "You need to specify either a <--path> or a <--checkpoint_file>"
+        )
+
+    if args["path"] is not None and args["checkpoint_file"] is not None:
+        raise Exception(
+            "Do not simultaneously specify <--checkpoint_file> and \
+                        <--path>."
+        )
+
+    if args["checkpoint"] != "last" and args["checkpoint_file"] is not None:
+        raise Exception(
+            "Do not simultaneously specify a checkpoint step with <--checkpoint> and a checkpoint file with \
+                        <--checkpoint_file>."
+        )
+    if args["checkpoint_file"] is not None:
+        if ("checkpoints" not in args["checkpoint_file"]) or (
+            ".pt" not in args["checkpoint_file"]
+        ):
+            raise Exception(
+                f'Invalid <--checkpoint_file> given: {args["checkpoint_file"]}'
+            )
+
+    if args["path"] is not None:
+        assert os.path.isfile(os.path.join(args["path"], "config.yaml"))
+
+
+def get_paths(path, checkpoint, checkpoint_file):
+    """
+    Checkpoints can be given as number e.g. <--checkpoint 1000000> or as file paths
+    e.g. <--checkpoint_file path/checkpoints/step_1000000.pt'>
+    This function handles this functionality.
+    """
+    if checkpoint_file is not None:
+        path = checkpoint_file.split("checkpoints")[0]
+        checkpoint = checkpoint_file.split("step_")[1].split(".")[0]
+    checkpoint_path = os.path.join(path, "checkpoints")
+    return path, checkpoint, checkpoint_path
+
+
 def play_gym(agent, environment, noisy, num_episodes, no_render):
     """Launches an agent in a Gym-based environment."""
     observations = environment.reset()
@@ -247,24 +289,24 @@ def play(
     noisy,
     no_render,
     num_episodes,
+    checkpoint_file,
 ):
     """Reloads an agent and an environment from a previous experiment."""
 
     checkpoint_path = None
     config = None
 
-    if path:
-        logger.log(f"Loading experiment from {path}")
-        # Load config file and checkpoint path from folder
-        checkpoint_path = os.path.join(path, "checkpoints")
-        config, checkpoint_path, _ = load_checkpoint(
-            checkpoint_path, checkpoint
-        )
-        # Get important info from config
-        header = header or config["tonic"]["header"]
-        agent = agent or config["tonic"]["agent"]
-        environment = environment or config["tonic"]["test_environment"]
-        environment = environment or config["tonic"]["environment"]
+    logger.log(f"Loading experiment from {path}")
+    # Load config file and checkpoint path from folder
+    path, checkpoint, checkpoint_path = get_paths(
+        path, checkpoint, checkpoint_file
+    )
+    config, checkpoint_path, _ = load_checkpoint(checkpoint_path, checkpoint)
+    # Get important info from config
+    header = header or config["tonic"]["header"]
+    agent = agent or config["tonic"]["agent"]
+    environment = environment or config["tonic"]["test_environment"]
+    environment = environment or config["tonic"]["environment"]
 
     # Run the header first, e.g. to load an ML framework.
     if header:
@@ -319,14 +361,16 @@ def play(
 if __name__ == "__main__":
     # Argument parsing.
     parser = argparse.ArgumentParser()
-    parser.add_argument("--path")
-    parser.add_argument("--checkpoint", default="last")
+    parser.add_argument("--path", default=None)
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--num_episodes", type=int, default=5)
     parser.add_argument("--noisy", action="store_true")
     parser.add_argument("--no_render", action="store_true")
-    parser.add_argument("--header")
-    parser.add_argument("--agent")
+    parser.add_argument("--header", default=None)
+    parser.add_argument("--agent", default=None)
+    parser.add_argument("--checkpoint_file", default=None)
+    parser.add_argument("--checkpoint", default="last")
     parser.add_argument("--environment", "--env")
     args = vars(parser.parse_args())
+    check_args(args)
     play(**args)

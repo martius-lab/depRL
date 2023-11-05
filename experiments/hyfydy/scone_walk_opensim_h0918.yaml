@@ -1,0 +1,45 @@
+tonic:
+  after_training: ''
+  header: "import deprl, gym, sconegym"
+  agent: "deprl.custom_agents.dep_factory(3, deprl.custom_mpo_torch.TunedMPO())(replay=deprl.custom_replay_buffers.AdaptiveEnergyBuffer(return_steps=1,
+    batch_size=256, steps_between_batches=1000, batch_iterations=30, steps_before_batches=2e5,
+    num_acts=18))"
+  before_training: ''
+  checkpoint: "last"
+  environment: "deprl.environments.Gym('sconewalk_h0918_osim-v1', scaled_actions=False)"
+  full_save: 1
+  name: "sconewalk_h0918_osimv1"
+  resume: true
+  seed: 0
+  parallel: 20
+  sequential: 10
+  test_environment: null
+  trainer: "deprl.custom_trainer.Trainer(steps=int(5e8), epoch_steps=int(2e5), save_steps=int(1e6))"
+
+working_dir: "IGNORED_FOR_HYFYDY"
+id: 0
+
+env_args:
+  clip_actions: true
+  grf_coeff: -0.07281
+  joint_limit_coeff: -0.1307
+  nmuscle_coeff: -1.57929
+  smooth_coeff: -0.097
+  vel_coeff: 10
+  step_size: 0.025
+
+DEP:
+  bias_rate: 0.002
+  buffer_size: 200
+  intervention_length: 8
+  intervention_proba: 0.00371
+  kappa: 1000
+  normalization: "independent"
+  q_norm_selector: "l2"
+  regularization: 32
+  s4avg: 2
+  sensor_delay: 1
+  tau: 40
+  test_episode_every: 3
+  time_dist: 5
+  with_learning: true

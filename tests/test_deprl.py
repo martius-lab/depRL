@@ -28,6 +28,7 @@ def test_play():
         noisy=False,
         num_episodes=3,
         no_render=True,
+        checkpoint_file=None,
     )
     play.play(**kwargs)
 
