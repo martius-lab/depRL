@@ -26,7 +26,7 @@ class PPO(A2C):
         # Compute the lambda-returns.
         batch = self.replay.get_full("observations", "next_observations")
         values, next_values = self._evaluate(**batch)
-        values, next_values = values.numpy(), next_values.numpy()
+        values, next_values = values.numpy(force=True), next_values.numpy(force=True)
         self.replay.compute_returns(values, next_values)
 
         train_actor = True
@@ -50,11 +50,11 @@ class PPO(A2C):
 
             # Stop earlier the training of the actor.
             if train_actor:
-                train_actor = not infos["actor"]["stop"].numpy()
+                train_actor = not infos["actor"]["stop"].numpy(force=True)
 
             for key in infos:
                 for k, v in infos[key].items():
-                    logger.store(key + "/" + k, v.numpy())
+                    logger.store(key + "/" + k, v.numpy(force=True))
 
         logger.store("actor/iterations", actor_iterations)
         logger.store("critic/iterations", critic_iterations)

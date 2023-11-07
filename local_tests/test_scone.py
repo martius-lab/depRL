@@ -29,6 +29,12 @@ def test_envs():
         "sconerun_h0918-v0",
         "sconerun_h1622-v0",
         "sconerun_h2190-v0",
+        "sconewalk_h0918-v1",
+        "sconewalk_h1622-v1",
+        "sconewalk_h2190-v1",
+        "sconerun_h0918-v1",
+        "sconerun_h1622-v1",
+        "sconerun_h2190-v1",
     ]:
         env = gym.make(name)
         env.seed(SEED)

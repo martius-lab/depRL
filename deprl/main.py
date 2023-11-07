@@ -21,6 +21,10 @@ def train(
     if "header" in tonic_conf:
         exec(tonic_conf["header"])
 
+    # In case no env_args are passed via the config
+    if "env_args" not in config or config["env_args"] is None:
+        config["env_args"] = {}
+
     # Build the training environment.
     _environment = tonic_conf["environment"]
     environment = custom_distributed.distribute(
@@ -50,10 +54,6 @@ def train(
         sequential=1,
     )
     test_environment.initialize(seed=tonic_conf["seed"] + 1000000)
-
-    # In case no env_args are passed via the config
-    if "env_args" not in config or config["env_args"] is None:
-        config["env_args"] = {}
 
     # Build the agent.
     if "agent" not in tonic_conf or tonic_conf["agent"] is None:

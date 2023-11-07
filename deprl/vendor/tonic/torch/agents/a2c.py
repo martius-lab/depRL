@@ -48,8 +48,8 @@ class A2C(Agent):
     def step(self, observations, steps):
         # Sample actions and get their log-probabilities for training.
         actions, log_probs = self._step(observations)
-        actions = actions.numpy()
-        log_probs = log_probs.numpy()
+        actions = actions.numpy(force=True)
+        log_probs = log_probs.numpy(force=True)
 
         # Keep some values for the next update.
         self.last_observations = observations.copy()
@@ -60,7 +60,7 @@ class A2C(Agent):
 
     def test_step(self, observations, steps):
         # Sample actions for testing.
-        return self._test_step(observations).numpy()
+        return self._test_step(observations).numpy(force=True)
 
     def update(self, observations, rewards, resets, terminations, steps):
         # Store the last transitions in the replay.
@@ -115,7 +115,7 @@ class A2C(Agent):
         # Compute the lambda-returns.
         batch = self.replay.get_full("observations", "next_observations")
         values, next_values = self._evaluate(**batch)
-        values, next_values = values.numpy(), next_values.numpy()
+        values, next_values = values.numpy(force=True), next_values.numpy(force=True)
         self.replay.compute_returns(values, next_values)
 
         # Update the actor once.
@@ -124,14 +124,14 @@ class A2C(Agent):
         batch = {k: torch.as_tensor(v) for k, v in batch.items()}
         infos = self.actor_updater(**batch)
         for k, v in infos.items():
-            logger.store("actor/" + k, v.numpy())
+            logger.store("actor/" + k, v.numpy(force=True))
 
         # Update the critic multiple times.
         for batch in self.replay.get("observations", "returns"):
             batch = {k: torch.as_tensor(v) for k, v in batch.items()}
             infos = self.critic_updater(**batch)
             for k, v in infos.items():
-                logger.store("critic/" + k, v.numpy())
+                logger.store("critic/" + k, v.numpy(force=True))
 
         # Update the normalizers.
         if self.model.observation_normalizer:
