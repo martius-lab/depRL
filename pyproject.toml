@@ -18,7 +18,6 @@ gym = "0.13.0"
 wandb = "^0.15.4"
 # torch = {version="2.1.0", source="pytorch-cpu"}
 torch = ">=2.1.0"
-myosuite = {path = "../myochallenge_hub/myosuite", develop = true}
 
 
 [tool.poetry.group.dev.dependencies]
@@ -30,6 +29,7 @@ pytest = "^7.4.0"
 sphinx-copybutton = "^0.5.2"
 sconegym = {path = "../sconegym", develop = true}
 matplotlib = "^3.8.0"
+myosuite = "^2.1.5"
 
 
 [tool.poetry.scripts]
