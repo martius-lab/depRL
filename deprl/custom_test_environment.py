@@ -13,8 +13,6 @@ def test_mujoco(env, agent, steps, params=None, test_episodes=10):
         env.test_observations, _ = env.start()
         assert len(env.test_observations) == 1
 
-
-
     eval_rwd_metrics = (
         True if hasattr(env.environments[0], "rwd_dict") else False
     )

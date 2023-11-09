@@ -115,7 +115,9 @@ class A2C(Agent):
         # Compute the lambda-returns.
         batch = self.replay.get_full("observations", "next_observations")
         values, next_values = self._evaluate(**batch)
-        values, next_values = values.numpy(force=True), next_values.numpy(force=True)
+        values, next_values = values.numpy(force=True), next_values.numpy(
+            force=True
+        )
         self.replay.compute_returns(values, next_values)
 
         # Update the actor once.

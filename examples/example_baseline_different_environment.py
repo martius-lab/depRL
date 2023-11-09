@@ -1,4 +1,5 @@
 import gym
+import sconegym  # noqa
 
 import deprl
 

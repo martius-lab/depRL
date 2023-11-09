@@ -1,5 +1,6 @@
 import gym
-import sconegym
+import sconegym  # noqa
+
 import deprl
 
 # create the sconegym env
