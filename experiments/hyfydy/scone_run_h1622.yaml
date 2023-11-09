@@ -27,6 +27,8 @@ env_args:
   self_contact_coeff: -10.0
   vel_coeff: 10.0
   step_size: 0.025
+  init_activations_mean: 0.01
+  init_activations_std: 0 # if 0: deterministic
 
 DEP:
   bias_rate: 0.002

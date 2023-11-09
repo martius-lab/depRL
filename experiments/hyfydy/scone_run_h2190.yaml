@@ -7,8 +7,8 @@ tonic:
   checkpoint: "last"
   environment: "deprl.environments.Gym('sconerun_h2190-v0', scaled_actions=False)"
   full_save: 1
-  name: "sconerun_h2190"
-  resume: true
+  name: "sconerun_h2190_randomvel"
+  resume: false
   seed: 0
   parallel: 20
   sequential: 10
@@ -27,6 +27,15 @@ env_args:
   self_contact_coeff: -10.0
   vel_coeff: 10.0
   step_size: 0.025
+  run: false
+  init_activations_mean: 0.01
+  init_activations_std: 0 # if 0: deterministic
+
+mpo_args:
+  hidden_size: 1024
+  lr_actor: 3.53e-05
+  lr_critic: 6.081e-05
+  lr_dual: 0.00213
 
 DEP:
   bias_rate: 0.002

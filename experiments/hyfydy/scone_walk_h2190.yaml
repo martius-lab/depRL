@@ -6,9 +6,9 @@ tonic:
     num_acts=90))"
   before_training: ''
   checkpoint: "last"
-  environment: "deprl.environments.Gym('sconewalk_h2190-v0', scaled_actions=False)"
+  environment: "deprl.environments.Gym('sconewalk_h2190-v1', scaled_actions=False)"
   full_save: 1
-  name: "sconewalk_h2190"
+  name: "sconewalk_h2190_v1"
   resume: true
   seed: 0
   parallel: 20
@@ -27,6 +27,14 @@ env_args:
   smooth_coeff: -0.097
   vel_coeff: 10
   step_size: 0.025
+  init_activations_mean: 0.01
+  init_activations_std: 0 # if 0: deterministic
+ 
+mpo_args:
+  hidden_size: 1024
+  lr_actor: 3.53e-05
+  lr_critic: 6.081e-05
+  lr_dual: 0.00213
 
 DEP:
   bias_rate: 0.002

@@ -149,7 +149,6 @@ def play_scone(
     global_max_reward = -float("inf")
     steps = 0
     episodes = 0
-
     while True:
         if not noisy:
             actions = agent.test_step(
@@ -346,7 +345,7 @@ def play(
 
     # Load the weights of the agent from a checkpoint.
     if checkpoint_path:
-        agent.load(checkpoint_path)
+        agent.load(checkpoint_path, only_checkpoint=True)
     if "control" in str(environment).lower():
         if no_render or num_episodes != 5:
             logger.log(

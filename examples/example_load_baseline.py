@@ -1,5 +1,5 @@
 import gym
-
+import sconegym
 import deprl
 
 # create the sconegym env
