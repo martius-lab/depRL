@@ -5,9 +5,9 @@ tonic:
     batch_size=256, steps_between_batches=1000, batch_iterations=30, steps_before_batches=1e6))"
   before_training: ''
   checkpoint: "last"
-  environment: "deprl.environments.Gym('sconerun_h2190-v0', scaled_actions=False)"
+  environment: "deprl.environments.Gym('sconerun_h2190-v1', scaled_actions=False)"
   full_save: 1
-  name: "sconerun_h2190_randomvel"
+  name: "sconerun_h2190_v1"
   resume: false
   seed: 0
   parallel: 20
@@ -27,7 +27,7 @@ env_args:
   self_contact_coeff: -10.0
   vel_coeff: 10.0
   step_size: 0.025
-  run: false
+  run: true
   init_activations_mean: 0.01
   init_activations_std: 0 # if 0: deterministic
 
