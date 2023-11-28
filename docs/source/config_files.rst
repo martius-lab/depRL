@@ -6,6 +6,8 @@ Configuration files
 deprl uses json files to configure training runs. The `experiments <https://github.com/martius-lab/depRL/tree/main/experiments>`_ folder in the main github directory contains training settings for several experiments.
 For the MyoSuite and the MyoChallenge2023, you can find settings files `here <https://github.com/martius-lab/depRL/tree/main/experiments/myosuite_training_files>`_.
 
+Links for sconegym will be added once the main repo has been updated.
+
 
 .. list-table:: Configuration files for myosuite.
    :widths: 30 25 60

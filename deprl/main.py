@@ -144,6 +144,7 @@ def main():
         logger.log("Manually forcing CPU run.")
     else:
         set_tensor_device()
+    print(config)
     train(config)
 
 
