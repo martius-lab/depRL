@@ -202,7 +202,7 @@ def load_baseline_myorelocatep1(environment):
 # Hyfydy Baselines
 def load_baseline_sconewalk_h0918(environment):
     modelurl = (
-        "https://drive.google.com/uc?id=154Tvq3QI3WJbybXL2OrePwaJQqnLNTCA"
+        "https://drive.google.com/uc?id=1TM86OHWa06m0at-4-tBdNLRIcj7iCkEb"
     )
     configurl = (
         "https://drive.google.com/uc?id=1hlgK3JdjKe0F3-JOsoZHhdpOoxwtfpoc"
@@ -211,7 +211,7 @@ def load_baseline_sconewalk_h0918(environment):
     if not os.path.exists(foldername):
         os.makedirs(foldername)
         os.makedirs(os.path.join(foldername, "checkpoints"))
-    modelpath = os.path.join(foldername, "checkpoints/step_10000000.pt")
+    modelpath = os.path.join(foldername, "checkpoints/step_50000000.pt")
     configpath = os.path.join(foldername, "config.yaml")
     if not os.path.exists(modelpath):
         gdown.download(modelurl, modelpath, quiet=False)
