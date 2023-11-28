@@ -32,8 +32,15 @@ I created this package to make my research contributions easily available to oth
 Environment and algorithm support
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-At the moment, there is basic support for general gym and dmcontrol environments, while myosuite as well as the environments from my publications are tested for. This includes ostrichrl and warmup.
-As deprl is built on TonicRL, it supports various RL algorithms. However, as I primarily use MPO with PyTorch as a learner for my experiments, that is the most well tested.
+At the moment, there is basic support for general gym and dmcontrol environments. The myosuite and sconegym (hyfydy) environments, used in my publications, are tested for. The packages for ostrichrl and warmup are also supported.
+As deprl is built on TonicRL, it supports various RL algorithms. However, as I primarily use MPO with PyTorch as a learner for my experiments, that is the most well tested. I aim to verify my code on Windows, MacOS and Linux, but can't guarantee that all configurations work.
+
+Hyperparameters and baselines from my publications
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+I provide a range of different training parameters and pre-trained baselines from my works. Check out  :ref:`config_files` to see configuration files for MyoSuite and sconegym that train biomechanical models for walking and running. These training runs generally finish in under 24h on a single workstation with a GPU and a large number of cores (~16). If you do not have enough RAM, try to run them with a reduced `parallel` setting. Systems with fewer muscles train much faster, usually less than 5 hours on a single workstation.
+
+I also provide pre-trained policies for myosuite and for different scongym environments. Check  :ref:`myobaselines` and  :ref:`hyfydybaselines` respectively.
 
 
 How to cite

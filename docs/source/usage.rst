@@ -24,7 +24,7 @@ This function also creates an output folder with the trained policy checkpoints,
 Here is an example folder structure for a baseline we trained, we will refer to this structure in later sections.
 
  .. note::
-  The saving mechanism for SCONE and Hyfydy is slightly different, which improves integration with the remaining SCONE features. When a sconegym experiment is detected, the experiment is automatically saved to the results folder defined in the SCONE interface.
+  The saving mechanism for SCONE/Hyfydy is slightly different from the default, improving integration with the remaining SCONE features. When a sconegym experiment is detected, the experiment is automatically saved to the results folder defined in the SCONE interface.
 
 .. code-block:: bash
 
@@ -47,7 +47,7 @@ Usage:
 
 .. code-block:: bash
 
-   python -m deprl.main experiments/settings.json
+   python -m deprl.main experiments/settings.yaml
 
 .. _play:
 

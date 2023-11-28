@@ -40,7 +40,7 @@ Continuing training with deprl
 When you start a training run, a folder inside `working_dir/name` with the current date and time as foldername will be created. The `working_dir/name` path is extracted from the given settings file. After terminating a run, you can then simply call
 .. code-block:: bash
 
-        python -m deprl.main experiments/settings.json
+        python -m deprl.main experiments/settings.yaml
 
 .. _continue_training:
 
@@ -54,14 +54,14 @@ As an example, we can start training with:
 
 .. code-block:: bash
 
-   python -m deprl.main experiments/settings.json
+   python -m deprl.main experiments/settings.yaml
 
 
 Now you might cancel training at some point. If you would like to continue, simply call it again:
 
 .. code-block:: bash
 
-   python -m deprl.main experiments/settings.json
+   python -m deprl.main experiments/settings.yaml
 
 and training will continue.
 
@@ -88,4 +88,4 @@ Loading a pre-trained baseline
 .................................
 
 
-We refer to the documentation on the :ref:`myobaselines` function.
+We refer to the documentation on the :ref:`myobaselines` or the :ref:`hyfydybaselines` functions.

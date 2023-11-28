@@ -26,7 +26,7 @@ def dep_factory(mix, instance):
         def reset(self):
             pass
 
-    class BaseDep(instance.__class__):
+    class InitExploreDEP(instance.__class__):
         """
         Dep basis. Here, DEP exploration is only initially used to pre-fill
         the replay buffer before training.
@@ -65,7 +65,7 @@ def dep_factory(mix, instance):
         def dep_step(self, muscle_states, steps):
             return self.expl.step(muscle_states, steps)
 
-    class DetSwitchDep(BaseDep):
+    class DetSwitchDep(InitExploreDEP):
         def __init__(self, *args, **kwargs):
             self.switch = 0
             self.since_switch = 1
@@ -129,7 +129,7 @@ def dep_factory(mix, instance):
             self.since_switch += 1
             return actions
 
-    class PureDep(BaseDep):
+    class PureDep(InitExploreDEP):
         def step(
             self, observations, steps, muscle_states=None, greedy_episode=False
         ):
@@ -150,7 +150,7 @@ def dep_factory(mix, instance):
 
     if mix == 1:
         logger.log("Initial exploration DEP")
-        return BaseDep
+        return InitExploreDEP
     elif mix == 2:
         logger.log("Deterministic Switch-DEP.")
         return DetSwitchDep

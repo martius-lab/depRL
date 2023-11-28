@@ -5,12 +5,34 @@ Hyfydy baselines
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 We include several pretrained baselines for Hyfydy. They are similar to the ones trained for our `preprint <https://arxiv.org/abs/2309.02976>`_.
-The baselines includes straight walking for `sconewalk-h0918-v0`, running for ...
+The baselines includes straight walking for `sconewalk-h0918-v1`, running for ...
 
-To try the baselines, you need to first install `sconegym` and scone. TODO add information here or link.
+To try the baselines, you need to first install `sconegym` and scone. A link with installation instructions will be added at a later date.
 
-You can play with the pre-trained baselines by using the code in this section. To train agents yourself, go to the Configuration Files section.
+You can play with the pre-trained baselines by using the code in this section. To train agents yourself, go to the :ref:`config_files` section.
 
+
+.. list-table:: Pre-trained baselines.
+   :widths: 30 60
+   :header-rows: 1
+
+   * - environment id
+     - description
+   * - sconewalk_h0918-v1
+     - Energy-efficient walking with the H0918 model.
+   * - sconewalk_h1622-v1
+     - Energy-efficient walking with the H1622 model.
+   * - sconewalk_h2190-v1
+     - Energy-efficient walking with the H2190 model.
+   * - sconerun_h0918-v1
+     - Running with the H0918 model.
+   * - sconerun_h1622-v1
+     - Running with the H1622 model.
+   * - sconerun_h2190-v1
+     - Running with the H2190 model.
+
+Usage example
+-------------
 
 .. code-block:: python
 
@@ -18,7 +40,7 @@ You can play with the pre-trained baselines by using the code in this section. T
  import sconegym
  import deprl
 
- env = gym.make('sconewalk_h0918-v0')
+ env = gym.make('sconewalk_h0918-v1')
  policy = deprl.load_baseline(env)
 
  for ep in range(5):
@@ -31,7 +53,7 @@ You can play with the pre-trained baselines by using the code in this section. T
              break
 
 
-For the other baselines, just use: `env = gym.make('sconewalk_h2190-v0')` or ...
+For the other baselines, just use: `env = gym.make('sconewalk_h2190-v1')` or ...
 
 
 You can also use noisy policy steps with:
@@ -57,4 +79,4 @@ You can also use noisy policy steps with:
              break
 
 
-This can affect your performance positively and negatively, depending on the task!
+This can affect your performance positively or negatively, depending on the task!

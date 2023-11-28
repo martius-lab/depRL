@@ -6,8 +6,23 @@ MyoSuite baselines
 We include several pretrained baselines for MyoSuite and MyoChallenge2023 environments. This includes straight walking for `myoLegWalk-v0`, standing for `myoChallengeChaseTagP1-v0` and cube lifting for `myoChallengeRelocateP1-v0`.
 
 To try the baselines, you need to first install `myosuite==2.0.1`.
-You can play with the pre-trained baselines by using the code in this section. To train agents yourself, go to the Configuration Files section.
+You can play with the pre-trained baselines by using the code in this section. To train agents yourself, go to the :ref:`config_files` section.
 
+.. list-table:: Pre-trained baselines for myosuite.
+   :widths: 30 60
+   :header-rows: 1
+
+   * - environment id
+     - description
+   * - myoLegWalk-v0
+     - Train a straight walking myoLeg agent.
+   * - myoChallengeChaseTagP1-v0
+     - Used to create the ChaseTag baseline, but rewards are not provided.
+   * - myoChallengeRelocateP1-v0
+     - Used to create the Relocate baseline, but rewards are not provided.
+
+Usage example
+-------------
 
 .. code-block:: python
 
@@ -57,4 +72,4 @@ You can also use noisy policy steps with:
              break
 
 
-This can affect your performance positively and negatively, depending on the task!
+This can affect your performance positively or negatively, depending on the task!

@@ -17,7 +17,6 @@
     "cpu_override": 1
   },
   "working_dir": "./tests/test_DEPRL",
-  "id": 0,
   "mpo_args":{"hidden_size":64, "lr_actor": 3.53e-5, "lr_critic": 6.081e-5, "lr_dual": 0.00213},
   "env_args":{},
   "DEP":{
