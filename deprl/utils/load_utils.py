@@ -240,7 +240,7 @@ def load_baseline_sconewalk_h1622(environment):
 
 def load_baseline_sconewalk_h2190(environment):
     modelurl = (
-        "https://drive.google.com/uc?id=1BOgohxezyJTrEXnTg3_IX5_-FoP9_Tdm"
+        "https://drive.google.com/uc?id=1saSFc5R6LgDeeACGQmCw32BDX8ktEsYb"
     )
     configurl = (
         "https://drive.google.com/uc?id=1khC-55_nfz5uMsRUJN8QYjac3UEUlhEh"
@@ -249,7 +249,7 @@ def load_baseline_sconewalk_h2190(environment):
     if not os.path.exists(foldername):
         os.makedirs(foldername)
         os.makedirs(os.path.join(foldername, "checkpoints"))
-    modelpath = os.path.join(foldername, "checkpoints/step_67000000.pt")
+    modelpath = os.path.join(foldername, "checkpoints/step_50000000.pt")
     configpath = os.path.join(foldername, "config.yaml")
     if not os.path.exists(modelpath):
         gdown.download(modelurl, modelpath, quiet=False)
