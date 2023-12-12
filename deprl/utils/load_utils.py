@@ -33,7 +33,7 @@ def load_time_dict(checkpoint_path):
         return torch.load(os.path.join(checkpoint_path, "time.pt"))
     except FileNotFoundError:
         logger.log(
-            "Error in full loading. Was the previous checkpoint saved with  <'full_save': True>?"
+            "Found only the policy checkpoint, the previous run was likely only run with  <'full_save': False>"
         )
         logger.log("Only loading policy checkpoint.")
         return None
