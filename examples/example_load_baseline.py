@@ -4,7 +4,7 @@ import sconegym  # noqa
 import deprl
 
 # create the sconegym env
-env = gym.make("sconewalk_h0918-v1")
+# env = gym.make("sconewalk_h0918-v1")
 
 # choose one of these for another baseline
 
@@ -12,7 +12,7 @@ env = gym.make("sconewalk_h0918-v1")
 # env = gym.make("sconewalk_h2190-v1")
 # env = gym.make("sconerun_h0918-v1")
 # env = gym.make("sconerun_h1622-v1")
-# env = gym.make("sconerun_h2190-v1")
+env = gym.make("sconerun_h2190-v1")
 
 policy = deprl.load_baseline(env)
 

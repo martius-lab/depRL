@@ -259,16 +259,16 @@ def load_baseline_sconewalk_h2190(environment):
 
 def load_baseline_sconerun_h0918(environment):
     modelurl = (
-        "https://drive.google.com/uc?id=1WZ9rkI3W58zVzUtkXgM0MVjrEEiiiOzk"
+        "https://drive.google.com/uc?id=18mECgv2I7UnA8m4RuhRjdKZr8L7y3p5T"
     )
     configurl = (
-        "https://drive.google.com/uc?id=18mECgv2I7UnA8m4RuhRjdKZr8L7y3p5T"
+        "https://drive.google.com/uc?id=1n9EfnTzoAzeRx2jO5GXlOSJNt0glTxVh"
     )
     foldername = "./baselines_DEPRL/sconerun_h0918/"
     if not os.path.exists(foldername):
         os.makedirs(foldername)
         os.makedirs(os.path.join(foldername, "checkpoints"))
-    modelpath = os.path.join(foldername, "checkpoints/step_10000000.pt")
+    modelpath = os.path.join(foldername, "checkpoints/step_100000000.pt")
     configpath = os.path.join(foldername, "config.yaml")
     if not os.path.exists(modelpath):
         gdown.download(modelurl, modelpath, quiet=False)
@@ -278,16 +278,16 @@ def load_baseline_sconerun_h0918(environment):
 
 def load_baseline_sconerun_h1622(environment):
     modelurl = (
-        "https://drive.google.com/uc?id=1WZ9rkI3W58zVzUtkXgM0MVjrEEiiiOzk"
+        "https://drive.google.com/uc?id=1O8SUkEYiFX2HfUW2NEvpVnNJveymIjha"
     )
     configurl = (
-        "https://drive.google.com/uc?id=18mECgv2I7UnA8m4RuhRjdKZr8L7y3p5T"
+        "https://drive.google.com/uc?id=1YU2FC1h_FoAFMMuViLCp0ldgUqPh6W_a"
     )
     foldername = "./baselines_DEPRL/sconerun_h1622/"
     if not os.path.exists(foldername):
         os.makedirs(foldername)
         os.makedirs(os.path.join(foldername, "checkpoints"))
-    modelpath = os.path.join(foldername, "checkpoints/step_10000000.pt")
+    modelpath = os.path.join(foldername, "checkpoints/step_100000000.pt")
     configpath = os.path.join(foldername, "config.yaml")
     if not os.path.exists(modelpath):
         gdown.download(modelurl, modelpath, quiet=False)
@@ -297,7 +297,7 @@ def load_baseline_sconerun_h1622(environment):
 
 def load_baseline_sconerun_h2190(environment):
     modelurl = (
-        "https://drive.google.com/uc?id=1WZ9rkI3W58zVzUtkXgM0MVjrEEiiiOzk"
+        "https://drive.google.com/uc?id=1L_ohXkPCWW1n8TgsLZDEOJjXjz6KYkKa"
     )
     configurl = (
         "https://drive.google.com/uc?id=18mECgv2I7UnA8m4RuhRjdKZr8L7y3p5T"
