@@ -29,8 +29,6 @@ def test_play():
         num_episodes=3,
         no_render=True,
         checkpoint_file=None,
-        full_save=True,
-        resume=True,
     )
     play.play(**kwargs)
 
