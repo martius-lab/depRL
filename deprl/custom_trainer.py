@@ -27,7 +27,7 @@ class Trainer:
         show_progress=True,
         replace_checkpoint=False,
     ):
-        assert epoch_steps < save_steps
+        assert epoch_steps <= save_steps
         self.max_steps = int(steps)
         self.epoch_steps = int(epoch_steps)
         self.save_steps = int(save_steps)
