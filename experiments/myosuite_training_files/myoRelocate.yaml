@@ -14,7 +14,6 @@ DEP:
   time_dist: 5
   with_learning: true
 env_args: {}
-id: 0
 tonic:
   after_training: ''
   agent: deprl.custom_agents.dep_factory(3, deprl.custom_mpo_torch.TunedMPO())(replay=deprl.replays.buffers.Buffer(return_steps=3,

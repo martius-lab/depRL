@@ -1,26 +1,18 @@
-# This example requires the installation of sconegym:
-# https://github.com/tgeijten/sconegym
+# This example requires the installation of myosuite
+# pip install myosuite
 
 import gym
-import sconegym  # noqa
+import myosuite  # noqa
 
 import deprl
 
 # create the sconegym env
-env = gym.make("sconewalk_h1622-v0")
+env = gym.make("myoLegChaseTagP1-v0")
 
-# pretrained baselines
 policy = deprl.load_baseline(env)
 
-# example of loading baseline but executing with another model
-# NOTE they need to have an identical observation space
-env = gym.make("sconewalk_h1622-v1")
-
 env.seed(0)
-for ep in range(10):
-    if ep % 1 == 0:
-        env.store_next_episode()  # Store results of every Nth episode
-
+for ep in range(5):
     ep_steps = 0
     ep_tot_reward = 0
     state = env.reset()
@@ -33,6 +25,7 @@ for ep in range(10):
 
         ep_steps += 1
         ep_tot_reward += reward
+        env.render()
 
         # check if done
         if done or (ep_steps >= 1000):

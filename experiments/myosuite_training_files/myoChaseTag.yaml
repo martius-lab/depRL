@@ -14,7 +14,6 @@ DEP:
   time_dist: 5
   with_learning: true
 env_args: {}
-id: 0
 mpo_args:
   hidden_size: 1024
   lr_actor: 3.53e-05

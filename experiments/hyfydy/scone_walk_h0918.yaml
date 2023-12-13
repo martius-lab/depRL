@@ -17,11 +17,10 @@ tonic:
   trainer: "deprl.custom_trainer.Trainer(steps=int(5e8), epoch_steps=int(2e5), save_steps=int(1e6))"
 
 working_dir: "IGNORED_FOR_HYFYDY"
-id: 0
 
 env_args:
   clip_actions: true
-  grf_coeff: -0.07281
+  grf_coeff: -0.17281
   joint_limit_coeff: -0.1307
   nmuscle_coeff: -1.57929
   smooth_coeff: -0.097
