@@ -64,7 +64,7 @@ You can also use noisy policy steps with:
  import myosuite
  import deprl
 
- env = gym.make('sconewalk_h0918')
+ env = gym.make('sconewalk_h0918-v1')
  policy = deprl.load_baseline(env)
 
  for ep in range(5):
