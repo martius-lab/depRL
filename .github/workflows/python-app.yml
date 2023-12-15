@@ -4,13 +4,13 @@ name: Python application
 
 on:
   push:
-    branches: [ "main" , "dev_internal"]
+    branches: [ "main" , "dev"]
     paths-ignore:
       - "doc/**"
       - "**/README.md"
 
   pull_request:
-    branches: [ "main" , "dev_internal"]
+    branches: [ "main" , "dev"]
     paths-ignore:
       - "doc/**"
       - "**/README.md"
