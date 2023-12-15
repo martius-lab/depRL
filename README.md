@@ -4,9 +4,10 @@
  [![Downloads](https://static.pepy.tech/badge/deprl)](https://pepy.tech/project/deprl)
  [![Documentation Status](https://readthedocs.org/projects/deprl/badge/?version=latest)](https://deprl.readthedocs.io/en/latest/?badge=latest)
 
-Please read the [docs](https://deprl.readthedocs.io/en/latest/?badge=latest).
+### All our features are described in the [docs](https://deprl.readthedocs.io/en/latest/?badge=latest).
 
- This repo contains the code for the paper [DEP-RL: Embodied Exploration for Reinforcement Learning in Overactuated and Musculoskeletal Systems](https://openreview.net/forum?id=C-xa_D3oTj6) paper, published at ICLR 2023 with perfect review scores (8, 8, 8, 10) and a notable-top-25% rating. See [here](https://sites.google.com/view/dep-rl) for videos.
+
+This repo contains the code for the paper [DEP-RL: Embodied Exploration for Reinforcement Learning in Overactuated and Musculoskeletal Systems](https://openreview.net/forum?id=C-xa_D3oTj6) paper, published at ICLR 2023 with perfect review scores (8, 8, 8, 10) and a notable-top-25% rating. See [here](https://sites.google.com/view/dep-rl) for videos.
 
 The work was performed by Pierre Schumacher, Daniel F.B. Haeufle, Dieter Büchler, Syn Schmitt and Georg Martius.
 
@@ -21,7 +22,12 @@ If you just want to see the code for DEP, take a look at `deprl/dep_controller.p
 
 ### Big update!
 
-We now provide code for our newest preprint, [Natural and Robust Walking using Reinforcement Learning without Demonstrations in High-Dimensional Musculoskeletal Models](https://sites.google.com/view/naturalwalkingrl). With this work, we take a step towards _natural_ movement generation with RL. Take a look at the [docs](https://deprl.readthedocs.io/en/latest/?badge=latest) for more information.
+We now provide code for our newest preprint, [Natural and Robust Walking using Reinforcement Learning without Demonstrations in High-Dimensional Musculoskeletal Models](https://sites.google.com/view/naturalwalkingrl). With this work, we take a step towards _natural_ movement generation with RL. 
+This update provides code for adaptive energy costs in muscle-driven systems and provides support for the SCONE and Hyfydy softwares in the shape of the recently released [sconegym](https://github.com/tgeijten/sconegym/tree/main) environment suite.
+
+The new features also include pre-trained baselines from the preprint, enabling rendering from SCONE and much more. See the [docs](https://deprl.readthedocs.io/en/latest/?badge=latest) for more information.
+
+We encourage anyone encountering bugs or wanting help to open a GitHub issue or contact us directly. Let us help you make it work.
 
 ## Abstract
 Muscle-actuated organisms are capable of learning an unparalleled diversity of
@@ -52,8 +58,13 @@ and a bipedal ostrich. The OstrichRL environment can be installed from [here](ht
 
 We also collaborated with groups that provide musculoskeletal control environments and provide additional baselines as well as code from our latest preprints.
 
-### Hyfydy
-We include several pre-trained baselines and configuration files to train the policies from our newest [preprint](https://arxiv.org/abs/2309.02976). These allow you to train walking agents in [Hyfydy](hyfydy.com) with RL for natural walking and robust running tasks. We joined forces with Thomas Geijtenbeek [@tgeijten](https://github.com/tgeijten) to create a python environment interface for Hyfydy. Take a look at [sconegym](https://github.com/tgeijten/sconegym/tree/main)!
+### Hyfydy and sconegym
+We include several pre-trained baselines and configuration files to train the policies from our newest [preprint](https://arxiv.org/abs/2309.02976). These allow you to train walking agents in [Hyfydy](hyfydy.com) with RL for natural walking and robust running tasks. We worked together with Thomas Geijtenbeek [@tgeijten](https://github.com/tgeijten) to create a python environment interface for Hyfydy, called [sconegym](https://github.com/tgeijten/sconegym/tree/main)!
+This repository also includes the definitions of all the cost terms we used, see [here](https://github.com/tgeijten/sconegym/blob/main/sconegym/gaitgym.py).
+The configuration files to train our sconegym policies are included [here](https://github.com/martius-lab/depRL/tree/main/experiments/hyfydy). 
+
+
+Check out how to install sconegym from their [repo](https://github.com/tgeijten/sconegym/blob/main/sconegym/gaitgym.py), you can immediately start with a simple OpenSim model. To access the fast Hyfydy engine, and the complex 3D models, you need to request a trial license from the [Hyfydy](hyfydy.com) website or purchase a license. Some usage examples can be found [here](https://deprl.readthedocs.io/en/latest/hyfydy_baselines.html) and [here]()
 
 ### MyoLeg
 If you are coming here for the MyoLeg, take a look at this [tutorial](https://github.com/facebookresearch/myosuite/blob/main/docs/source/tutorials.rst#load-dep-rl-baseline). It will show you how to run the pre-trained baseline. We also explain how to train the walking agent in the MyoSuite  [documentation](https://myosuite.readthedocs.io/en/latest/baselines.html#dep-rl-baseline).
@@ -72,6 +83,7 @@ or render the pretrained baselines with:
 
 You have to find your own reward function, of course. These files also require the installation of `myosuite==2.1.5`.
 
+We will release a tutorial on how to implement all cost terms from our natural walking [preprint](https://sites.google.com/view/naturalwalkingrl) in the near future.
 
 
 ## Experiments
