@@ -19,26 +19,9 @@ If you just want to see the code for DEP, take a look at `deprl/dep_controller.p
  <img src=https://user-images.githubusercontent.com/24903880/229783370-ee95b9c3-06a0-4ef3-9b60-78e88c4eae38.gif width=214>
 </p>
 
+### Big update!
 
-### MyoLeg
-If you are coming here for the MyoLeg, take a look at this [tutorial](https://github.com/facebookresearch/myosuite/blob/main/docs/source/tutorials.rst#load-dep-rl-baseline). It will show you how to run the pre-trained baseline. We also explain how to train the walking agent in the MyoSuite  [documentation](https://myosuite.readthedocs.io/en/latest/baselines.html#dep-rl-baseline).
-<p align="center">
-<img src=https://github.com/martius-lab/depRL/assets/24903880/d06200ae-ad35-484c-9d55-83b5235269bc width=350
-</p>
-
-This repository has been updated with training files that have been used for the MyoSuite baselines, as well as pretrained networks.
-Simply try training something:
-
-`python -m deprl.main experiments/myosuite_training_files/myoChaseTag.json`
-
-or render the pretrained baselines with:
-
-`python experiments/myosuite_training_files/render_baselines.py`
-
-You have to find your own reward function, of course. These files also require the installation of `myosuite==1.7.0`.
-
-## SCONE
-We include several pre-trained baselines and configuration files to train the policies from our preprint on natural and robust walking with reinforcement learning.
+We now provide code for our newest preprint, [Natural and Robust Walking using Reinforcement Learning without Demonstrations in High-Dimensional Musculoskeletal Models](https://sites.google.com/view/naturalwalkingrl). With this work, we take a step towards _natural_ movement generation with RL. Take a look at the [docs](https://deprl.readthedocs.io/en/latest/?badge=latest) for more information.
 
 ## Abstract
 Muscle-actuated organisms are capable of learning an unparalleled diversity of
@@ -58,22 +41,37 @@ We provide a python package for easy installation:
 pip install deprl
 ```
 
-### CPU only
- If the default PyTorch version defaults to CUDA and you generate an exception on a CPU-only machine, consider running:
+There are more instructions on installation from source, and other things, in the [documentation](https://deprl.readthedocs.io/en/latest/installation.html)
 
-```
- pip install torch --index-url https://download.pytorch.org/whl/cpu
-```
-after installation.
-
- ### Environments
-
-The humanreacher environment can be installed with
+### Environments
+The ICLR publication includes experiments with human arms:
 ```
 pip install git+https://github.com/P-Schumacher/warmup.git
 ```
+and a bipedal ostrich. The OstrichRL environment can be installed from [here](https://github.com/vittorione94/ostrichrl).
 
-OstrichRL can be installed from [here](https://github.com/vittorione94/ostrichrl).
+We also collaborated with groups that provide musculoskeletal control environments and provide additional baselines as well as code from our latest preprints.
+
+### Hyfydy
+We include several pre-trained baselines and configuration files to train the policies from our newest [preprint](https://arxiv.org/abs/2309.02976). These allow you to train walking agents in [Hyfydy](hyfydy.com) with RL for natural walking and robust running tasks. We joined forces with Thomas Geijtenbeek [@tgeijten](https://github.com/tgeijten) to create a python environment interface for Hyfydy. Take a look at [sconegym](https://github.com/tgeijten/sconegym/tree/main)!
+
+### MyoLeg
+If you are coming here for the MyoLeg, take a look at this [tutorial](https://github.com/facebookresearch/myosuite/blob/main/docs/source/tutorials.rst#load-dep-rl-baseline). It will show you how to run the pre-trained baseline. We also explain how to train the walking agent in the MyoSuite  [documentation](https://myosuite.readthedocs.io/en/latest/baselines.html#dep-rl-baseline).
+<p align="center">
+<img src=https://github.com/martius-lab/depRL/assets/24903880/d06200ae-ad35-484c-9d55-83b5235269bc width=350
+</p>
+
+This repository has been updated with training files that have been used for the MyoSuite baselines, as well as pretrained networks.
+Simply try training something:
+
+`python -m deprl.main experiments/myosuite_training_files/myoChaseTag.json`
+
+or render the pretrained baselines with:
+
+`python experiments/myosuite_training_files/render_baselines.py`
+
+You have to find your own reward function, of course. These files also require the installation of `myosuite==2.1.5`.
+
 
 
 ## Experiments
