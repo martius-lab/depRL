@@ -3,7 +3,7 @@ Usage
 
 .. _usage:
 
-deprl uses 4 basic commands, partially derived from TonicRL: main, play, log, plot. We refer to the TonicRL `README <https://github.com/fabiopardo/tonic>`_ for further exlanations on how to use them.
+deprl uses 4 basic commands, partially derived from TonicRL: main, play, log, plot. We refer to the TonicRL `README <https://github.com/fabiopardo/tonic>`_ for further explanations on how to use them.
 
 See below for brief explanations.
 
