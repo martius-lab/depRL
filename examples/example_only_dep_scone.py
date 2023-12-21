@@ -1,11 +1,11 @@
 import gym
-import sconegym
+import sconegym  # noqa
+
 from deprl import env_wrappers
 from deprl.dep_controller import DEP
 
-
 # create the sconegym env
-env = gym.make('sconewalk_h2190-v1')
+env = gym.make("sconewalk_h2190-v1")
 
 # apply wrapper to environment
 env = env_wrappers.SconeWrapper(env)
@@ -28,7 +28,7 @@ for ep in range(5):
 
     while True:
         # samples random action
-        action = dep.step(env.muscle_lengths())[0,:]
+        action = dep.step(env.muscle_lengths())[0, :]
         # applies action and advances environment by one step
         state, reward, done, info = env.step(action)
 
@@ -46,4 +46,3 @@ for ep in range(5):
             break
 
 env.close()
-

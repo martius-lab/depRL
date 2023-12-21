@@ -22,7 +22,7 @@ If you just want to see the code for DEP, take a look at `deprl/dep_controller.p
 
 ### Big update!
 
-We now provide code for our newest preprint, [Natural and Robust Walking using Reinforcement Learning without Demonstrations in High-Dimensional Musculoskeletal Models](https://sites.google.com/view/naturalwalkingrl). With this work, we take a step towards _natural_ movement generation with RL. 
+We now provide code for our newest preprint, [Natural and Robust Walking using Reinforcement Learning without Demonstrations in High-Dimensional Musculoskeletal Models](https://sites.google.com/view/naturalwalkingrl). With this work, we take a step towards _natural_ movement generation with RL.
 This update provides code for adaptive energy costs in muscle-driven systems and provides support for the SCONE and Hyfydy softwares in the shape of the recently released [sconegym](https://github.com/tgeijten/sconegym/tree/main) environment suite.
 
 The new features also include pre-trained baselines from the preprint, enabling rendering from SCONE and much more. See the [docs](https://deprl.readthedocs.io/en/latest/?badge=latest) for more information.
@@ -61,7 +61,7 @@ We also collaborated with groups that provide musculoskeletal control environmen
 ### Hyfydy and sconegym
 We include several pre-trained baselines and configuration files to train the policies from our newest [preprint](https://arxiv.org/abs/2309.02976). These allow you to train walking agents in [Hyfydy](hyfydy.com) with RL for natural walking and robust running tasks. We worked together with Thomas Geijtenbeek [@tgeijten](https://github.com/tgeijten) to create a python environment interface for Hyfydy, called [sconegym](https://github.com/tgeijten/sconegym/tree/main)!
 This repository also includes the definitions of all the cost terms we used, see [here](https://github.com/tgeijten/sconegym/blob/main/sconegym/gaitgym.py).
-The configuration files to train our sconegym policies are included [here](https://github.com/martius-lab/depRL/tree/main/experiments/hyfydy). 
+The configuration files to train our sconegym policies are included [here](https://github.com/martius-lab/depRL/tree/main/experiments/hyfydy).
 
 
 Check out how to install sconegym from their [repo](https://github.com/tgeijten/sconegym/blob/main/sconegym/gaitgym.py), you can immediately start with a simple OpenSim model. To access the fast Hyfydy engine, and the complex 3D models, you need to request a trial license from the [Hyfydy](hyfydy.com) website or purchase a license. Some usage examples can be found [here](https://deprl.readthedocs.io/en/latest/hyfydy_baselines.html) and [here]()
