@@ -11,7 +11,7 @@ torch.set_default_dtype(torch.float32)
 class DEP:
     """
     DEP Implementation from Der et al.(2015).
-    Jax is used instead of numpy to speed up computation, GPU strongly
+    PyTorch is used instead of numpy to speed up computation, GPU strongly
     recommended.
     In the future, proper JAX features such as jit, vmap, etc
     should be used.
