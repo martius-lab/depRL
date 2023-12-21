@@ -5,9 +5,10 @@ Hyfydy baselines
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 We include several pretrained baselines for Hyfydy. They are similar to the ones trained for our `preprint <https://arxiv.org/abs/2309.02976>`_.
-The baselines includes straight walking for `sconewalk-h0918-v1`, running for ...
+The baselines includes straight walking for `sconewalk_h0918-v1`, running for `sconerun_h0918-v1` and similar for the other models.
+There is also an example for OpenSim `sconewalk_h0918_osim-v1`
 
-To try the baselines, you need to first install `sconegym` and scone. A link with installation instructions will be added at a later date.
+To try the baselines, you need to first install `sconegym` and scone. See `here <https://github.com/tgeijten/sconegym>`_ for installation help.
 
 You can play with the pre-trained baselines by using the code in this section. To train agents yourself, go to the :ref:`config_files` section.
 
@@ -18,6 +19,8 @@ You can play with the pre-trained baselines by using the code in this section. T
 
    * - environment id
      - description
+   * - sconewalk_h0918_osim-v1
+     - Energy-efficient walking with the H0918 model in OpenSim (slow performance).
    * - sconewalk_h0918-v1
      - Energy-efficient walking with the H0918 model.
    * - sconewalk_h1622-v1
@@ -53,7 +56,7 @@ Usage example
              break
 
 
-For the other baselines, just use: `env = gym.make('sconewalk_h2190-v1')` or ...
+For the other baselines, just use: `env = gym.make('sconewalk_h2190-v1')` or `env = gym.make('sconerun_h2190-v1')`
 
 
 You can also use noisy policy steps with:
@@ -61,7 +64,7 @@ You can also use noisy policy steps with:
 .. code-block:: python
 
  import gym
- import myosuite
+ import sconegym
  import deprl
 
  env = gym.make('sconewalk_h0918-v1')
