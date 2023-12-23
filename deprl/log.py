@@ -17,7 +17,7 @@ class WandbProcessor:
         self._setup_wandb()
 
     def get_line_number(self, data):
-        return len(data["train/episode_score/mean"])
+        return len(data[[key for key in data.keys()][0]])
 
     def _setup_wandb(self):
         data = utils.load_csv_to_dict(self._path)
