@@ -29,6 +29,12 @@ The new features also include pre-trained baselines from the preprint, enabling 
 
 We encourage anyone encountering bugs or wanting help to open a GitHub issue or contact us directly. Let us help you make it work.
 
+<p align="center">
+<img src=https://github.com/martius-lab/depRL/assets/24903880/8d6392d2-542d-405b-afb8-e5c68726117e width=250>
+ <img src=https://github.com/martius-lab/depRL/assets/24903880/67384006-e72d-4e8f-ab2f-dbe504a19c1d width=250>
+</p>
+
+
 ## Abstract
 Muscle-actuated organisms are capable of learning an unparalleled diversity of
 dexterous movements despite their vast amount of muscles. Reinforcement learning (RL) on large musculoskeletal models, however, has not been able to show
