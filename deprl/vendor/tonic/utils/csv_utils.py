@@ -29,6 +29,6 @@ def load_csv_to_dict(csv_path):
     data = load_csv(csv_path)
     keys = data[0]
     data = data[1:]
-    data = [list(map(float, x)) for x in data if x[0] != "None"]
+    data = [list(map(float, x)) for x in data if x[0] != "None" and all(val != '' for val in x)]
     data = {k: [x[idx] for x in data] for idx, k in enumerate(keys)}
     return data
