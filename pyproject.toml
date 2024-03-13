@@ -13,7 +13,7 @@ pyyaml = "^6.0"
 numpy = "^1.22.4"
 termcolor = "^2.2.0"
 pandas = "^2.0.1"
-gdown = "^4.7.1"
+gdown = "^5.1.0"
 gym = "0.13.0"
 wandb = "^0.15.4"
 # torch = {version="2.1.0", source="pytorch-cpu"}
