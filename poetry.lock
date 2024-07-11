@@ -2007,12 +2007,13 @@ test = ["enum34", "ipaddress", "mock", "pywin32", "wmi"]
 
 [[package]]
 name = "pudb"
-version = "2024.1"
+version = "2024.1.1"
 description = "A full-screen, console-based Python debugger"
 optional = false
 python-versions = "~=3.8"
 files = [
-    {file = "pudb-2024.1.tar.gz", hash = "sha256:fc9d6a976a59b590764c8379ec200fecd47faa84259b64efd8cd86066a0af338"},
+    {file = "pudb-2024.1.1-py3-none-any.whl", hash = "sha256:b184af80036ea379a4f79ba7859ecf4fe0681a2b6f46e807f49d1900668f7c66"},
+    {file = "pudb-2024.1.1.tar.gz", hash = "sha256:ff5f5395e36a19a65f22f522fd6027d27a36ab783de4511b41c91484ab614975"},
 ]
 
 [package.dependencies]
@@ -2020,7 +2021,7 @@ jedi = ">=0.18,<1"
 packaging = ">=20.0"
 pygments = ">=2.7.4"
 urwid = ">=2.4"
-urwid_readline = "*"
+urwid-readline = "*"
 
 [package.extras]
 completion = ["shtab"]

@@ -264,6 +264,8 @@ def distribute(
         env=environment, parallel=parallel, sequential=sequential
     )
 
+    if "header" in tonic_conf:
+        exec(tonic_conf["header"])
     dummy_environment = build_env_from_dict(build_dict)
     max_episode_steps = dummy_environment._max_episode_steps
     del dummy_environment
