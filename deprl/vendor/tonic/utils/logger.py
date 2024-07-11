@@ -52,7 +52,7 @@ def create_resumed_results_path(config, env):
         postfix = f".{env.unwrapped.model.name()}"
     folders = [x for x in os.walk(path)]
     if len(folders) != 0:
-        log("Found earlier run, continuing training: Path is: {path}")
+        log(f"Found earlier run, continuing training: Path is: {path}")
         folder = get_sorted_folders(folders[0][1])[-1]
         return os.path.join(path, folder)
     else:
