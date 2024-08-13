@@ -5,7 +5,12 @@ from types import SimpleNamespace
 
 import gym.wrappers
 import numpy as np
-from myosuite.utils import gym
+
+try:
+    from myosuite.utils import gym
+except ModuleNotFoundError:
+    pass
+
 
 from deprl.vendor.tonic import environments
 from deprl.vendor.tonic.utils import logger

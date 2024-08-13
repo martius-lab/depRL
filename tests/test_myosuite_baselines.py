@@ -1,7 +1,7 @@
-import gym
 import myosuite  # noqa
 import numpy as np
 import torch
+from myosuite.utils import gym
 
 import deprl
 
@@ -17,13 +17,14 @@ def helper_env_loop(env):
     env.seed(SEED)
     for ep in range(10):
         ret = 0
-        obs = env.reset()
+        obs = env.reset()[0]
         for i in range(2000):
             action = policy.noisy_test_step(obs)
-            obs, reward, done, _ = env.step(action)
+            obs, reward, terminated, truncated, info = env.step(action)
             # env.mj_render()
             ret += reward
             qpos.append(env.sim.data.qpos[1])
+            done = terminated or truncated
             if done:
                 break
         returns.append(ret)

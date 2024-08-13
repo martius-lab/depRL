@@ -88,7 +88,9 @@ class ExceptionWrapper(AbstractWrapper):
         super().__init__(*args, **kwargs)
 
     def reset(self, **kwargs):
-        observation = super().reset(**kwargs)[0]
+        observation = super().reset(**kwargs)
+        if len(observation) == 2 and type(observation) is tuple:
+            observation = observation[0]
         if not np.any(np.isnan(observation)):
             self.last_observation = observation.copy()
         else:
