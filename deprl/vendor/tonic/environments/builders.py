@@ -3,7 +3,7 @@
 import os
 from types import SimpleNamespace
 
-import gym.wrappers
+from gymnasium import wrappers
 import numpy as np
 
 try:
@@ -55,7 +55,7 @@ def control_suite_environment(*args, **kwargs):
         environment.spec = SimpleNamespace(
             max_episode_steps=time_limit, id="ostrichrl-dmcontrol"
         )
-        return gym.wrappers.TimeLimit(environment, time_limit)
+        return wrappers.TimeLimit(environment, time_limit)
 
     return build_environment(_builder, *args, **kwargs, header=None)
 
@@ -97,7 +97,7 @@ def build_environment(
 
     # Remove the TimeLimit wrapper if needed.
     if not terminal_timeouts:
-        if type(environment) == gym.wrappers.TimeLimit:
+        if type(environment) == wrappers.TimeLimit:
             environment = environment.env
 
     # Add time as a feature if needed.
