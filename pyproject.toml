@@ -29,7 +29,7 @@ pytest = "^7.4.0"
 sphinx-copybutton = "^0.5.2"
 # sconegym = {path = "../sconegym", develop = true}
 matplotlib = "^3.8.0"
-myosuite = "^2.1.5"
+myosuite = "^2.5.0"
 
 
 [tool.poetry.scripts]
