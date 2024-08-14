@@ -3,8 +3,8 @@
 import os
 from types import SimpleNamespace
 
-from gymnasium import wrappers
 import numpy as np
+from gymnasium import wrappers
 
 try:
     from myosuite.utils import gym

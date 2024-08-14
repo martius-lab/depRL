@@ -5,9 +5,9 @@ import time
 
 import myosuite  # noqa
 from myosuite.utils import gym
-from deprl import env_wrappers
 
 import deprl
+from deprl import env_wrappers
 
 env = gym.make("myoLegWalk-v0", reset_type="random")
 env = env_wrappers.GymWrapper(env)

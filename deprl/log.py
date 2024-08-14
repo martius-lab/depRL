@@ -2,9 +2,9 @@ import argparse
 import os
 import time
 
-import wandb
 import yaml
 
+import wandb
 from deprl.vendor.tonic import utils
 
 
