@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-import gym
+import gymnasium as gym
 import numpy as np
 
 import deprl  # noqa
@@ -89,6 +89,8 @@ class ExceptionWrapper(AbstractWrapper):
 
     def reset(self, **kwargs):
         observation = super().reset(**kwargs)
+        if len(observation) == 2 and type(observation) is tuple:
+            observation = observation[0]
         if not np.any(np.isnan(observation)):
             self.last_observation = observation.copy()
         else:
@@ -97,10 +99,16 @@ class ExceptionWrapper(AbstractWrapper):
 
     def step(self, action):
         try:
-            observation, reward, done, info = self._inner_step(action)
+            (
+                observation,
+                reward,
+                terminated,
+                truncated,
+                info,
+            ) = self._inner_step(action)
             if np.any(np.isnan(observation)):
                 raise self.error("NaN detected! Resetting.")
-
+            done = terminated or truncated
         except self.error as e:
             logger.log(f"Simulator exception thrown: {e}")
             observation = self.last_observation

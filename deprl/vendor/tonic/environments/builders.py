@@ -3,8 +3,14 @@
 import os
 from types import SimpleNamespace
 
-import gym.wrappers
 import numpy as np
+from gymnasium import wrappers
+
+try:
+    from myosuite.utils import gym
+except ModuleNotFoundError:
+    pass
+
 
 from deprl.vendor.tonic import environments
 from deprl.vendor.tonic.utils import logger
@@ -12,26 +18,33 @@ from deprl.vendor.tonic.utils import logger
 
 def gym_environment(*args, **kwargs):
     """Returns a wrapped Gym environment."""
+    if "header" in kwargs:
+        kwargs.pop("header")
 
     def _builder(*args, **kwargs):
         return gym.make(*args, **kwargs)
 
-    return build_environment(_builder, *args, **kwargs)
+    return build_environment(_builder, *args, **kwargs, header=None)
 
 
 def bullet_environment(*args, **kwargs):
     """Returns a wrapped PyBullet environment."""
+    if "header" in kwargs:
+        kwargs.pop("header")
 
     def _builder(*args, **kwargs):
         import pybullet_envs  # noqa
 
         return gym.make(*args, **kwargs)
 
-    return build_environment(_builder, *args, **kwargs)
+    return build_environment(_builder, *args, **kwargs, header=None)
 
 
 def control_suite_environment(*args, **kwargs):
     """Returns a wrapped Control Suite environment."""
+
+    if "header" in kwargs:
+        kwargs.pop("header")
 
     def _builder(name, *args, **kwargs):
         domain, task = name.split("-")
@@ -42,9 +55,9 @@ def control_suite_environment(*args, **kwargs):
         environment.spec = SimpleNamespace(
             max_episode_steps=time_limit, id="ostrichrl-dmcontrol"
         )
-        return gym.wrappers.TimeLimit(environment, time_limit)
+        return wrappers.TimeLimit(environment, time_limit)
 
-    return build_environment(_builder, *args, **kwargs)
+    return build_environment(_builder, *args, **kwargs, header=None)
 
 
 def build_environment(
@@ -54,6 +67,7 @@ def build_environment(
     time_feature=False,
     max_episode_steps="default",
     scaled_actions=True,
+    header=None,
     *args,
     **kwargs,
 ):
@@ -62,6 +76,8 @@ def build_environment(
     time_feature=True, see https://arxiv.org/pdf/1712.00378.pdf for more
     details.
     """
+    if header is not None:
+        exec(header)
 
     # Build the environment.
     environment = builder(name, *args, **kwargs)
@@ -81,7 +97,7 @@ def build_environment(
 
     # Remove the TimeLimit wrapper if needed.
     if not terminal_timeouts:
-        if type(environment) == gym.wrappers.TimeLimit:
+        if type(environment) == wrappers.TimeLimit:
             environment = environment.env
 
     # Add time as a feature if needed.

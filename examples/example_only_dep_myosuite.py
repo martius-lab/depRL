@@ -1,7 +1,7 @@
 import time
 
-import gym
 import myosuite  # noqa
+from myosuite.utils import gym
 
 from deprl import env_wrappers
 from deprl.dep_controller import DEP

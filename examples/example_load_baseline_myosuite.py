@@ -3,13 +3,14 @@
 
 import time
 
-import gym
 import myosuite  # noqa
+from myosuite.utils import gym
 
 import deprl
+from deprl import env_wrappers
 
-# create the sconegym env
-env = gym.make("myoChallengeChaseTagP1-v0")
+env = gym.make("myoLegWalk-v0", reset_type="random")
+env = env_wrappers.GymWrapper(env)
 policy = deprl.load_baseline(env)
 
 env.seed(0)
@@ -36,5 +37,3 @@ for ep in range(10):
             )
             env.reset()
             break
-
-env.close()

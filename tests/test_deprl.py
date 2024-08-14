@@ -1,9 +1,9 @@
 import shutil
 import sys
 
-import gym
 import myosuite  # noqa
 import torch
+from myosuite.utils import gym
 
 import deprl
 from deprl import main, play
@@ -79,7 +79,8 @@ def test_exception():
 
 
 if __name__ == "__main__":
-    # test_exception()
+    test_play()
     test_train()
     test_load_resume()
     test_load_no_resume()
+    test_exception()
