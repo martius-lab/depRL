@@ -311,6 +311,7 @@ def play(
     config, checkpoint_path, _ = load_checkpoint(checkpoint_path, checkpoint)
 
     # Get important info from config
+    assert config is not None
     header = header or config["tonic"]["header"]
     agent = agent or config["tonic"]["agent"]
     environment = environment or config["tonic"]["test_environment"]
