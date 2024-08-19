@@ -13,8 +13,8 @@ pyyaml = "^6.0"
 numpy = "^1.22.4"
 termcolor = "^2.2.0"
 pandas = "^2.0.1"
-gdown = "^4.7.1"
-gym = "0.13.0"
+gdown = "^5.1.0"
+gymnasium = "*"
 wandb = "^0.15.4"
 # torch = {version="2.1.0", source="pytorch-cpu"}
 torch = ">=2.1.0"
@@ -27,9 +27,9 @@ sphinx = "5.3.0"
 sphinx-rtd-theme = "^1.2.2"
 pytest = "^7.4.0"
 sphinx-copybutton = "^0.5.2"
-sconegym = {path = "../sconegym", develop = true}
+# sconegym = {path = "../sconegym", develop = true}
 matplotlib = "^3.8.0"
-myosuite = "^2.1.5"
+myosuite = "^2.5.0"
 
 
 [tool.poetry.scripts]

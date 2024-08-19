@@ -44,6 +44,7 @@ def load_checkpoint(checkpoint_path, checkpoint="last"):
     Checkpoint loading for main() function.
     """
     if not os.path.isdir(checkpoint_path):
+        logger.log(f"Checkpoint path is not valid: {checkpoint_path}")
         return None, None, None
 
     path = (

@@ -72,7 +72,14 @@ class SconeWrapper(ExceptionWrapper):
         done = self.unwrapped._get_done()
         self.unwrapped.time += self.step_size
         self.unwrapped.total_reward += reward
-        return obs, reward, done, {}
+        truncated = (
+            self.unwrapped.time / self.step_size
+        ) < self._max_episode_steps
+        return obs, reward, done, truncated, {}
+
+    def reset(self, *args, **kwargs):
+        obs = super().reset()
+        return obs, obs
 
     @property
     def _max_episode_steps(self):

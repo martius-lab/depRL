@@ -57,4 +57,7 @@ class GymWrapper(ExceptionWrapper):
 
     @property
     def _max_episode_steps(self):
-        return self.unwrapped.max_episode_steps
+        if hasattr(self.unwrapped, "max_episode_steps"):
+            return self.unwrapped.max_episode_steps
+        else:
+            return self.unwrapped.horizon

@@ -23,7 +23,7 @@ tonic:
   environment: deprl.environments.Gym('myoChallengeRelocateP1-v0', scaled_actions=False)
   environment_name: deprl_baseline_relocate
   full_save: 1
-  header: import deprl, gym, myosuite
+  header: import deprl, myosuite; from myosuite.utils import gym
   name: Relocate
   parallel: 20
   resume: 1

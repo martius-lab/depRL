@@ -2,7 +2,7 @@ import json
 import os
 from collections import deque
 
-import gym
+import gymnasium as gym
 import torch
 
 torch.set_default_dtype(torch.float32)

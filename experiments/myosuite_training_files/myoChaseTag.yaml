@@ -29,7 +29,7 @@ tonic:
     reset_type='random')
   environment_name: deprl_baseline_chasetag
   full_save: 1
-  header: import deprl, gym, myosuite
+  header: import deprl, myosuite; from myosuite.utils import gym
   name: myoChasetag
   parallel: 20
   path: ./output
