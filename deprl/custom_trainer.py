@@ -77,7 +77,6 @@ class Trainer:
             observations, muscle_states, info = self.environment.step(actions)
             if "env_infos" in info:
                 info.pop("env_infos")
-            from pudb import set_trace; set_trace()
             self.agent.update(**info, steps=self.steps)
 
             scores += info["rewards"]

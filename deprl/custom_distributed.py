@@ -93,7 +93,6 @@ class Sequential:
 
             if reset:
                 ob = self.environments[i].reset()
-                from pudb import set_trace; set_trace()
                 if isinstance(ob, tuple):
                     ob = ob[0]
                 muscle = self.environments[i].muscle_states
