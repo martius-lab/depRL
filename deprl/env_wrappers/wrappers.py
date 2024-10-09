@@ -49,29 +49,29 @@ class AbstractWrapper(gym.Wrapper, ABC):
         """
         lce = self.muscle_lengths()
         f = self.muscle_forces()
-        if not hasattr(self, "max_muscle"):
-            self.max_muscle = np.zeros_like(lce)
-            self.min_muscle = np.ones_like(lce) * 100.0
-            self.max_force = -np.ones_like(f) * 100.0
-            self.min_force = np.ones_like(f) * 100.0
+        if not hasattr(self.unwrapped, "max_muscle"):
+            self.unwrapped.max_muscle = np.zeros_like(lce)
+            self.unwrapped.min_muscle = np.ones_like(lce) * 100.0
+            self.unwrapped.max_force = -np.ones_like(f) * 100.0
+            self.unwrapped.min_force = np.ones_like(f) * 100.0
         if not np.any(np.isnan(lce)):
-            self.max_muscle = np.maximum(lce, self.max_muscle)
-            self.min_muscle = np.minimum(lce, self.min_muscle)
+            self.unwrapped.max_muscle = np.maximum(lce, self.unwrapped.max_muscle)
+            self.unwrapped.min_muscle = np.minimum(lce, self.unwrapped.min_muscle)
         if not np.any(np.isnan(f)):
-            self.max_force = np.maximum(f, self.max_force)
-            self.min_force = np.minimum(f, self.min_force)
+            self.unwrapped.max_force = np.maximum(f, self.unwrapped.max_force)
+            self.unwrapped.min_force = np.minimum(f, self.unwrapped.min_force)
         return (
             1.0
             * (
                 (
-                    (lce - self.min_muscle)
-                    / (self.max_muscle - self.min_muscle + 0.1)
+                    (lce - self.unwrapped.min_muscle)
+                    / (self.unwrapped.max_muscle - self.unwrapped.min_muscle + 0.1)
                 )
                 - 0.5
             )
             * 2.0
             + self.force_scale
-            * ((f - self.min_force) / (self.max_force - self.min_force + 0.1))
+            * ((f - self.unwrapped.min_force) / (self.unwrapped.max_force - self.unwrapped.min_force + 0.1))
         ).copy()
 
     @property

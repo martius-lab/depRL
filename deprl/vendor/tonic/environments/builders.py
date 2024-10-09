@@ -6,10 +6,11 @@ from types import SimpleNamespace
 import numpy as np
 from gymnasium import wrappers
 
-try:
-    from myosuite.utils import gym
-except ModuleNotFoundError:
-    pass
+import gymnasium as gym
+# try:
+#     from myosuite.utils import gym
+# except ModuleNotFoundError:
+#     import gymnasium as gym
 
 
 from deprl.vendor.tonic import environments
@@ -84,10 +85,10 @@ def build_environment(
 
     # Get the default time limit.
     if max_episode_steps == "default":
-        if hasattr(environment, "_max_episode_steps"):
-            max_episode_steps = environment._max_episode_steps
-        elif hasattr(environment, "horizon"):
-            max_episode_steps = environment.horizon
+        if hasattr(environment.unwrapped, "_max_episode_steps"):
+            max_episode_steps = environment.unwrapped._max_episode_steps
+        elif hasattr(environment.unwrapped, "horizon"):
+            max_episode_steps = environment.unwrapped.horizon
         elif hasattr(environment, "max_episode_steps"):
             max_episode_steps = environment.max_episode_steps
 

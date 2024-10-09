@@ -6,7 +6,7 @@ from deprl.env_wrappers.scone_wrapper import SconeWrapper
 
 def apply_wrapper(env):
     if "control" in str(env).lower():
-        if env.name == "ostrich-run":
+        if env.unwrapped.name == "ostrich-run":
             return OstrichDMWrapper(env)
         return DMWrapper(env)
     elif "scone" in str(env).lower():

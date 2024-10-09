@@ -65,7 +65,7 @@ class Sequential:
 
     def start(self):
         """Used once to get the initial observations."""
-        observations = [env.reset() for env in self.environments]
+        observations = [env.reset()[0] for env in self.environments]
         muscle_states = [env.muscle_states for env in self.environments]
         self.lengths = np.zeros(len(self.environments), int)
         return np.array(observations, np.float32), np.array(
@@ -79,7 +79,6 @@ class Sequential:
         terminations = []
         observations = []  # Observations for the actions selection.
         muscle_states = []
-
         for i in range(len(self.environments)):
             ob, rew, term, env_info = self.environments[i].step(actions[i])
             muscle = self.environments[i].muscle_states
@@ -94,12 +93,14 @@ class Sequential:
 
             if reset:
                 ob = self.environments[i].reset()
+                from pudb import set_trace; set_trace()
+                if isinstance(ob, tuple):
+                    ob = ob[0]
                 muscle = self.environments[i].muscle_states
                 self.lengths[i] = 0
 
             observations.append(ob)
             muscle_states.append(muscle)
-
         observations = np.array(observations, np.float32)
         muscle_states = np.array(muscle_states, np.float32)
         infos = dict(

@@ -30,10 +30,10 @@ tonic:
   full_save: 1
   header: import deprl, myosuite; from myosuite.utils import gym
   name: myoLeg
-  parallel: 20
+  parallel: 1
   resume: 1
   seed: 0
-  sequential: 10
+  sequential: 1
   test_environment: null
   trainer: deprl.custom_trainer.Trainer(steps=int(1e8), epoch_steps=int(2e5), save_steps=int(1e6))
 working_dir: ./baselines_DEPRL

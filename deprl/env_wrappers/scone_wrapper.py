@@ -21,6 +21,7 @@ class SconeWrapper(ExceptionWrapper):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.error = CustomSconeException
+        self.name = "scone"
 
     def render(self, *args, **kwargs):
         pass
@@ -42,10 +43,10 @@ class SconeWrapper(ExceptionWrapper):
 
     def write_now(self):
         if self.unwrapped.store_next:
-            self.model.write_results(
-                self.output_dir, f"{self.episode:05d}_{self.total_reward:.3f}"
+            self.unwrapped.model.write_results(
+                self.unwrapped.output_dir, f"{self.unwrapped.episode:05d}_{self.unwrapped.total_reward:.3f}"
             )
-        self.episode += 1
+        self.unwrapped.episode += 1
         self.unwrapped.store_next = False
 
     def _inner_step(self, action):
@@ -66,20 +67,23 @@ class SconeWrapper(ExceptionWrapper):
         else:
             self.unwrapped.model.set_actuator_inputs(action)
 
-        self.unwrapped.model.advance_simulation_to(self.time + self.step_size)
+        self.unwrapped.model.advance_simulation_to(self.unwrapped.time + self.unwrapped.step_size)
         reward = self.unwrapped._get_rew()
         obs = self.unwrapped._get_obs()
         done = self.unwrapped._get_done()
-        self.unwrapped.time += self.step_size
+        self.unwrapped.time += self.unwrapped.step_size
         self.unwrapped.total_reward += reward
         truncated = (
-            self.unwrapped.time / self.step_size
-        ) < self._max_episode_steps
+            self.unwrapped.time / self.unwrapped.step_size
+        ) > self._max_episode_steps
         return obs, reward, done, truncated, {}
 
     def reset(self, *args, **kwargs):
         obs = super().reset()
-        return obs, obs
+        return obs, {}
+
+    def seed(self, seed):
+        self.reset(seed=seed)
 
     @property
     def _max_episode_steps(self):

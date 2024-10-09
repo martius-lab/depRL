@@ -106,8 +106,8 @@ def load_checkpoint(checkpoint_path, checkpoint="last"):
 # All kinds of pretrained baselines
 def load_baseline(environment):
     identifier = (
-        environment.env_name
-        if hasattr(environment, "env_name")
+        environment.unwrapped.env_name
+        if hasattr(environment.unwrapped, "env_name")
         else str(environment)
     )
     if "myoLegWalk" in identifier:
