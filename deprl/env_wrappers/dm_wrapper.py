@@ -26,7 +26,7 @@ class DMWrapper(ExceptionWrapper):
         return self.unwrapped.environment.physics.data.act
 
     @property
-    def _max_episode_steps(self):
+    def max_episode_steps(self):
         return self.unwrapped.max_episode_steps
 
 

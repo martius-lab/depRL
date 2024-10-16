@@ -52,7 +52,7 @@ class Sequential:
         if env_args is not None:
             [x.merge_args(env_args) for x in self.environments]
             [x.apply_args() for x in self.environments]
-        self._max_episode_steps = max_episode_steps
+        self.max_episode_steps = max_episode_steps
         self.observation_space = self.environments[0].observation_space
         self.action_space = self.environments[0].action_space
         self.name = self.environments[0].name
@@ -85,7 +85,7 @@ class Sequential:
             muscle = self.environments[i].muscle_states
             self.lengths[i] += 1
             # Timeouts trigger resets but are not true terminations.
-            reset = term or self.lengths[i] == self._max_episode_steps
+            reset = term or self.lengths[i] == self.max_episode_steps
             next_observations.append(ob)
             rewards.append(rew)
             resets.append(reset)
@@ -138,7 +138,7 @@ class Parallel:
         self.build_dict = build_dict
         self.worker_groups = worker_groups
         self.workers_per_group = workers_per_group
-        self._max_episode_steps = max_episode_steps
+        self.max_episode_steps = max_episode_steps
         self.env_args = env_args
         self.header = header
 
@@ -171,7 +171,7 @@ class Parallel:
                 "output_queue": self.output_queue,
                 "group_seed": group_seed,
                 "build_dict": self.build_dict,
-                "max_episode_steps": self._max_episode_steps,
+                "max_episode_steps": self.max_episode_steps,
                 "index": i,
                 "workers": self.workers_per_group,
                 "env_args": self.env_args
@@ -267,7 +267,7 @@ def distribute(
     if "header" in tonic_conf:
         exec(tonic_conf["header"])
     dummy_environment = build_env_from_dict(build_dict)
-    max_episode_steps = dummy_environment._max_episode_steps
+    max_episode_steps = dummy_environment.max_episode_steps
     del dummy_environment
 
     if parallel < 2:
