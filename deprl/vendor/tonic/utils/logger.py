@@ -73,13 +73,17 @@ class Logger:
         config=None,
         test_env=None,
         resume=False,
+        custom_save_path=None,        
     ):
         env = test_env.environments[0] if test_env is not None else None
-        self.path = (
-            create_resumed_results_path(config, env)
-            if resume
-            else create_results_path(config, env)
-        )
+        if custom_save_path:
+            self.path = custom_save_path
+        else:
+            self.path = (
+                create_resumed_results_path(config, env)
+                if resume
+                else create_results_path(config, env)
+            )
         self.log_file_path = os.path.join(self.path, "log.csv")
 
         # Save the launch script.
