@@ -42,7 +42,7 @@ class Sequential:
         if hasattr(build_env_from_dict(build_dict).unwrapped, "environment"):
             # its a deepmind env
             self.environments = [
-                build_env_from_dict(build_dict)() for i in range(workers)
+                build_env_from_dict(build_dict) for i in range(workers)
             ]
         else:
             # its a gym env
