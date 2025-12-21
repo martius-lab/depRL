@@ -48,4 +48,4 @@ class OstrichDMWrapper(DMWrapper):
         return self.unwrapped.environment.physics.muscle_velocities().copy()
 
     def muscle_activity(self):
-        return self.unrapped.environment.physics.muscle_activations().copy()
+        return self.unwrapped.environment.physics.muscle_activations().copy()

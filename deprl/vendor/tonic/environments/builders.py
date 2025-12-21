@@ -172,32 +172,42 @@ class ControlSuiteEnvironment(gym.core.Env):
             reward = time_step.reward
 
             # Remove terminations from timeouts.
-            done = time_step.last()
-            if done:
+            truncated = False
+            terminated = False
+            if time_step.last():
                 done = self.environment.task.get_termination(
                     self.environment.physics
                 )
-                done = done is not None
+                if done is None:
+                    truncated = True
+                else:
+                    terminated = True
 
             self.last_time_step = time_step
 
         # In case MuJoCo crashed.
         except self.error as e:
-            path = logger.get_path()
-            os.makedirs(path, exist_ok=True)
-            save_path = os.path.join(path, "crashes.txt")
-            error = str(e)
-            with open(save_path, "a") as file:
-                file.write(error + "\n")
-            logger.error(error)
+            try:
+                path = logger.get_path()
+                os.makedirs(path, exist_ok=True)
+                save_path = os.path.join(path, "crashes.txt")
+                error = str(e)
+                with open(save_path, "a") as file:
+                    file.write(error + "\n")
+                logger.error(error)
+            except Exception:
+                # if no path, just print the error for now
+                print(f'Encountered: {str(e)}')
+
             observation = _flatten_observation(self.last_time_step.observation)
             observation = np.zeros_like(observation)
             reward = 0.0
-            done = True
+            terminated = True
+            truncated = False
 
-        return observation, reward, done, {}
+        return observation, reward, terminated, truncated, {}
 
-    def reset(self):
+    def reset(self, seed=None, options=None):
         time_step = self.environment.reset()
         self.last_time_step = time_step
         return _flatten_observation(time_step.observation)

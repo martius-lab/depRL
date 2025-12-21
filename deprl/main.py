@@ -78,7 +78,7 @@ def train(
         script_path=__file__,
         config=config,
         test_env=test_environment,
-        resume=tonic_conf["resume"],
+        resume=tonic_conf.get("resume", None),
     )
     path = logger.get_path()
 
